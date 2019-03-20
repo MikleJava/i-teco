@@ -38,12 +38,20 @@ public class Main {
                 }
             }
             else if(command.equals("-spbi")) {
-                System.out.print("input project id : ");
-                int id = scanner.nextInt();
-                System.out.println("\tid\t|\tname");
-                System.out.println("____________________");
-                for (Project project : projects) {
-                    System.out.println("\t" + project.getId() + "\t|\t" + project.getName());
+                try {
+                    System.out.print("input project id : ");
+                    int id = scanner.nextInt();
+                    System.out.println("\tid\t|\tname");
+                    System.out.println("____________________");
+                    for (Project project : projects) {
+                        if (project.getId() == id) {
+                            System.out.println("\t" + project.getId() + "\t|\t" + project.getName());
+                        } else {
+                            System.out.println("Project with id " + id + "does not exist");
+                        }
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Incorrect data");
                 }
             }
             else if(command.equals("-sap")) {
