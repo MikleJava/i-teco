@@ -1,5 +1,10 @@
 package ru.girfanov.tm;
 
+import ru.girfanov.tm.data.Project;
+import ru.girfanov.tm.data.Task;
+import ru.girfanov.tm.select.Select;
+import ru.girfanov.tm.update.Update;
+
 import java.util.*;
 
 public class Main {
@@ -7,6 +12,8 @@ public class Main {
         List<Project> projects = new ArrayList<>();
         List<Task> tasks = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
+        Select select = new Select();
+        Update update = new Update();
         String command = null;
         System.out.println("input --help to get info");
         System.out.println("input --exit to close application");
@@ -15,8 +22,8 @@ public class Main {
             if(command.equals("--help")) {
                 System.out.println("-cp\t create project \n" +
                         "-ct\t create task \n" +
-                        "-ep\t edit project \n" +
-                        "-et\t edit task \n" +
+                        "-up\t update project \n" +
+                        "-ut\t update task \n" +
                         "-dp\t delete project \n" +
                         "-dt\t delete task \n" +
                         "-spbi\t select project by id \n" +
@@ -48,32 +55,24 @@ public class Main {
                     System.out.println("Incorrect data");
                 }
             }
-            else if(command.equals("-ep")) {
+            else if(command.equals("-up")) {
                 try {
-                    System.out.print("input project id which you want to edit : ");
+                    System.out.print("input project id which you want to update : ");
                     int id = scanner.nextInt();
-                    for(Project project : projects) {
-                        if(project.getId() == id) {
-                            System.out.print("input new project name : ");
-                            String name = scanner.next();
-                            project.setName(name);
-                        }
-                    }
+                    System.out.print("input new project name : ");
+                    String name = scanner.next();
+                    update.updateProject(projects, id, name);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
             }
-            else if(command.equals("-et")) {
+            else if(command.equals("-ut")) {
                 try {
-                    System.out.print("input task id which you want to edit : ");
+                    System.out.print("input task id which you want to update : ");
                     int id = scanner.nextInt();
-                    for(Task task : tasks) {
-                        if(task.getId() == id) {
-                            System.out.print("input new task name : ");
-                            String name = scanner.next();
-                            task.setName(name);
-                        }
-                    }
+                    System.out.print("input new task name : ");
+                    String name = scanner.next();
+                    update.updateTask(tasks, id, name);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
@@ -82,11 +81,7 @@ public class Main {
                 try {
                     System.out.print("input project id which you want to delete : ");
                     int id = scanner.nextInt();
-                    for(Project project : projects) {
-                        if(project.getId() == id) {
-                            projects.remove(project);
-                        }
-                    }
+                    projects.removeIf(project -> project.getId() == id);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
@@ -95,11 +90,7 @@ public class Main {
                 try {
                     System.out.print("input task id which you want to delete : ");
                     int id = scanner.nextInt();
-                    for(Task task : tasks) {
-                        if(task.getId() == id) {
-                            tasks.remove(id);
-                        }
-                    }
+                    tasks.removeIf(task -> task.getId() == id);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
@@ -110,11 +101,7 @@ public class Main {
                     int id = scanner.nextInt();
                     System.out.println("\tid\t|\tname");
                     System.out.println("____________________");
-                    for (Project project : projects) {
-                        if (project.getId() == id) {
-                            System.out.println("\t" + project.getId() + "\t|\t" + project.getName());
-                        }
-                    }
+                    select.selectProjectById(projects, id);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
@@ -125,11 +112,7 @@ public class Main {
                     int id = scanner.nextInt();
                     System.out.println("\tid\t|\tname\t|\tproject_id");
                     System.out.println("__________________________________");
-                    for (Task task : tasks) {
-                        if (task.getId() == id) {
-                            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" +task.getProjectID());
-                        }
-                    }
+                    select.selectTaskById(tasks, id);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
@@ -137,16 +120,12 @@ public class Main {
             else if(command.equals("-sap")) {
                 System.out.println("\tid\t|\tname");
                 System.out.println("____________________");
-                for (Project project : projects) {
-                    System.out.println("\t" + project.getId() + "\t|\t" + project.getName());
-                }
+                select.selectAllProjects(projects);
             }
             else if(command.equals("-sat")) {
                 System.out.println("\tid\t|\tname\t|\tproject_id");
                 System.out.println("__________________________________");
-                for (Task task : tasks) {
-                    System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" +task.getProjectID());
-                }
+                select.selectAllTasks(tasks);
             }
         }
     }

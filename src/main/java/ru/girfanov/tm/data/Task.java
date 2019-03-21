@@ -1,27 +1,33 @@
-package ru.girfanov.tm;
+package ru.girfanov.tm.data;
 
-public class Project {
+public class Task {
     private int id;
     private String name;
+    private int projectID;
 
-    public Project() {
+    public Task() {
     }
 
-    public Project(int id, String name) {
+    public Task(int id, String name, int projectID) {
         this.id = id;
         this.name = name;
+        this.projectID = projectID;
     }
 
     public int getId() {
         return id;
     }
 
-    public Project getById(int id) {
+    public Task getById(int id) {
         return this;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getProjectID() {
+        return projectID;
     }
 
     public void setId(int id) {
@@ -30,5 +36,9 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 }

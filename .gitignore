@@ -9,6 +9,11 @@ build/
 
 /classes
 
+/target/
+
+/.idea/
+
+/.idea/*.xml
 
 
 .idea
