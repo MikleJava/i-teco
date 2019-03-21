@@ -1,7 +1,7 @@
 package ru.girfanov.tm.update;
 
-import ru.girfanov.tm.data.Project;
-import ru.girfanov.tm.data.Task;
+import ru.girfanov.tm.entity.Project;
+import ru.girfanov.tm.entity.Task;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -14,11 +14,11 @@ public class Update {
     public void updateProject(List<Project> projects) {
         try {
             System.out.print("input project id which you want to update : ");
-            int id = scanner.nextInt();
+            String id = scanner.next();
             System.out.print("input new project name : ");
             String name = scanner.next();
             for(Project project : projects) {
-                if(project.getId() == id) {project.setName(name);}
+                if(project.getUuid().equals(id)) {project.setName(name);}
             }
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
@@ -28,11 +28,11 @@ public class Update {
     public void updateTask(List<Task> tasks) {
         try {
             System.out.print("input task id which you want to update : ");
-            int id = scanner.nextInt();
+            String id = scanner.next();
             System.out.print("input new task name : ");
             String name = scanner.next();
             for(Task task : tasks) {
-                if(task.getId() == id) {task.setName(name);}
+                if(task.getUuid().equals(id)) {task.setName(name);}
             }
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

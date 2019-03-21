@@ -1,7 +1,7 @@
 package ru.girfanov.tm.delete;
 
-import ru.girfanov.tm.data.Project;
-import ru.girfanov.tm.data.Task;
+import ru.girfanov.tm.entity.Project;
+import ru.girfanov.tm.entity.Task;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -14,8 +14,8 @@ public class Delete {
     public void deleteProject(List<Project> projects) {
         try {
             System.out.print("input project id which you want to delete : ");
-            int id = scanner.nextInt();
-            projects.removeIf(project -> project.getId() == id);
+            String id = scanner.next();
+            projects.removeIf(project -> project.getUuid().equals(id));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }
@@ -24,8 +24,8 @@ public class Delete {
     public void deleteTask(List<Task> tasks) {
         try {
             System.out.print("input task id which you want to delete : ");
-            int id = scanner.nextInt();
-            tasks.removeIf(task -> task.getId() == id);
+            String id = scanner.next();
+            tasks.removeIf(task -> task.getUuid().equals(id));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

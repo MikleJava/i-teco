@@ -11,6 +11,7 @@ public class Information {
                 "-spbi\t select project by id \n" +
                 "-stbi\t select task by id \n" +
                 "-sap\t select all projects \n" +
-                "-sat\t select all tasks");
+                "-sat\t select all tasks \n" +
+                "-satbpi\t select all tasks by project id");
     }
 }

@@ -1,35 +1,45 @@
-package ru.girfanov.tm.data;
+package ru.girfanov.tm.entity;
 
 import java.util.Date;
 
 public class Task {
 
-    private int id;
+    private String uuid;
     private String name;
-    private int projectId;
+    private String description;
+    private String projectId;
     private Date dateStart;
     private Date dateEnd;
 
     public Task() {
     }
 
-    public Task(int id, String name, int projectId, Date dateStart, Date dateEnd) {
-        this.id = id;
+    public Task(String uuid, String name, String description, String projectId, Date dateStart, Date dateEnd) {
+        this.uuid = uuid;
         this.name = name;
+        this.description = description;
         this.projectId = projectId;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
     }
 
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getProjectId() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getProjectId() {
         return projectId;
     }
 

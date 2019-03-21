@@ -1,26 +1,28 @@
-package ru.girfanov.tm.data;
+package ru.girfanov.tm.entity;
 
 import java.util.Date;
 
 public class Project {
 
-    private int id;
+    private String uuid;
     private String name;
+    private String description;
     private Date dateStart;
     private Date dateEnd;
 
     public Project() {
     }
 
-    public Project(int id, String name, Date dateStart, Date dateEnd) {
-        this.id = id;
+    public Project(String uuid, String name, String description, Date dateStart, Date dateEnd) {
+        this.uuid = uuid;
         this.name = name;
+        this.description = description;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
     }
 
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getName() {
@@ -29,6 +31,14 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getDateStart() {
