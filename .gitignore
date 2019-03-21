@@ -13,6 +13,7 @@ target/
 
 bin/
 
+.README.md.swp
 
 *.iml
 
