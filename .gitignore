@@ -11,6 +11,8 @@ target/
 
 .idea/
 
+bin/
+
 
 *.iml
 
