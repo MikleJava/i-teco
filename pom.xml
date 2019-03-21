@@ -16,6 +16,14 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
+  <developers>
+    <developer>
+      <name>
+        Girfanov Mikhail
+      </name>
+    </developer>
+  </developers>
+
   <dependencyManagement>
     <dependencies>
       <!-- Camel BOM -->

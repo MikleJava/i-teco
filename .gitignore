@@ -1,22 +1,16 @@
 
 .gradle/
 
-/gradle/
+gradle/
 
-/out/
+out/
 
 build/
 
-/classes
+target/
 
-/target/
+.idea/
 
-/.idea/
-
-/.idea/*.xml
-
-
-.idea
 
 *.iml
 
