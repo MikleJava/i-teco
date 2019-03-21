@@ -8,5 +8,5 @@
 
 ```1)mvn install```
 
-'''2)mvn exec:java -Dexec.mainClass="ru.girfanov.tm.Main"'''
+```2)mvn exec:java -Dexec.mainClass="ru.girfanov.tm.Main"```
 
