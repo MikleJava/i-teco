@@ -3,6 +3,7 @@ package ru.girfanov.tm.select;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 
+import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -39,7 +40,7 @@ public class Select {
         }
     }
 
-    public void selectAllProjects(List<Project> projects) {
+    public void selectAllProjects(Collection<Project> projects) {
         System.out.println("\tid\t|\tname\t|\tdescription\t|\tdate_start\t|\tdate_end");
         System.out.println("_________________________________________________________________________________");
         for (Project project : projects) {

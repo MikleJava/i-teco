@@ -5,36 +5,40 @@ import ru.girfanov.tm.entity.Project;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class ProjectRepository {
+public class ProjectRepository implements Repository<Project>{
 
     private Map<String, Project> projectMap = new HashMap<>();
 
-    public void persist(String uuid, Project project) {
-        projectMap.put(uuid, project);
+    @Override
+    public void persistEntity(Project entity) {
+        projectMap.put(entity.getUuid(), entity);
     }
 
-    public void mergeProjectName(Project project, String name) {
-        projectMap.merge(project.getUuid(), project, (oldVal, newVal) -> newVal);
+    @Override
+    public void mergeEntityName(String uuid, String name) {
+        projectMap.merge(uuid, projectMap.get(uuid), (oldVal, newVal) -> newVal);
     }
 
-    public void removeProjectbyId(Project project) {
-        projectMap.remove(project.getUuid(), project);
+    @Override
+    public void removeEntityById(String uuid) {
+        projectMap.remove(uuid);
     }
 
-    public void removeAllProjects() {
+    public void removeAllEntities() {
         projectMap.clear();
     }
 
-    public Collection<Project> findAll() {
+    @Override
+    public Collection<Project> findAllEntities() {
         return projectMap.values();
     }
 
-    public Project findProjectById(Project project) {
+    @Override
+    public Project findEntityById(String uuid) {
         Project resultProject = null;
         for(Map.Entry<String, Project> entry : projectMap.entrySet()) {
-            if(Objects.requireNonNull(project.getUuid()).equals(entry.getValue().getUuid())) {
+            if(uuid.equals(entry.getValue().getUuid())) {
                 resultProject = entry.getValue();
             }
         }

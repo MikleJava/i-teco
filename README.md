@@ -6,7 +6,12 @@
 
 Команды для сборки и запуска приложения:
 
-```mvn clean install
+```mvn clean install```
 
-mvn exec:java -Dexec.mainClass="ru.girfanov.tm.App"```
+```mvn exec:java -Dexec.mainClass="ru.girfanov.tm.App"```
+
+Описание программы
+
+Консольная программа для работы с двумя сущностями Project и Task
+
 

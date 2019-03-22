@@ -2,9 +2,8 @@ package ru.girfanov.tm.entity;
 
 import java.util.Date;
 
-public class Task {
+public class Task extends AbstractEntity {
 
-    private String uuid;
     private String name;
     private String description;
     private String projectId;
@@ -14,17 +13,12 @@ public class Task {
     public Task() {
     }
 
-    public Task(String uuid, String name, String description, String projectId, Date dateStart, Date dateEnd) {
-        this.uuid = uuid;
+    public Task(String name, String description, String projectId, Date dateStart, Date dateEnd) {
         this.name = name;
         this.description = description;
         this.projectId = projectId;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-    }
-
-    public String getUuid() {
-        return uuid;
     }
 
     public String getName() {
