@@ -49,7 +49,7 @@ public class App {
             if(command.equals(ct)) {create.createTask(tasks); }
             if(command.equals(up)) {update.updateProject(projects);}
             if(command.equals(ut)) {update.updateTask(tasks);}
-            if(command.equals(dp)) {delete.deleteProject(projects);}
+            if(command.equals(dp)) {delete.deleteProject(projects, tasks);}
             if(command.equals(dt)) {delete.deleteTask(tasks);}
             if(command.equals(spbi)) {select.selectProjectById(projects);}
             if(command.equals(stbi)) {select.selectTaskById(tasks);}

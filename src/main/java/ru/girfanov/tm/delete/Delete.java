@@ -11,10 +11,11 @@ public class Delete {
 
     private Scanner scanner = new Scanner(System.in);
 
-    public void deleteProject(List<Project> projects) {
+    public void deleteProject(List<Project> projects, List<Task> tasks) {
         try {
             System.out.print("input project id which you want to delete : ");
             String id = scanner.next();
+            tasks.removeIf(task -> task.getProjectId().equals(id));
             projects.removeIf(project -> project.getUuid().equals(id));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
