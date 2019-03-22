@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TaskRepository {
-    
+
     private Map<String, Task> taskMap = new HashMap<>();
 
     public void persist(String uuid, Task task) {
