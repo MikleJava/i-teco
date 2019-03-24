@@ -1,13 +1,12 @@
 package ru.girfanov.tm.bootstrap;
 
+import ru.girfanov.tm.api.*;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.info.Information;
 import ru.girfanov.tm.repository.ProjectRepository;
-import ru.girfanov.tm.repository.Repository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.service.ProjectService;
-import ru.girfanov.tm.service.Service;
 import ru.girfanov.tm.service.TaskService;
 
 import java.text.DateFormat;
@@ -35,10 +34,10 @@ public class Bootstrap {
     public void init() {
         Information info = new Information();
         Scanner scanner = new Scanner(System.in);
-        Repository<Project> projectRepository = new ProjectRepository();
-        Repository<Task> taskRepository = new TaskRepository();
-        Service<Project> projectService = new ProjectService(projectRepository);
-        Service<Task> taskService = new TaskService(taskRepository);
+        IProjectRepository projectRepository = new ProjectRepository();
+        ITaskRepository taskRepository = new TaskRepository();
+        IProjectService projectService = new ProjectService(projectRepository, taskRepository);
+        ITaskService taskService = new TaskService(taskRepository);
         String command = null;
 
         while (!exit.equals(command)) {
@@ -67,13 +66,18 @@ public class Bootstrap {
                     String name = scanner.next();
                     System.out.print("input task description : ");
                     String description = scanner.next();
+                    System.out.println("all available projects : ");
+                    List<Project> projects = new ArrayList<>(projectService.findAll());
+                    for (int i = 0; i < projects.size(); i++) {
+                        System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                    }
                     System.out.print("input project id : ");
-                    String projectID = scanner.next();
+                    int projectID = scanner.nextInt();
                     System.out.print("input date start : ");
                     Date dateStart = dateFormat.parse(scanner.next());
                     System.out.print("input date end : ");
                     Date dateEnd = dateFormat.parse(scanner.next());
-                    taskService.persist(new Task(name, description, projectID, dateStart, dateEnd));
+                    taskService.persist(new Task(name, description, projects.get(projectID).getUuid(), dateStart, dateEnd));
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 } catch (ParseException e) {
@@ -82,51 +86,76 @@ public class Bootstrap {
             }
             if(command.equals(up)) {
                 try {
+                    System.out.println("all available projects : ");
+                    List<Project> projects = new ArrayList<>(projectService.findAll());
+                    for (int i = 0; i < projects.size(); i++) {
+                        System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                    }
                     System.out.print("input project id which you want to update : ");
-                    String id = scanner.next();
+                    int id = scanner.nextInt();
                     System.out.print("input new project name : ");
                     String name = scanner.next();
-                    projectService.merge(id, name);
+                    projectService.merge(projects.get(id).getUuid(), name);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
             }
             if(command.equals(ut)) {
                 try {
+                    System.out.println("all available tasks : ");
+                    List<Task> tasks = new ArrayList<>(taskService.findAll());
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
+                    }
                     System.out.print("input task id which you want to update : ");
-                    String id = scanner.next();
+                    int id = scanner.nextInt();
                     System.out.print("input new task name : ");
                     String name = scanner.next();
-                    taskService.merge(id, name);
+                    taskService.merge(tasks.get(id).getUuid(), name);
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
             }
             if(command.equals(dp)) {
                 try {
+                    System.out.println("all available projects : ");
+                    List<Project> projects = new ArrayList<>(projectService.findAll());
+                    for (int i = 0; i < projects.size(); i++) {
+                        System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                    }
                     System.out.print("input project id which you want to delete : ");
-                    String id = scanner.next();
-                    projectService.remove(id);
+                    int id = scanner.nextInt();
+                    projectService.remove(projects.get(id).getUuid());
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
             }
             if(command.equals(dt)) {
                 try {
+                    System.out.println("all available tasks : ");
+                    List<Task> tasks = new ArrayList<>(taskService.findAll());
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
+                    }
                     System.out.print("input task id which you want to delete : ");
-                    String id = scanner.next();
-                    taskService.remove(id);
+                    int id = scanner.nextInt();
+                    taskService.remove(tasks.get(id).getUuid());
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
                 }
             }
             if(command.equals(spbi)) {
                 try {
+                    System.out.println("all available projects : ");
+                    List<Project> projects = new ArrayList<>(projectService.findAll());
+                    for (int i = 0; i < projects.size(); i++) {
+                        System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                    }
                     System.out.print("input project id : ");
-                    String id = scanner.next();
+                    int id = scanner.nextInt();
                     System.out.println("\tid\t|\tname\t|\tdescription\t|\tdate_start\t|\tdate_end");
                     System.out.println("_______________________________________________________________________________");
-                    Project project = projectService.findOne(id);
+                    Project project = projectService.findOne(projects.get(id).getUuid());
                     System.out.println("\t" + project.getUuid() + "\t|\t" + project.getName() + "\t|\t" + project.getDescription() + "\t|\t" + project.getDateStart() + "\t|\t" + project.getDateEnd());
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
@@ -134,11 +163,16 @@ public class Bootstrap {
             }
             if(command.equals(stbi)) {
                 try {
+                    System.out.println("all available tasks : ");
+                    List<Task> tasks = new ArrayList<>(taskService.findAll());
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
+                    }
                     System.out.print("input task id : ");
-                    String id = scanner.next();
+                    int id = scanner.nextInt();
                     System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
                     System.out.println("_______________________________________________________________________________________________");
-                    Task task = taskService.findOne(id);
+                    Task task = taskService.findOne(tasks.get(id).getUuid());
                     System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");
@@ -162,13 +196,18 @@ public class Bootstrap {
             }
             if(command.equals(satbpi)) {
                 try {
+                    System.out.println("all available projects : ");
+                    List<Project> projects = new ArrayList<>(projectService.findAll());
+                    for (int i = 0; i < projects.size(); i++) {
+                        System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                    }
                     System.out.print("input project id : ");
-                    String id = scanner.next();
+                    int id = scanner.nextInt();
                     System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
                     System.out.println("___________________________________________________________________________________________________");
-                    Collection<Task> tasks = ((TaskService) taskService).findAllTasksByProjectId(id);
+                    Collection<Task> tasks = taskService.findAllTasksByProjectId(projects.get(id).getUuid());
                     for(Task task : tasks) {
-                        if(task.getProjectId().equals(id)) {System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());}
+                        System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Incorrect data");

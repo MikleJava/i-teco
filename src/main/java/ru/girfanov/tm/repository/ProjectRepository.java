@@ -1,14 +1,15 @@
 package ru.girfanov.tm.repository;
 
+import ru.girfanov.tm.api.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class ProjectRepository implements Repository<Project>{
+public class ProjectRepository implements IProjectRepository {
 
-    private Map<String, Project> projectMap = new HashMap<>();
+    private Map<String, Project> projectMap = new ConcurrentHashMap<>();
 
     @Override
     public void persistEntity(Project entity) {
@@ -17,7 +18,7 @@ public class ProjectRepository implements Repository<Project>{
 
     @Override
     public void mergeEntityName(String uuid, String name) {
-        projectMap.merge(uuid, projectMap.get(uuid), (oldVal, newVal) -> newVal);
+        projectMap.merge(uuid, projectMap.get(uuid).setName(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
@@ -25,6 +26,7 @@ public class ProjectRepository implements Repository<Project>{
         projectMap.remove(uuid);
     }
 
+    @Override
     public void removeAllEntities() {
         projectMap.clear();
     }

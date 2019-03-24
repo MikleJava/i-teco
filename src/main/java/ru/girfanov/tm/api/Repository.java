@@ -1,4 +1,4 @@
-package ru.girfanov.tm.repository;
+package ru.girfanov.tm.api;
 
 import ru.girfanov.tm.entity.AbstractEntity;
 

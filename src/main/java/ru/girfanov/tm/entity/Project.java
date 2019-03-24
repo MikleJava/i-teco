@@ -23,8 +23,9 @@ public class Project extends AbstractEntity {
         return name;
     }
 
-    public void setName(String name) {
+    public Project setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {

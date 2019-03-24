@@ -37,8 +37,9 @@ public class Task extends AbstractEntity {
         return projectId;
     }
 
-    public void setName(String name) {
+    public Task setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Date getDateStart() {

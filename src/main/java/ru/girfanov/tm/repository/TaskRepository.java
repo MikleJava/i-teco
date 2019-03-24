@@ -1,15 +1,16 @@
 package ru.girfanov.tm.repository;
 
+import ru.girfanov.tm.api.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class TaskRepository implements Repository<Task>{
+public class TaskRepository implements ITaskRepository {
 
-    private Map<String, Task> taskMap = new HashMap<>();
+    private Map<String, Task> taskMap = new ConcurrentHashMap<>();
 
     @Override
     public void persistEntity(Task entity) {
@@ -18,7 +19,7 @@ public class TaskRepository implements Repository<Task>{
 
     @Override
     public void mergeEntityName(String uuid, String name) {
-        taskMap.merge(uuid, taskMap.get(uuid), (oldVal, newVal) -> newVal);
+        taskMap.merge(uuid, taskMap.get(uuid).setName(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
@@ -47,13 +48,23 @@ public class TaskRepository implements Repository<Task>{
         return resultTask;
     }
 
-    public Collection<Task> findAllTasksByProjectId(String uuid) {
+    @Override
+    public Collection<Task> findAllTasksByEntityId(String entityUuid) {
         Collection<Task> resultTasks = new ArrayList<>();
-        for(Task task : taskMap.values()) {
-            if(task.getProjectId().equals(uuid)) {
-                resultTasks.add(task);
+        taskMap.forEach((key, value) -> {
+            if(value.getProjectId().equals(entityUuid)) {
+                resultTasks.add(value);
             }
-        }
+        });
         return resultTasks;
+    }
+
+    @Override
+    public void removeAllTasksByEntityId(String entityUuid) {
+        taskMap.forEach((key, value) -> {
+            if (value.getProjectId().equals(entityUuid)) {
+                taskMap.remove(key, value);
+            }
+        });
     }
 }
