@@ -1,7 +1,28 @@
-package ru.girfanov.tm.info;
+package ru.girfanov.tm.command;
 
-public class Information {
-    public void getInfo() {
+import ru.girfanov.tm.bootstrap.Bootstrap;
+
+public class HelpCommand extends AbstractCommand<String> {
+
+    private static final String name = "--help";
+    private static final String description = "get information";
+
+    public HelpCommand(Bootstrap bootstrap) {
+        super(bootstrap);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void execute() {
         System.out.println("-cp\t create project \n" +
                 "-ct\t create task \n" +
                 "-up\t update project \n" +
