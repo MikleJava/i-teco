@@ -3,6 +3,7 @@ package ru.girfanov.tm.repository;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,5 +46,16 @@ public class ProjectRepository implements IProjectRepository {
             }
         }
         return resultProject;
+    }
+
+    @Override
+    public Collection<Project> findAllProjectsByUserId(String userId) {
+        Collection<Project> projects = new ArrayList<>();
+        projectMap.forEach((key, value) -> {
+            if(value.getUserId().equals(userId)) {
+                projects.add(value);
+            }
+        });
+        return projects;
     }
 }

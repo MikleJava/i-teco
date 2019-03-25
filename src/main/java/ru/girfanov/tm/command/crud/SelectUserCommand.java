@@ -1,6 +1,7 @@
 package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.command.AbstractCommand;
 import ru.girfanov.tm.entity.User;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class SelectUserCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(String ... params) {
         try {
             System.out.println("all available users : ");
             List<User> users = new ArrayList<>(bootstrap.userService.findAll());

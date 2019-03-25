@@ -51,6 +51,24 @@ public class TaskService implements ITaskService {
     @Override
     public Collection<Task> findAllTasksByProjectId(String projectUuid) {
         if(projectUuid == null || projectUuid.isEmpty()) { return null; }
-        return repository.findAllTasksByEntityId(projectUuid);
+        return repository.findAllTasksByProjectId(projectUuid);
+    }
+
+    @Override
+    public void removeAllTasksByProjectId(String projectId) {
+        if(projectId == null || projectId.isEmpty()) { return; }
+        repository.removeAllTasksByProjectId(projectId);
+    }
+
+    @Override
+    public Collection<Task> findAllTasksByUserId(String userId) {
+        if(userId == null || userId.isEmpty()) { return null; }
+        return repository.findAllTasksByUserId(userId);
+    }
+
+    @Override
+    public void removeAllTasksByUserId(String userId) {
+        if(userId == null || userId.isEmpty()) { return; }
+        repository.removeAllTasksByUserId(userId);
     }
 }

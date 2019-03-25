@@ -1,6 +1,7 @@
 package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.command.AbstractCommand;
 import ru.girfanov.tm.entity.Task;
 
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class UpdateTaskCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(String ... params) {
         try {
             System.out.println("all available tasks : ");
-            List<Task> tasks = new ArrayList<>(bootstrap.taskService.findAll());
+            List<Task> tasks = new ArrayList<>(bootstrap.taskService.findAllTasksByUserId(params[0]));
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
             }

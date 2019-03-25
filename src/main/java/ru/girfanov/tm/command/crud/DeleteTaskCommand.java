@@ -12,7 +12,6 @@ public class DeleteTaskCommand extends AbstractCrudCommand {
 
     private static final String name = "-dt";
     private static final String description = "delete task";
-
     public DeleteTaskCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -28,10 +27,10 @@ public class DeleteTaskCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(String ... params) {
         try {
             System.out.println("all available tasks : ");
-            List<Task> tasks = new ArrayList<>(bootstrap.taskService.findAll());
+            List<Task> tasks = new ArrayList<>(bootstrap.taskService.findAllTasksByUserId(params[0]));
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
             }

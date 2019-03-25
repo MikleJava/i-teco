@@ -21,6 +21,5 @@ public class ExitCommand extends AbstractCommand<String> {
         return description;
     }
 
-    @Override
-    public void execute() {}
+    public void execute(String ... params) {}
 }

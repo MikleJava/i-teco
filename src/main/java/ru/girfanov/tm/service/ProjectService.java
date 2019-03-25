@@ -31,7 +31,7 @@ public class ProjectService implements IProjectService {
     @Override
     public void remove(String uuid) {
         if(uuid == null || uuid.isEmpty()) { return; }
-        taskRepository.removeAllTasksByEntityId(uuid);
+        taskRepository.removeAllTasksByProjectId(uuid);
         projectRepository.removeEntityById(uuid);
     }
 
@@ -50,5 +50,11 @@ public class ProjectService implements IProjectService {
     public Project findOne(String uuid) {
         if(uuid == null || uuid.isEmpty()) { return null; }
         return projectRepository.findEntityById(uuid);
+    }
+
+    @Override
+    public Collection<Project> findAllProjectsByUserId(String userId) {
+        if(userId == null || userId.isEmpty()) { return null; }
+        return projectRepository.findAllProjectsByUserId(userId);
     }
 }

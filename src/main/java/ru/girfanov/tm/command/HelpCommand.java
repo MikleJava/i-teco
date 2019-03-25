@@ -21,8 +21,7 @@ public class HelpCommand extends AbstractCommand<String> {
         return description;
     }
 
-    @Override
-    public void execute() {
+    public void execute(String ... params) {
         System.out.println("-cp\t create project \n" +
                 "-ct\t create task \n" +
                 "-up\t update project \n" +

@@ -8,7 +8,6 @@ public class AuthUserCommand extends AbstractCommand<String> {
 
     private static final String name = "-au";
     private static final String description = "auth user";
-    private User user;
 
     public AuthUserCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -25,15 +24,13 @@ public class AuthUserCommand extends AbstractCommand<String> {
     }
 
     @Override
-    public void execute() {
+    public void execute(String ... params) {
         System.out.print("input user login : ");
         String login = scanner.next();
         System.out.print("input user password : ");
         String password = scanner.next();
-        this.user = bootstrap.userService.findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
-    }
-
-    public User getAuthUser() {
-        return user;
+        User user = bootstrap.userService.findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
+        if(user == null) { System.out.println("You must be logged in"); }
+        else {bootstrap.setUser(user);}
     }
 }

@@ -1,6 +1,7 @@
 package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.command.AbstractCommand;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 
@@ -29,10 +30,10 @@ public class SelectAllTasksByProjectIdCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(String ... params) {
         try {
             System.out.println("all available projects : ");
-            List<Project> projects = new ArrayList<>(bootstrap.projectService.findAll());
+            List<Project> projects = new ArrayList<>(bootstrap.projectService.findAllProjectsByUserId(params[0]));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }

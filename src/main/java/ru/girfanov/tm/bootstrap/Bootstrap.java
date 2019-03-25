@@ -22,29 +22,34 @@ public class Bootstrap {
     public IUserService userService = new UserService(new UserRepository());
 
     private Map<String, AbstractCommand<String>> mapCommands = new HashMap<>();
+    private User user;
     private Scanner scanner = new Scanner(System.in);
     private String command = null;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void init() {
         AbstractCommand<String> help = new HelpCommand(this);
         AbstractCommand<String> exit = new ExitCommand(this);
-        CreateUserCommand cu = new CreateUserCommand(this);
-        AuthUserCommand au = new AuthUserCommand(this);
-        AbstractCrudCommand cp = new CreateProjectCommand(this);
-        AbstractCrudCommand ct = new CreateTaskCommand(this);
-        AbstractCrudCommand up = new UpdateProjectCommand(this);
-        AbstractCrudCommand ut = new UpdateTaskCommand(this);
-        AbstractCrudCommand dp = new DeleteProjectCommnd(this);
-        AbstractCrudCommand dt = new DeleteTaskCommand(this);
-        AbstractCrudCommand spbi = new SelectProjectCommand(this);
-        AbstractCrudCommand stbi = new SelectTaskCommand(this);
-        AbstractCrudCommand sap = new SelectAllProjectsCommand(this);
-        AbstractCrudCommand sat = new SelectAllTasksCommand(this);
-        AbstractCrudCommand satbpi = new SelectAllTasksByProjectIdCommand(this);
-        AbstractCrudCommand esu = new EndSessionUserCommand(this);
-        AbstractCrudCommand uup = new UpdateUserPasswordCommand(this);
-        AbstractCrudCommand subi = new SelectUserCommand(this);
-        AbstractCrudCommand sau = new SelectAllUsersCommand(this);
+        AbstractCommand<String> cu = new CreateUserCommand(this);
+        AbstractCommand<String> au = new AuthUserCommand(this);
+        AbstractCommand<String> cp = new CreateProjectCommand(this);
+        AbstractCommand<String> ct = new CreateTaskCommand(this);
+        AbstractCommand<String> up = new UpdateProjectCommand(this);
+        AbstractCommand<String> ut = new UpdateTaskCommand(this);
+        AbstractCommand<String> dp = new DeleteProjectCommnd(this);
+        AbstractCommand<String> dt = new DeleteTaskCommand(this);
+        AbstractCommand<String> spbi = new SelectProjectCommand(this);
+        AbstractCommand<String> stbi = new SelectTaskCommand(this);
+        AbstractCommand<String> sap = new SelectAllProjectsCommand(this);
+        AbstractCommand<String> sat = new SelectAllTasksCommand(this);
+        AbstractCommand<String> satbpi = new SelectAllTasksByProjectIdCommand(this);
+        AbstractCommand<String> esu = new EndSessionUserCommand(this);
+        AbstractCommand<String> uup = new UpdateUserPasswordCommand(this);
+        AbstractCommand<String> subi = new SelectUserCommand(this);
+        AbstractCommand<String> sau = new SelectAllUsersCommand(this);
 
         mapCommands.put(help.getName(), help);
         mapCommands.put(exit.getName(), exit);
@@ -69,11 +74,11 @@ public class Bootstrap {
         while (!exit.getName().equals(command)) {
             command = scanner.nextLine();
             if(mapCommands.containsKey(command)) {
-                if (mapCommands.get(command) instanceof AbstractCrudCommand) {
+                if(mapCommands.get(command).isSecure()) {
                     au.execute();
-                    User user = au.getAuthUser();
-                    if(user == null) { System.out.println("You must be logged in"); }
-                    else {mapCommands.get(command).execute();}
+                    if(user != null) {
+                        mapCommands.get(command).execute(user.getUuid());
+                    }
                 } else {
                     mapCommands.get(command).execute();
                 }

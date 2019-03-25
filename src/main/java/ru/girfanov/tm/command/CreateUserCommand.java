@@ -23,8 +23,7 @@ public class CreateUserCommand extends AbstractCommand<String> {
         return description;
     }
 
-    @Override
-    public void execute() {
+    public void execute(String ... params) {
         System.out.print("input user login : ");
         String login = scanner.next();
         System.out.print("input user password : ");

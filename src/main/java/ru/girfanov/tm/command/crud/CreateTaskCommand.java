@@ -32,7 +32,7 @@ public class CreateTaskCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(String ... params) {
         try {
             System.out.print("input task name : ");
             String name = scanner.next();
@@ -45,18 +45,11 @@ public class CreateTaskCommand extends AbstractCrudCommand {
             }
             System.out.print("input project id : ");
             int projectID = scanner.nextInt();
-            System.out.println("all available users : ");
-            List<User> users = new ArrayList<>(bootstrap.userService.findAll());
-            for (int i = 0; i < users.size(); i++) {
-                System.out.println(i + ") " + users.get(i).getUuid() + " | " + users.get(i).getLogin());
-            }
-            System.out.print("input user id : ");
-            int userId = scanner.nextInt();
             System.out.print("input date start : ");
             Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             Date dateEnd = dateFormat.parse(scanner.next());
-            bootstrap.taskService.persist(new Task(name, description, projects.get(projectID).getUuid(), users.get(userId).getUuid(), dateStart, dateEnd));
+            bootstrap.taskService.persist(new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

@@ -49,10 +49,10 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Collection<Task> findAllTasksByEntityId(String entityUuid) {
+    public Collection<Task> findAllTasksByProjectId(String projectId) {
         Collection<Task> resultTasks = new ArrayList<>();
         taskMap.forEach((key, value) -> {
-            if(value.getProjectId().equals(entityUuid)) {
+            if(value.getProjectId().equals(projectId)) {
                 resultTasks.add(value);
             }
         });
@@ -60,9 +60,29 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public void removeAllTasksByEntityId(String entityUuid) {
+    public void removeAllTasksByProjectId(String projectId) {
         taskMap.forEach((key, value) -> {
-            if (value.getProjectId().equals(entityUuid)) {
+            if (value.getProjectId().equals(projectId)) {
+                taskMap.remove(key, value);
+            }
+        });
+    }
+
+    @Override
+    public Collection<Task> findAllTasksByUserId(String userId) {
+        Collection<Task> resultTasks = new ArrayList<>();
+        taskMap.forEach((key, value) -> {
+            if(value.getUserId().equals(userId)) {
+                resultTasks.add(value);
+            }
+        });
+        return resultTasks;
+    }
+
+    @Override
+    public void removeAllTasksByUserId(String userId) {
+        taskMap.forEach((key, value) -> {
+            if (value.getUserId().equals(userId)) {
                 taskMap.remove(key, value);
             }
         });
