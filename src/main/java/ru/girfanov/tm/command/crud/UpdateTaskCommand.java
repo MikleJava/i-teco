@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command;
+package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.entity.Task;
@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class DeleteTaskCommand extends AbstractCommand<String> {
+public class UpdateTaskCommand extends AbstractCrudCommand {
 
-    private static final String name = "-dt";
-    private static final String description = "delete task";
+    private static final String name = "-ut";
+    private static final String description = "update task";
 
-    public DeleteTaskCommand(Bootstrap bootstrap) {
+    public UpdateTaskCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
@@ -34,9 +34,11 @@ public class DeleteTaskCommand extends AbstractCommand<String> {
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
             }
-            System.out.print("input task id which you want to delete : ");
+            System.out.print("input task id which you want to update : ");
             int id = scanner.nextInt();
-            bootstrap.taskService.remove(tasks.get(id).getUuid());
+            System.out.print("input new task name : ");
+            String name = scanner.next();
+            bootstrap.taskService.merge(tasks.get(id).getUuid(), name);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

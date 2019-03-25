@@ -1,11 +1,8 @@
 package ru.girfanov.tm.service;
 
-import ru.girfanov.tm.api.ITaskRepository;
-import ru.girfanov.tm.api.ITaskService;
-import ru.girfanov.tm.api.Service;
+import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
-import ru.girfanov.tm.api.Repository;
-import ru.girfanov.tm.repository.TaskRepository;
 
 import java.util.Collection;
 

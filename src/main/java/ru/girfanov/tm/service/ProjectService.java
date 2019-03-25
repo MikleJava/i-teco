@@ -1,16 +1,17 @@
 package ru.girfanov.tm.service;
 
-import ru.girfanov.tm.api.*;
+import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 
 import java.util.Collection;
 
 public class ProjectService implements IProjectService {
 
-    private IProjectRepository projectRepository;
-    private ITaskRepository taskRepository;
+    private ru.girfanov.tm.api.repository.IProjectRepository projectRepository;
+    private ru.girfanov.tm.api.repository.ITaskRepository taskRepository;
 
-    public ProjectService(IProjectRepository projectRepository, ITaskRepository taskRepository) {
+    public ProjectService(ru.girfanov.tm.api.repository.IProjectRepository projectRepository, ITaskRepository taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }

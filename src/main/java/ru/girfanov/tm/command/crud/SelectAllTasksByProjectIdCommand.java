@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command;
+package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.entity.Project;
@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class SelectAllTasksByProjectIdCommand extends AbstractCommand<String> {
+public class SelectAllTasksByProjectIdCommand extends AbstractCrudCommand {
 
     private static final String name = "-satbpi";
     private static final String description = "select all tasks by project id";

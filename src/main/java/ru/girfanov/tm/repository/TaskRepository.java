@@ -1,6 +1,6 @@
 package ru.girfanov.tm.repository;
 
-import ru.girfanov.tm.api.ITaskRepository;
+import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
 import java.util.ArrayList;

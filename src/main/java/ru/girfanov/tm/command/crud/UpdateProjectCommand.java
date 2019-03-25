@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command;
+package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.entity.Project;
@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class DeleteProjectCommnd extends AbstractCommand<String> {
+public class UpdateProjectCommand extends AbstractCrudCommand {
 
-    private static final String name = "-dp";
-    private static final String description = "delete project";
+    private static final String name = "-up";
+    private static final String description = "update project";
 
-    public DeleteProjectCommnd(Bootstrap bootstrap) {
+    public UpdateProjectCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
@@ -34,9 +34,11 @@ public class DeleteProjectCommnd extends AbstractCommand<String> {
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
-            System.out.print("input project id which you want to delete : ");
+            System.out.print("input project id which you want to update : ");
             int id = scanner.nextInt();
-            bootstrap.projectService.remove(projects.get(id).getUuid());
+            System.out.print("input new project name : ");
+            String name = scanner.next();
+            bootstrap.projectService.merge(projects.get(id).getUuid(), name);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

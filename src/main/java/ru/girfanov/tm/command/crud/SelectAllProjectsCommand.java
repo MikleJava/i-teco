@@ -1,11 +1,11 @@
-package ru.girfanov.tm.command;
+package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.entity.Project;
 
 import java.util.Collection;
 
-public class SelectAllProjectsCommand extends AbstractCommand<String> {
+public class SelectAllProjectsCommand extends AbstractCrudCommand {
 
     private static final String name = "-sap";
     private static final String description = "select all projects";

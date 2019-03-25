@@ -1,6 +1,6 @@
 package ru.girfanov.tm.repository;
 
-import ru.girfanov.tm.api.IProjectRepository;
+import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
 import java.util.Collection;

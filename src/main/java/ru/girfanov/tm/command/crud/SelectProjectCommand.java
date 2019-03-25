@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command;
+package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.entity.Project;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class SelectProjectCommand extends AbstractCommand<String> {
+public class SelectProjectCommand extends AbstractCrudCommand {
 
     private static final String name = "-spbi";
     private static final String description = "select project by id";

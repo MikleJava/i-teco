@@ -1,4 +1,4 @@
-package ru.girfanov.tm.api;
+package ru.girfanov.tm.api.service;
 
 import ru.girfanov.tm.entity.Task;
 

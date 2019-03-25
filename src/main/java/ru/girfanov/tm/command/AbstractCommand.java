@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public abstract class AbstractCommand<T> {
 
-    Bootstrap bootstrap;
-    Scanner scanner = new Scanner(System.in);
-    DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+    protected Bootstrap bootstrap;
+    protected Scanner scanner = new Scanner(System.in);
+    protected DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
 
     public AbstractCommand(Bootstrap bootstrap) {
         this.bootstrap = bootstrap;
