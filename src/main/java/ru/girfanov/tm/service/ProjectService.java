@@ -1,35 +1,24 @@
 package ru.girfanov.tm.service;
 
+import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 
 import java.util.Collection;
 
-public class ProjectService implements IProjectService {
+public final class ProjectService extends AbstractService<Project> implements IProjectService {
 
-    private ru.girfanov.tm.api.repository.IProjectRepository projectRepository;
-    private ru.girfanov.tm.api.repository.ITaskRepository taskRepository;
+    final private IProjectRepository projectRepository;
+    final private ITaskRepository taskRepository;
 
-    public ProjectService(ru.girfanov.tm.api.repository.IProjectRepository projectRepository, ITaskRepository taskRepository) {
+    public ProjectService(final IProjectRepository projectRepository, final ITaskRepository taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
     @Override
-    public void persist(Project entity) {
-        if(entity == null) { return; }
-        projectRepository.persistEntity(entity);
-    }
-
-    @Override
-    public void merge(String uuid, String name) {
-        if(uuid == null || name == null || uuid.isEmpty() || name.isEmpty()) { return; }
-        projectRepository.mergeEntityName(uuid, name);
-    }
-
-    @Override
-    public void remove(String uuid) {
+    public void remove(final String uuid) {
         if(uuid == null || uuid.isEmpty()) { return; }
         taskRepository.removeAllTasksByProjectId(uuid);
         projectRepository.removeEntityById(uuid);
@@ -42,18 +31,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Collection<Project> findAll() {
-        return projectRepository.findAllEntities();
-    }
-
-    @Override
-    public Project findOne(String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return null; }
-        return projectRepository.findEntityById(uuid);
-    }
-
-    @Override
-    public Collection<Project> findAllProjectsByUserId(String userId) {
+    public Collection<Project> findAllProjectsByUserId(final String userId) {
         if(userId == null || userId.isEmpty()) { return null; }
         return projectRepository.findAllProjectsByUserId(userId);
     }

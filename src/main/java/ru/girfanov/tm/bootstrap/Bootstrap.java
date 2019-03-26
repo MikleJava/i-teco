@@ -1,5 +1,6 @@
 package ru.girfanov.tm.bootstrap;
 
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
@@ -15,20 +16,35 @@ import ru.girfanov.tm.service.UserService;
 
 import java.util.*;
 
-public class Bootstrap {
+public final class Bootstrap implements ServiceLocator {
 
-    public IProjectService projectService = new ProjectService(new ProjectRepository(), new TaskRepository());
-    public ITaskService taskService = new TaskService(new TaskRepository());
-    public IUserService userService = new UserService(new UserRepository());
-
-    private Map<String, AbstractCommand<String>> mapCommands = new HashMap<>();
+    private final IProjectService projectService = new ProjectService(new ProjectRepository(), new TaskRepository());
+    private final ITaskService taskService = new TaskService(new TaskRepository());
+    private final IUserService userService = new UserService(new UserRepository());
+    private final Map<String, AbstractCommand<String>> mapCommands = new HashMap<>();
     private User user;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private String command = null;
 
-    public void setUser(User user) {
+    public void setUser(final User user) {
         this.user = user;
     }
+
+    @Override
+    public IProjectService getProjectService() {
+        return projectService;
+    }
+
+    @Override
+    public ITaskService getTaskService() {
+        return taskService;
+    }
+
+    @Override
+    public IUserService getUserService() {
+        return userService;
+    }
+
 
     public void init() {
         AbstractCommand<String> help = new HelpCommand(this);

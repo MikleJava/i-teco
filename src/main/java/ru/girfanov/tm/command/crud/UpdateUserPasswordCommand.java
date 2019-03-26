@@ -1,15 +1,15 @@
 package ru.girfanov.tm.command.crud;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
-public class UpdateUserPasswordCommand extends AbstractCrudCommand {
+public final class UpdateUserPasswordCommand extends AbstractCrudCommand {
 
     private static final String name = "-uup";
     private static final String description = "update user password";
 
-    public UpdateUserPasswordCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UpdateUserPasswordCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -28,11 +28,11 @@ public class UpdateUserPasswordCommand extends AbstractCrudCommand {
         String login = scanner.next();
         System.out.print("input user password : ");
         String password = scanner.next();
-        User user = bootstrap.userService.findOneByLoginAndPassword(login, password);
+        User user = serviceLocator.getUserService().findOneByLoginAndPassword(login, password);
         if(user != null) {
             System.out.print("input new password : ");
             String newPassword = scanner.next();
-            bootstrap.userService.mergeUserPassword(user.getUuid(), newPassword);
+            serviceLocator.getUserService().mergeUserPassword(user.getUuid(), newPassword);
         }
     }
 }

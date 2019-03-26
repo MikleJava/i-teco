@@ -1,14 +1,14 @@
 package ru.girfanov.tm.command;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.api.ServiceLocator;
 
-public class ExitCommand extends AbstractCommand<String> {
+public final class ExitCommand extends AbstractCommand<String> {
 
     private static final String name = "--exit";
     private static final String description = "close application";
 
-    public ExitCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public ExitCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override

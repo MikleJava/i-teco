@@ -1,16 +1,16 @@
 package ru.girfanov.tm.command;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
 
-public class CreateUserCommand extends AbstractCommand<String> {
+public final class CreateUserCommand extends AbstractCommand<String> {
 
     private static final String name = "-cu";
     private static final String description = "create user";
 
-    public CreateUserCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public CreateUserCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -34,6 +34,6 @@ public class CreateUserCommand extends AbstractCommand<String> {
         user.setLogin(login);
         user.setPassword(password);
         user.setRole(role);
-        bootstrap.userService.persist(user);
+        serviceLocator.getUserService().persist(user);
     }
 }

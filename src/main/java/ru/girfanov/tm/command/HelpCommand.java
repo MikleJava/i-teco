@@ -1,14 +1,14 @@
 package ru.girfanov.tm.command;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.api.ServiceLocator;
 
-public class HelpCommand extends AbstractCommand<String> {
+public final class HelpCommand extends AbstractCommand<String> {
 
     private static final String name = "--help";
     private static final String description = "get information";
 
-    public HelpCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public HelpCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override

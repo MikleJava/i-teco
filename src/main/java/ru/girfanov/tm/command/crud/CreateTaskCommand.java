@@ -1,10 +1,8 @@
 package ru.girfanov.tm.command.crud;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
-import ru.girfanov.tm.command.AbstractCommand;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
-import ru.girfanov.tm.entity.User;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -12,13 +10,13 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class CreateTaskCommand extends AbstractCrudCommand {
+public final class CreateTaskCommand extends AbstractCrudCommand {
 
     private static final String name = "-ct";
     private static final String description = "create task";
 
-    public CreateTaskCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public CreateTaskCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class CreateTaskCommand extends AbstractCrudCommand {
             System.out.print("input task description : ");
             String description = scanner.next();
             System.out.println("all available projects : ");
-            List<Project> projects = new ArrayList<>(bootstrap.projectService.findAll());
+            List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll());
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
@@ -49,7 +47,7 @@ public class CreateTaskCommand extends AbstractCrudCommand {
             Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             Date dateEnd = dateFormat.parse(scanner.next());
-            bootstrap.taskService.persist(new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd));
+            serviceLocator.getTaskService().persist(new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

@@ -1,20 +1,19 @@
 package ru.girfanov.tm.command.crud;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
-import ru.girfanov.tm.command.AbstractCommand;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Project;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.InputMismatchException;
 
-public class CreateProjectCommand extends AbstractCrudCommand {
+public final class CreateProjectCommand extends AbstractCrudCommand {
 
     private static final String name = "-cp";
     private static final String description = "create project";
 
-    public CreateProjectCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public CreateProjectCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class CreateProjectCommand extends AbstractCrudCommand {
             Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             Date dateEnd = dateFormat.parse(scanner.next());
-            bootstrap.projectService.persist(new Project(name, description, params[0], dateStart, dateEnd));
+            serviceLocator.getProjectService().persist(new Project(name, description, params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

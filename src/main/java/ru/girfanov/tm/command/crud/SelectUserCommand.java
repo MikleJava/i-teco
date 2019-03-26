@@ -1,20 +1,19 @@
 package ru.girfanov.tm.command.crud;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
-import ru.girfanov.tm.command.AbstractCommand;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class SelectUserCommand extends AbstractCrudCommand {
+public final class SelectUserCommand extends AbstractCrudCommand {
 
     private static final String name = "-subi";
     private static final String description = "select user by id";
 
-    public SelectUserCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public SelectUserCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -31,7 +30,7 @@ public class SelectUserCommand extends AbstractCrudCommand {
     public void execute(String ... params) {
         try {
             System.out.println("all available users : ");
-            List<User> users = new ArrayList<>(bootstrap.userService.findAll());
+            List<User> users = new ArrayList<>(serviceLocator.getUserService().findAll());
             for (int i = 0; i < users.size(); i++) {
                 System.out.println(i + ") " + users.get(i).getUuid() + " | " + users.get(i).getLogin());
             }
@@ -39,7 +38,7 @@ public class SelectUserCommand extends AbstractCrudCommand {
             int id = scanner.nextInt();
             System.out.println("\tid\t|\tlogin\t|\trole");
             System.out.println("_______________________________________________________________________________________________");
-            User user = bootstrap.userService.findOne(users.get(id).getUuid());
+            User user = serviceLocator.getUserService().findOne(users.get(id).getUuid());
             System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

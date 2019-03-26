@@ -3,7 +3,7 @@ package ru.girfanov.tm.entity;
 import java.util.Date;
 import java.util.Objects;
 
-public class Project extends AbstractEntity {
+public final class Project extends AbstractEntity {
 
     private String name;
     private String description;
@@ -14,7 +14,7 @@ public class Project extends AbstractEntity {
     public Project() {
     }
 
-    public Project(String name, String description, String userId, Date dateStart, Date dateEnd) {
+    public Project(final String name, final String description, final String userId, final Date dateStart, final Date dateEnd) {
         this.name = name;
         this.description = description;
         this.userId = userId;
@@ -26,7 +26,7 @@ public class Project extends AbstractEntity {
         return name;
     }
 
-    public Project setName(String name) {
+    public Project setName(final String name) {
         this.name = name;
         return this;
     }
@@ -35,7 +35,7 @@ public class Project extends AbstractEntity {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -43,7 +43,7 @@ public class Project extends AbstractEntity {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(final String userId) {
         this.userId = userId;
     }
 
@@ -51,7 +51,7 @@ public class Project extends AbstractEntity {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(final Date dateStart) {
         this.dateStart = dateStart;
     }
 
@@ -59,12 +59,12 @@ public class Project extends AbstractEntity {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(final Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;

@@ -6,28 +6,16 @@ import ru.girfanov.tm.entity.Task;
 
 import java.util.Collection;
 
-public class TaskService implements ITaskService {
+public final class TaskService extends AbstractService<Task> implements ITaskService {
 
-    private ITaskRepository repository;
+    final private ITaskRepository repository;
 
-    public TaskService(ITaskRepository repository) {
+    public TaskService(final ITaskRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void persist(Task entity) {
-        if(entity == null) { return; }
-        repository.persistEntity(entity);
-    }
-
-    @Override
-    public void merge(String uuid, String name) {
-        if(uuid == null || name == null || uuid.isEmpty() || name.isEmpty()) { return; }
-        repository.mergeEntityName(uuid, name);
-    }
-
-    @Override
-    public void remove(String uuid) {
+    public void remove(final String uuid) {
         if(uuid == null || uuid.isEmpty()) { return; }
         repository.removeEntityById(uuid);
     }
@@ -38,36 +26,25 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public Collection<Task> findAll() {
-        return repository.findAllEntities();
-    }
-
-    @Override
-    public Task findOne(String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return null; }
-        return repository.findEntityById(uuid);
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByProjectId(String projectUuid) {
+    public Collection<Task> findAllTasksByProjectId(final String projectUuid) {
         if(projectUuid == null || projectUuid.isEmpty()) { return null; }
         return repository.findAllTasksByProjectId(projectUuid);
     }
 
     @Override
-    public void removeAllTasksByProjectId(String projectId) {
+    public void removeAllTasksByProjectId(final String projectId) {
         if(projectId == null || projectId.isEmpty()) { return; }
         repository.removeAllTasksByProjectId(projectId);
     }
 
     @Override
-    public Collection<Task> findAllTasksByUserId(String userId) {
+    public Collection<Task> findAllTasksByUserId(final String userId) {
         if(userId == null || userId.isEmpty()) { return null; }
         return repository.findAllTasksByUserId(userId);
     }
 
     @Override
-    public void removeAllTasksByUserId(String userId) {
+    public void removeAllTasksByUserId(final String userId) {
         if(userId == null || userId.isEmpty()) { return; }
         repository.removeAllTasksByUserId(userId);
     }

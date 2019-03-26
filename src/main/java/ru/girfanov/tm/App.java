@@ -1,8 +1,9 @@
 package ru.girfanov.tm;
 
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.bootstrap.Bootstrap;
 
-public class App {
+public final class App {
 
     static {
         System.out.println("input --help to get info");
@@ -10,7 +11,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.init();
+        ServiceLocator serviceLocator = new Bootstrap();
+        serviceLocator.init();
     }
 }

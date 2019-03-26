@@ -6,7 +6,7 @@ import ru.girfanov.tm.entity.enumeration.Role;
 import java.util.Objects;
 
 
-public class User extends AbstractEntity {
+public final class User extends AbstractEntity {
 
     private String login;
     private String password;
@@ -15,7 +15,7 @@ public class User extends AbstractEntity {
     public User() {
     }
 
-    public User(String login, String password, Role role) {
+    public User(final String login, final String password, final Role role) {
         this.login = login;
         this.password = password;
         this.role = role;
@@ -25,7 +25,7 @@ public class User extends AbstractEntity {
         return login;
     }
 
-    public User setLogin(String login) {
+    public User setLogin(final String login) {
         this.login = login;
         return this;
     }
@@ -34,7 +34,7 @@ public class User extends AbstractEntity {
         return password;
     }
 
-    public User setPassword(String password) {
+    public User setPassword(final String password) {
         this.password = DigestUtils.md5Hex(password);
         return this;
     }
@@ -43,13 +43,13 @@ public class User extends AbstractEntity {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(final String role) {
         if("Администратор".equals(role)) { this.role = Role.ADMINISTRATOR; }
         if("Пользователь".equals(role)) { this.role = Role.USER; }
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;

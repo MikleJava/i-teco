@@ -8,22 +8,22 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ProjectRepository implements IProjectRepository {
+public final class ProjectRepository implements IProjectRepository {
 
-    private Map<String, Project> projectMap = new ConcurrentHashMap<>();
+    final private Map<String, Project> projectMap = new ConcurrentHashMap<>();
 
     @Override
-    public void persistEntity(Project entity) {
+    public void persistEntity(final Project entity) {
         projectMap.put(entity.getUuid(), entity);
     }
 
     @Override
-    public void mergeEntityName(String uuid, String name) {
+    public void mergeEntityName(final String uuid, final String name) {
         projectMap.merge(uuid, projectMap.get(uuid).setName(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
-    public void removeEntityById(String uuid) {
+    public void removeEntityById(final String uuid) {
         projectMap.remove(uuid);
     }
 
@@ -38,7 +38,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public Project findEntityById(String uuid) {
+    public Project findEntityById(final String uuid) {
         Project resultProject = null;
         for(Map.Entry<String, Project> entry : projectMap.entrySet()) {
             if(uuid.equals(entry.getValue().getUuid())) {
@@ -49,7 +49,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public Collection<Project> findAllProjectsByUserId(String userId) {
+    public Collection<Project> findAllProjectsByUserId(final String userId) {
         Collection<Project> projects = new ArrayList<>();
         projectMap.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {

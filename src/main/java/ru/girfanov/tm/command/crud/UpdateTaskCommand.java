@@ -1,20 +1,19 @@
 package ru.girfanov.tm.command.crud;
 
-import ru.girfanov.tm.bootstrap.Bootstrap;
-import ru.girfanov.tm.command.AbstractCommand;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Task;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class UpdateTaskCommand extends AbstractCrudCommand {
+public final class UpdateTaskCommand extends AbstractCrudCommand {
 
     private static final String name = "-ut";
     private static final String description = "update task";
 
-    public UpdateTaskCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UpdateTaskCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -31,7 +30,7 @@ public class UpdateTaskCommand extends AbstractCrudCommand {
     public void execute(String ... params) {
         try {
             System.out.println("all available tasks : ");
-            List<Task> tasks = new ArrayList<>(bootstrap.taskService.findAllTasksByUserId(params[0]));
+            List<Task> tasks = new ArrayList<>(serviceLocator.getTaskService().findAllTasksByUserId(params[0]));
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
             }
@@ -39,7 +38,7 @@ public class UpdateTaskCommand extends AbstractCrudCommand {
             int id = scanner.nextInt();
             System.out.print("input new task name : ");
             String name = scanner.next();
-            bootstrap.taskService.merge(tasks.get(id).getUuid(), name);
+            serviceLocator.getTaskService().merge(tasks.get(id).getUuid(), name);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

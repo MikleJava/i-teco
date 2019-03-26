@@ -7,27 +7,27 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UserRepository implements IUserRepository {
+public final class UserRepository implements IUserRepository {
 
-    private Map<String, User> userMap = new ConcurrentHashMap<>();
+    final private Map<String, User> userMap = new ConcurrentHashMap<>();
 
     @Override
-    public void persistEntity(User entity) {
+    public void persistEntity(final User entity) {
         userMap.put(entity.getUuid(), entity);
     }
 
     @Override
-    public void mergeEntityName(String uuid, String name) {
+    public void mergeEntityName(final String uuid, final String name) {
         userMap.merge(uuid, userMap.get(uuid).setLogin(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
-    public void mergeEntityPassword(String uuid, String newPassword) {
+    public void mergeEntityPassword(final String uuid, final String newPassword) {
         userMap.merge(uuid, userMap.get(uuid).setPassword(newPassword), (oldVal, newVal) -> newVal);
     }
 
     @Override
-    public void removeEntityById(String uuid) {
+    public void removeEntityById(final String uuid) {
         userMap.remove(uuid);
     }
 
@@ -42,7 +42,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User findEntityById(String uuid) {
+    public User findEntityById(final String uuid) {
         User user = null;
         for(Map.Entry<String, User> entry : userMap.entrySet()) {
             if(uuid.equals(entry.getValue().getUuid())) {
@@ -53,7 +53,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User findOneEntityByLoginAndPassword(String login, String password) {
+    public User findOneEntityByLoginAndPassword(final String login, final String password) {
         User user = null;
         for(Map.Entry<String, User> entry : userMap.entrySet()) {
             if(login.equals(entry.getValue().getLogin()) && password.equals(entry.getValue().getPassword())) {

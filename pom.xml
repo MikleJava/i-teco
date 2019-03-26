@@ -12,7 +12,6 @@
     <name>i-teco</name>
 
     <developers>
-
         <developer>
             <name>
                 Girfanov Mikhail
@@ -21,7 +20,6 @@
                 mikle.java@mail.ru
             </email>
         </developer>
-
     </developers>
 
     <properties>
@@ -37,7 +35,12 @@
             <artifactId>commons-codec</artifactId>
             <version>1.12</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-manifests -->
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-manifests</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
 
     <build>

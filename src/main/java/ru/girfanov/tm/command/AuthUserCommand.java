@@ -1,16 +1,16 @@
 package ru.girfanov.tm.command;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import ru.girfanov.tm.bootstrap.Bootstrap;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
-public class AuthUserCommand extends AbstractCommand<String> {
+public final class AuthUserCommand extends AbstractCommand<String> {
 
     private static final String name = "-au";
     private static final String description = "auth user";
 
-    public AuthUserCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public AuthUserCommand(final ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -29,11 +29,12 @@ public class AuthUserCommand extends AbstractCommand<String> {
         String login = scanner.next();
         System.out.print("input user password : ");
         String password = scanner.next();
-        User user = bootstrap.userService.findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
+        User user = serviceLocator.getUserService().findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
         if(user == null) {
-            bootstrap.setUser(null);
+            serviceLocator.setUser(null);
             System.out.println("This user does not exist");
         }
-        else {bootstrap.setUser(user);}
+        else {
+            serviceLocator.setUser(user);}
     }
 }

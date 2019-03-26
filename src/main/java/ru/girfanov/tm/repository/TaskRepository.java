@@ -8,22 +8,22 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TaskRepository implements ITaskRepository {
+public final class TaskRepository implements ITaskRepository {
 
-    private Map<String, Task> taskMap = new ConcurrentHashMap<>();
+    final private Map<String, Task> taskMap = new ConcurrentHashMap<>();
 
     @Override
-    public void persistEntity(Task entity) {
+    public void persistEntity(final Task entity) {
         taskMap.put(entity.getUuid(), entity);
     }
 
     @Override
-    public void mergeEntityName(String uuid, String name) {
+    public void mergeEntityName(final String uuid, final String name) {
         taskMap.merge(uuid, taskMap.get(uuid).setName(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
-    public void removeEntityById(String uuid) {
+    public void removeEntityById(final String uuid) {
         taskMap.remove(uuid);
     }
 
@@ -38,7 +38,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Task findEntityById(String uuid) {
+    public Task findEntityById(final String uuid) {
         Task resultTask = null;
         for(Map.Entry<String, Task> entry : taskMap.entrySet()) {
             if(uuid.equals(entry.getValue().getUuid())) {
@@ -49,7 +49,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Collection<Task> findAllTasksByProjectId(String projectId) {
+    public Collection<Task> findAllTasksByProjectId(final String projectId) {
         Collection<Task> resultTasks = new ArrayList<>();
         taskMap.forEach((key, value) -> {
             if(value.getProjectId().equals(projectId)) {
@@ -60,7 +60,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public void removeAllTasksByProjectId(String projectId) {
+    public void removeAllTasksByProjectId(final String projectId) {
         taskMap.forEach((key, value) -> {
             if (value.getProjectId().equals(projectId)) {
                 taskMap.remove(key, value);
@@ -69,7 +69,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Collection<Task> findAllTasksByUserId(String userId) {
+    public Collection<Task> findAllTasksByUserId(final String userId) {
         Collection<Task> resultTasks = new ArrayList<>();
         taskMap.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
@@ -80,7 +80,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public void removeAllTasksByUserId(String userId) {
+    public void removeAllTasksByUserId(final String userId) {
         taskMap.forEach((key, value) -> {
             if (value.getUserId().equals(userId)) {
                 taskMap.remove(key, value);
