@@ -1,5 +1,7 @@
 package ru.girfanov.tm.command.crud;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
@@ -9,10 +11,12 @@ import java.util.List;
 
 public final class SelectUserCommand extends AbstractCrudCommand {
 
+    @NotNull
     private static final String name = "-subi";
+    @NotNull
     private static final String description = "select user by id";
 
-    public SelectUserCommand(final ServiceLocator serviceLocator) {
+    public SelectUserCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -27,7 +31,7 @@ public final class SelectUserCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(@Nullable final String ... params) {
         try {
             System.out.println("all available users : ");
             List<User> users = new ArrayList<>(serviceLocator.getUserService().findAll());

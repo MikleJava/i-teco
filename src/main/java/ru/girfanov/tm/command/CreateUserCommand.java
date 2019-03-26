@@ -1,15 +1,19 @@
 package ru.girfanov.tm.command;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
 
 public final class CreateUserCommand extends AbstractCommand<String> {
 
+    @NotNull
     private static final String name = "-cu";
+    @NotNull
     private static final String description = "create user";
 
-    public CreateUserCommand(final ServiceLocator serviceLocator) {
+    public CreateUserCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -23,7 +27,7 @@ public final class CreateUserCommand extends AbstractCommand<String> {
         return description;
     }
 
-    public void execute(String ... params) {
+    public void execute(@Nullable final String ... params) {
         System.out.print("input user login : ");
         String login = scanner.next();
         System.out.print("input user password : ");

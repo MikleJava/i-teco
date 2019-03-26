@@ -1,15 +1,18 @@
 package ru.girfanov.tm.command;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.User;
 
 public final class AuthUserCommand extends AbstractCommand<String> {
-
+    @NotNull
     private static final String name = "-au";
+    @NotNull
     private static final String description = "auth user";
 
-    public AuthUserCommand(final ServiceLocator serviceLocator) {
+    public AuthUserCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -24,7 +27,7 @@ public final class AuthUserCommand extends AbstractCommand<String> {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(@Nullable final String ... params) {
         System.out.print("input user login : ");
         String login = scanner.next();
         System.out.print("input user password : ");

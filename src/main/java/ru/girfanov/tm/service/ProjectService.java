@@ -1,29 +1,29 @@
 package ru.girfanov.tm.service;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
-import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
-import ru.girfanov.tm.repository.ProjectRepository;
-import ru.girfanov.tm.repository.TaskRepository;
 
 import java.util.Collection;
 
 public final class ProjectService extends AbstractService<Project> implements IProjectService {
 
+    @NotNull
     final private IProjectRepository projectRepository;
+    @NotNull
     final private ITaskRepository taskRepository;
 
-    public ProjectService(final IProjectRepository projectRepository, final ITaskRepository taskRepository) {
+    public ProjectService(@NotNull final IProjectRepository projectRepository, @NotNull final ITaskRepository taskRepository) {
         super(projectRepository);
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
     @Override
-    public void remove(final String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return; }
+    public void remove(@NotNull final String uuid) {
+        if(uuid.isEmpty()) { return; }
         taskRepository.removeAllTasksByProjectId(uuid);
         repository.removeEntityById(uuid);
     }
@@ -35,8 +35,8 @@ public final class ProjectService extends AbstractService<Project> implements IP
     }
 
     @Override
-    public Collection<Project> findAllProjectsByUserId(final String userId) {
-        if(userId == null || userId.isEmpty()) { return null; }
+    public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
+        if(userId.isEmpty()) { return null; }
         return projectRepository.findAllProjectsByUserId(userId);
     }
 }

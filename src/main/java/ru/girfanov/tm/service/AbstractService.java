@@ -1,5 +1,6 @@
 package ru.girfanov.tm.service;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
 import ru.girfanov.tm.entity.AbstractEntity;
@@ -8,21 +9,21 @@ import java.util.Collection;
 
 public abstract class AbstractService<T extends AbstractEntity> implements Service<T> {
 
+    @NotNull
     protected Repository<T> repository;
 
-    public AbstractService(Repository<T> repository) {
+    public AbstractService(@NotNull Repository<T> repository) {
         this.repository = repository;
     }
 
     @Override
-    public void persist(final T entity) {
-        if(entity == null) { return; }
+    public void persist(@NotNull final T entity) {
         repository.persistEntity(entity);
     }
 
     @Override
-    public void merge(final String uuid, final String name) {
-        if(uuid == null || name == null || uuid.isEmpty() || name.isEmpty()) { return; }
+    public void merge(@NotNull final String uuid, @NotNull final String name) {
+        if(uuid.isEmpty() || name.isEmpty()) { return; }
         repository.mergeEntityName(uuid, name);
     }
 
@@ -32,8 +33,8 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     }
 
     @Override
-    public T findOne(final String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return null; }
+    public T findOne(@NotNull final String uuid) {
+        if(uuid.isEmpty()) { return null; }
         return repository.findEntityById(uuid);
     }
 }

@@ -1,5 +1,6 @@
 package ru.girfanov.tm.command.crud;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
@@ -12,10 +13,12 @@ import java.util.List;
 
 public final class CreateTaskCommand extends AbstractCrudCommand {
 
+    @NotNull
     private static final String name = "-ct";
+    @NotNull
     private static final String description = "create task";
 
-    public CreateTaskCommand(final ServiceLocator serviceLocator) {
+    public CreateTaskCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -30,7 +33,7 @@ public final class CreateTaskCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(@NotNull final String ... params) {
         try {
             System.out.print("input task name : ");
             String name = scanner.next();

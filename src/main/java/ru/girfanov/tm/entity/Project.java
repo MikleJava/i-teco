@@ -1,20 +1,28 @@
 package ru.girfanov.tm.entity;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Date;
 import java.util.Objects;
 
 public final class Project extends AbstractEntity {
 
+    @NotNull
     private String name;
+    @Nullable
     private String description;
+    @NotNull
     private String userId;
+    @Nullable
     private Date dateStart;
+    @Nullable
     private Date dateEnd;
 
     public Project() {
     }
 
-    public Project(final String name, final String description, final String userId, final Date dateStart, final Date dateEnd) {
+    public Project(@NotNull final String name, @Nullable final String description, @NotNull final String userId, @Nullable final Date dateStart, @Nullable final Date dateEnd) {
         this.name = name;
         this.description = description;
         this.userId = userId;
@@ -22,49 +30,54 @@ public final class Project extends AbstractEntity {
         this.dateEnd = dateEnd;
     }
 
+    @NotNull
     public String getName() {
         return name;
     }
 
-    public Project setName(final String name) {
+    public Project setName(@NotNull final String name) {
         this.name = name;
         return this;
     }
 
+    @Nullable
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(final String description) {
+    public void setDescription(@Nullable final String description) {
         this.description = description;
     }
 
+    @NotNull
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(final String userId) {
+    public void setUserId(@NotNull final String userId) {
         this.userId = userId;
     }
 
+    @Nullable
     public Date getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(final Date dateStart) {
+    public void setDateStart(@Nullable final Date dateStart) {
         this.dateStart = dateStart;
     }
 
+    @Nullable
     public Date getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(final Date dateEnd) {
+    public void setDateEnd(@Nullable final Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(@Nullable final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;

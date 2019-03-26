@@ -1,13 +1,17 @@
 package ru.girfanov.tm.command;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 
 public final class HelpCommand extends AbstractCommand<String> {
 
+    @NotNull
     private static final String name = "--help";
+    @NotNull
     private static final String description = "get information";
 
-    public HelpCommand(final ServiceLocator serviceLocator) {
+    public HelpCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -21,7 +25,7 @@ public final class HelpCommand extends AbstractCommand<String> {
         return description;
     }
 
-    public void execute(String ... params) {
+    public void execute(@Nullable final String ... params) {
         System.out.println("-cp\t create project \n" +
                 "-ct\t create task \n" +
                 "-up\t update project \n" +

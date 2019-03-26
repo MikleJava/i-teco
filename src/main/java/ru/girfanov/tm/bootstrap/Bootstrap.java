@@ -1,15 +1,14 @@
 package ru.girfanov.tm.bootstrap;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
-import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.command.*;
 import ru.girfanov.tm.command.crud.*;
-import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
-import ru.girfanov.tm.repository.AbstractRepository;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -20,28 +19,38 @@ import ru.girfanov.tm.service.UserService;
 import java.util.*;
 
 public final class Bootstrap implements ServiceLocator {
+    @NotNull
     private final IProjectService projectService = new ProjectService(new ProjectRepository(), new TaskRepository());
+    @NotNull
     private final ITaskService taskService = new TaskService(new TaskRepository());
+    @NotNull
     private final IUserService userService = new UserService(new UserRepository());
+    @NotNull
     private final Map<String, AbstractCommand<String>> mapCommands = new HashMap<>();
+    @Nullable
     private User user;
+    @NotNull
     private final Scanner scanner = new Scanner(System.in);
+    @Nullable
     private String command = null;
 
-    public void setUser(final User user) {
+    public void setUser(@Nullable final User user) {
         this.user = user;
     }
 
+    @NotNull
     @Override
     public IProjectService getProjectService() {
         return projectService;
     }
 
+    @NotNull
     @Override
     public ITaskService getTaskService() {
         return taskService;
     }
 
+    @NotNull
     @Override
     public IUserService getUserService() {
         return userService;

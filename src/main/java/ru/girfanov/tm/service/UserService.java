@@ -1,28 +1,29 @@
 package ru.girfanov.tm.service;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
-import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 
 public final class UserService extends AbstractService<User> implements IUserService {
 
+    @NotNull
     final private IUserRepository userRepository;
 
-    public UserService(final IUserRepository userRepository) {
+    public UserService(@NotNull final IUserRepository userRepository) {
         super(userRepository);
         this.userRepository = userRepository;
     }
 
     @Override
-    public void mergeUserPassword(final String uuid, final String newPassword) {
-        if(uuid == null || newPassword == null || uuid.isEmpty() || newPassword.isEmpty()) { return; }
+    public void mergeUserPassword(@NotNull final String uuid, @NotNull final String newPassword) {
+        if(uuid.isEmpty() || newPassword.isEmpty()) { return; }
         userRepository.mergeEntityPassword(uuid, newPassword);
     }
 
     @Override
-    public void remove(final String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return; }
+    public void remove(@NotNull final String uuid) {
+        if(uuid.isEmpty()) { return; }
         repository.removeEntityById(uuid);
     }
 
@@ -32,8 +33,8 @@ public final class UserService extends AbstractService<User> implements IUserSer
     }
 
     @Override
-    public User findOneByLoginAndPassword(final String login, final String password) {
-        if(login == null || password == null || login.isEmpty() || password.isEmpty()) { return null; }
+    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
+        if(login.isEmpty() || password.isEmpty()) { return null; }
         return userRepository.findOneEntityByLoginAndPassword(login, password);
     }
 }

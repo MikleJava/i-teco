@@ -1,5 +1,7 @@
 package ru.girfanov.tm.command;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 
 import java.text.DateFormat;
@@ -8,13 +10,16 @@ import java.util.Scanner;
 
 public abstract class AbstractCommand<T> {
 
+    @NotNull
     protected final ServiceLocator serviceLocator;
+    @NotNull
     protected Scanner scanner = new Scanner(System.in);
+    @NotNull
     protected final DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
 
     private final boolean isSecure = false;
 
-    public AbstractCommand(final ServiceLocator serviceLocator) {
+    public AbstractCommand(@NotNull final ServiceLocator serviceLocator) {
         this.serviceLocator = serviceLocator;
     }
 

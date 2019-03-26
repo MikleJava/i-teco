@@ -1,5 +1,6 @@
 package ru.girfanov.tm.command.crud;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Project;
 
@@ -9,10 +10,12 @@ import java.util.List;
 
 public final class SelectProjectCommand extends AbstractCrudCommand {
 
+    @NotNull
     private static final String name = "-spbi";
+    @NotNull
     private static final String description = "select project by id";
 
-    public SelectProjectCommand(final ServiceLocator serviceLocator) {
+    public SelectProjectCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -27,7 +30,7 @@ public final class SelectProjectCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(@NotNull final String ... params) {
         try {
             System.out.println("all available projects : ");
             List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAllProjectsByUserId(params[0]));

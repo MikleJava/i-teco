@@ -1,13 +1,16 @@
 package ru.girfanov.tm.command.crud;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 
 public final class EndSessionUserCommand extends AbstractCrudCommand {
 
+    @NotNull
     private static final String name = "-esu";
+    @NotNull
     private static final String description = "end session user";
 
-    public EndSessionUserCommand(final ServiceLocator serviceLocator) {
+    public EndSessionUserCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -22,7 +25,7 @@ public final class EndSessionUserCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(@NotNull final String ... params) {
         serviceLocator.getUserService().remove(params[0]);
     }
 }

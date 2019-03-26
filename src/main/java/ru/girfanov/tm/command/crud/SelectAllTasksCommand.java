@@ -1,5 +1,6 @@
 package ru.girfanov.tm.command.crud;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Task;
 
@@ -7,10 +8,12 @@ import java.util.Collection;
 
 public final class SelectAllTasksCommand extends AbstractCrudCommand {
 
+    @NotNull
     private static final String name = "-sat";
+    @NotNull
     private static final String description = "select all tasks";
 
-    public SelectAllTasksCommand(final ServiceLocator serviceLocator) {
+    public SelectAllTasksCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -25,7 +28,7 @@ public final class SelectAllTasksCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(final @NotNull String ... params) {
         System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tuser_id\t|\tdate_start\t|\tdate_end");
         System.out.println("__________________________________________________________________________________________________________________________________________________________");
         Collection<Task> tasks = serviceLocator.getTaskService().findAllTasksByUserId(params[0]);

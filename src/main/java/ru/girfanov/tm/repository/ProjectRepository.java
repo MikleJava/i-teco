@@ -1,5 +1,6 @@
 package ru.girfanov.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
@@ -9,12 +10,12 @@ import java.util.Collection;
 public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
 
     @Override
-    public void mergeEntityName(final String uuid, final String name) {
+    public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
         map.merge(uuid, map.get(uuid).setName(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
-    public void removeEntityById(final String uuid) {
+    public void removeEntityById(@NotNull final String uuid) {
         map.remove(uuid);
     }
 
@@ -24,7 +25,7 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
     }
 
     @Override
-    public Collection<Project> findAllProjectsByUserId(final String userId) {
+    public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
         Collection<Project> projects = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {

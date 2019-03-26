@@ -1,5 +1,6 @@
 package ru.girfanov.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
@@ -9,12 +10,12 @@ import java.util.Collection;
 public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
 
     @Override
-    public void mergeEntityName(final String uuid, final String name) {
+    public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
         map.merge(uuid, map.get(uuid).setName(name), (oldVal, newVal) -> newVal);
     }
 
     @Override
-    public void removeEntityById(final String uuid) {
+    public void removeEntityById(@NotNull final String uuid) {
         map.remove(uuid);
     }
 
@@ -24,7 +25,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public Collection<Task> findAllTasksByProjectId(final String projectId) {
+    public Collection<Task> findAllTasksByProjectId(@NotNull final String projectId) {
         Collection<Task> resultTasks = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getProjectId().equals(projectId)) {
@@ -35,7 +36,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public void removeAllTasksByProjectId(final String projectId) {
+    public void removeAllTasksByProjectId(@NotNull final String projectId) {
         map.forEach((key, value) -> {
             if (value.getProjectId().equals(projectId)) {
                 map.remove(key, value);
@@ -44,7 +45,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public Collection<Task> findAllTasksByUserId(final String userId) {
+    public Collection<Task> findAllTasksByUserId(@NotNull final String userId) {
         Collection<Task> resultTasks = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
@@ -55,7 +56,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public void removeAllTasksByUserId(final String userId) {
+    public void removeAllTasksByUserId(@NotNull final String userId) {
         map.forEach((key, value) -> {
             if (value.getUserId().equals(userId)) {
                 map.remove(key, value);

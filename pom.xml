@@ -41,6 +41,12 @@
             <artifactId>jcabi-manifests</artifactId>
             <version>1.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>17.0.0</version>
+        </dependency>
     </dependencies>
 
     <scm>
@@ -52,7 +58,7 @@
     </scm>
 
     <build>
-        <finalName>$\{project.artifactId}-$\{project.version}-r$\{buildNumber}</finalName>
+        <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
             <plugins>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -85,7 +91,7 @@
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             </manifest>
                             <manifestEntries>
-                                <Implementation-Build>$\{buildNumber}</Implementation-Build>
+                                <Implementation-Build>${buildNumber}</Implementation-Build>
                                 <developer>GirfanovMikhail</developer>
                             </manifestEntries>
                         </archive>

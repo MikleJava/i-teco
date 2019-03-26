@@ -1,5 +1,6 @@
 package ru.girfanov.tm.command.crud;
 
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.entity.Project;
 
@@ -8,11 +9,12 @@ import java.util.Date;
 import java.util.InputMismatchException;
 
 public final class CreateProjectCommand extends AbstractCrudCommand {
-
+    @NotNull
     private static final String name = "-cp";
+    @NotNull
     private static final String description = "create project";
 
-    public CreateProjectCommand(final ServiceLocator serviceLocator) {
+    public CreateProjectCommand(@NotNull final ServiceLocator serviceLocator) {
         super(serviceLocator);
     }
 
@@ -27,7 +29,7 @@ public final class CreateProjectCommand extends AbstractCrudCommand {
     }
 
     @Override
-    public void execute(String ... params) {
+    public void execute(@NotNull final String ... params) {
         try {
             System.out.print("input project name : ");
             String name = scanner.next();
