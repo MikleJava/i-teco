@@ -5,6 +5,8 @@ import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
+import ru.girfanov.tm.repository.ProjectRepository;
+import ru.girfanov.tm.repository.TaskRepository;
 
 import java.util.Collection;
 
@@ -13,8 +15,8 @@ public final class ProjectService extends AbstractService<Project> implements IP
     final private IProjectRepository projectRepository;
     final private ITaskRepository taskRepository;
 
-    public ProjectService(final Repository<Project> repository, final IProjectRepository projectRepository, final ITaskRepository taskRepository) {
-        super(repository);
+    public ProjectService(final IProjectRepository projectRepository, final ITaskRepository taskRepository) {
+        super(projectRepository);
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }

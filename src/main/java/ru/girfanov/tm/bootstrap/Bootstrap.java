@@ -50,6 +50,7 @@ public final class Bootstrap implements ServiceLocator {
 
     public void init() {
         AbstractCommand<String> help = new HelpCommand(this);
+        AbstractCommand<String> about = new AboutCommand(this);
         AbstractCommand<String> exit = new ExitCommand(this);
         AbstractCommand<String> cu = new CreateUserCommand(this);
         AbstractCommand<String> au = new AuthUserCommand(this);
@@ -70,6 +71,7 @@ public final class Bootstrap implements ServiceLocator {
         AbstractCommand<String> sau = new SelectAllUsersCommand(this);
 
         mapCommands.put(help.getName(), help);
+        mapCommands.put(about.getName(), about);
         mapCommands.put(exit.getName(), exit);
         mapCommands.put(cp.getName(), cp);
         mapCommands.put(ct.getName(), ct);

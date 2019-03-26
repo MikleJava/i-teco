@@ -11,8 +11,8 @@ public final class TaskService extends AbstractService<Task> implements ITaskSer
 
     private final ITaskRepository taskRepository;
 
-    public TaskService(final Repository<Task> repository, final ITaskRepository taskRepository) {
-        super(repository);
+    public TaskService(final ITaskRepository taskRepository) {
+        super(taskRepository);
         this.taskRepository = taskRepository;
     }
 

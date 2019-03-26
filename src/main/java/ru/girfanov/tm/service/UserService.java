@@ -9,8 +9,8 @@ public final class UserService extends AbstractService<User> implements IUserSer
 
     final private IUserRepository userRepository;
 
-    public UserService(final Repository<User> repository, final IUserRepository userRepository) {
-        super(repository);
+    public UserService(final IUserRepository userRepository) {
+        super(userRepository);
         this.userRepository = userRepository;
     }
 
