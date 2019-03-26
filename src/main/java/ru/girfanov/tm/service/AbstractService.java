@@ -1,6 +1,6 @@
 package ru.girfanov.tm.service;
 
-import ru.girfanov.tm.api.Repository;
+import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
 import ru.girfanov.tm.entity.AbstractEntity;
 
@@ -9,6 +9,10 @@ import java.util.Collection;
 public abstract class AbstractService<T extends AbstractEntity> implements Service<T> {
 
     protected Repository<T> repository;
+
+    public AbstractService(Repository<T> repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void persist(final T entity) {

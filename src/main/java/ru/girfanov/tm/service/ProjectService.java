@@ -2,6 +2,7 @@ package ru.girfanov.tm.service;
 
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 
@@ -12,7 +13,8 @@ public final class ProjectService extends AbstractService<Project> implements IP
     final private IProjectRepository projectRepository;
     final private ITaskRepository taskRepository;
 
-    public ProjectService(final IProjectRepository projectRepository, final ITaskRepository taskRepository) {
+    public ProjectService(final Repository<Project> repository, final IProjectRepository projectRepository, final ITaskRepository taskRepository) {
+        super(repository);
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
@@ -21,13 +23,13 @@ public final class ProjectService extends AbstractService<Project> implements IP
     public void remove(final String uuid) {
         if(uuid == null || uuid.isEmpty()) { return; }
         taskRepository.removeAllTasksByProjectId(uuid);
-        projectRepository.removeEntityById(uuid);
+        repository.removeEntityById(uuid);
     }
 
     @Override
     public void removeAll() {
         taskRepository.removeAllEntities();
-        projectRepository.removeAllEntities();
+        repository.removeAllEntities();
     }
 
     @Override

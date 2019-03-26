@@ -1,12 +1,15 @@
 package ru.girfanov.tm.bootstrap;
 
 import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.command.*;
 import ru.girfanov.tm.command.crud.*;
+import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.repository.AbstractRepository;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -17,7 +20,6 @@ import ru.girfanov.tm.service.UserService;
 import java.util.*;
 
 public final class Bootstrap implements ServiceLocator {
-
     private final IProjectService projectService = new ProjectService(new ProjectRepository(), new TaskRepository());
     private final ITaskService taskService = new TaskService(new TaskRepository());
     private final IUserService userService = new UserService(new UserRepository());

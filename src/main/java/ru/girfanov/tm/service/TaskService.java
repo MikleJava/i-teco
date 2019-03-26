@@ -1,6 +1,7 @@
 package ru.girfanov.tm.service;
 
 import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
 
@@ -8,10 +9,11 @@ import java.util.Collection;
 
 public final class TaskService extends AbstractService<Task> implements ITaskService {
 
-    final private ITaskRepository repository;
+    private final ITaskRepository taskRepository;
 
-    public TaskService(final ITaskRepository repository) {
-        this.repository = repository;
+    public TaskService(final Repository<Task> repository, final ITaskRepository taskRepository) {
+        super(repository);
+        this.taskRepository = taskRepository;
     }
 
     @Override
@@ -28,24 +30,24 @@ public final class TaskService extends AbstractService<Task> implements ITaskSer
     @Override
     public Collection<Task> findAllTasksByProjectId(final String projectUuid) {
         if(projectUuid == null || projectUuid.isEmpty()) { return null; }
-        return repository.findAllTasksByProjectId(projectUuid);
+        return taskRepository.findAllTasksByProjectId(projectUuid);
     }
 
     @Override
     public void removeAllTasksByProjectId(final String projectId) {
         if(projectId == null || projectId.isEmpty()) { return; }
-        repository.removeAllTasksByProjectId(projectId);
+        taskRepository.removeAllTasksByProjectId(projectId);
     }
 
     @Override
     public Collection<Task> findAllTasksByUserId(final String userId) {
         if(userId == null || userId.isEmpty()) { return null; }
-        return repository.findAllTasksByUserId(userId);
+        return taskRepository.findAllTasksByUserId(userId);
     }
 
     @Override
     public void removeAllTasksByUserId(final String userId) {
         if(userId == null || userId.isEmpty()) { return; }
-        repository.removeAllTasksByUserId(userId);
+        taskRepository.removeAllTasksByUserId(userId);
     }
 }
