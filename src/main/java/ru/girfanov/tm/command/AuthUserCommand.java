@@ -30,7 +30,10 @@ public class AuthUserCommand extends AbstractCommand<String> {
         System.out.print("input user password : ");
         String password = scanner.next();
         User user = bootstrap.userService.findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
-        if(user == null) { System.out.println("You must be logged in"); }
+        if(user == null) {
+            bootstrap.setUser(null);
+            System.out.println("This user does not exist");
+        }
         else {bootstrap.setUser(user);}
     }
 }

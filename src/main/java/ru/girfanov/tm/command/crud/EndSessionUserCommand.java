@@ -1,7 +1,6 @@
 package ru.girfanov.tm.command.crud;
 
 import ru.girfanov.tm.bootstrap.Bootstrap;
-import ru.girfanov.tm.command.AbstractCommand;
 
 public class EndSessionUserCommand extends AbstractCrudCommand {
 
