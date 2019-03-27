@@ -1,5 +1,6 @@
 package ru.girfanov.tm.service;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.service.ITaskService;
@@ -7,10 +8,10 @@ import ru.girfanov.tm.entity.Task;
 
 import java.util.Collection;
 
+@NoArgsConstructor
 public final class TaskService extends AbstractService<Task> implements ITaskService {
 
-    @NotNull
-    private final ITaskRepository taskRepository;
+    private ITaskRepository taskRepository;
 
     public TaskService(@NotNull final ITaskRepository taskRepository) {
         super(taskRepository);

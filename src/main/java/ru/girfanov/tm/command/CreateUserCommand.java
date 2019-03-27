@@ -35,7 +35,7 @@ public final class CreateUserCommand extends AbstractCommand<String> {
         System.out.print("input user role : ");
         String role = scanner.next();
         User user = new User();
-        user.setLogin(login);
+        user.setName(login);
         user.setPassword(password);
         user.setRole(role);
         serviceLocator.getUserService().persist(user);

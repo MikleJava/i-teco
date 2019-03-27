@@ -8,6 +8,7 @@ import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.command.*;
 import ru.girfanov.tm.command.crud.*;
+import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;

@@ -1,5 +1,6 @@
 package ru.girfanov.tm.repository;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.entity.AbstractEntity;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@NoArgsConstructor
 public abstract class AbstractRepository<T extends AbstractEntity> implements Repository<T> {
 
     @NotNull

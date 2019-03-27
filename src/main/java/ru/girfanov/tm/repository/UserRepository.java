@@ -10,12 +10,16 @@ public final class UserRepository extends AbstractRepository<User> implements IU
 
     @Override
     public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        map.merge(uuid, map.get(uuid).setLogin(name), (oldVal, newVal) -> newVal);
+        User user = map.get(uuid);
+        user.setName(name);
+        map.merge(uuid, user, (oldVal, newVal) -> newVal);
     }
 
     @Override
     public void mergeEntityPassword(@NotNull final String uuid, @NotNull final String newPassword) {
-        map.merge(uuid, map.get(uuid).setPassword(newPassword), (oldVal, newVal) -> newVal);
+        User user = map.get(uuid);
+        user.setPassword(newPassword);
+        map.merge(uuid, user, (oldVal, newVal) -> newVal);
     }
 
     @Override
@@ -29,10 +33,10 @@ public final class UserRepository extends AbstractRepository<User> implements IU
     }
 
     @Override
-    public User findOneEntityByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
+    public User findOneEntityByNameAndPassword(@NotNull final String name, @NotNull final String password) {
         User user = null;
         for(Map.Entry<String, User> entry : map.entrySet()) {
-            if(login.equals(entry.getValue().getLogin()) && password.equals(entry.getValue().getPassword())) {
+            if(name.equals(entry.getValue().getName()) && password.equals(entry.getValue().getPassword())) {
                 user = entry.getValue();
             }
         }

@@ -1,5 +1,8 @@
 package ru.girfanov.tm.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
@@ -7,14 +10,12 @@ import ru.girfanov.tm.entity.AbstractEntity;
 
 import java.util.Collection;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class AbstractService<T extends AbstractEntity> implements Service<T> {
 
-    @NotNull
+    @NonNull
     protected Repository<T> repository;
-
-    public AbstractService(@NotNull Repository<T> repository) {
-        this.repository = repository;
-    }
 
     @Override
     public void persist(@NotNull final T entity) {

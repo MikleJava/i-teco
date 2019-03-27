@@ -11,7 +11,9 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
 
     @Override
     public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        map.merge(uuid, map.get(uuid).setName(name), (oldVal, newVal) -> newVal);
+        Task task = map.get(uuid);
+        task.setName(name);
+        map.merge(uuid, task, (oldVal, newVal) -> newVal);
     }
 
     @Override

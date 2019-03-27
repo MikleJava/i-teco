@@ -32,7 +32,7 @@ public final class UpdateUserPasswordCommand extends AbstractCrudCommand {
         String login = scanner.next();
         System.out.print("input user password : ");
         String password = scanner.next();
-        User user = serviceLocator.getUserService().findOneByLoginAndPassword(login, password);
+        User user = serviceLocator.getUserService().findOneByNameAndPassword(login, password);
         if(user != null) {
             System.out.print("input new password : ");
             String newPassword = scanner.next();

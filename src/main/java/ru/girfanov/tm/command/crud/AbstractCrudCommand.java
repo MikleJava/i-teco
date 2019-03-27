@@ -1,6 +1,5 @@
 package ru.girfanov.tm.command.crud;
 
-import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractCommand;
 

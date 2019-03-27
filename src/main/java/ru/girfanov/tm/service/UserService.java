@@ -1,14 +1,15 @@
 package ru.girfanov.tm.service;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 
+@NoArgsConstructor
 public final class UserService extends AbstractService<User> implements IUserService {
 
-    @NotNull
-    final private IUserRepository userRepository;
+    private IUserRepository userRepository;
 
     public UserService(@NotNull final IUserRepository userRepository) {
         super(userRepository);
@@ -33,8 +34,8 @@ public final class UserService extends AbstractService<User> implements IUserSer
     }
 
     @Override
-    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
-        if(login.isEmpty() || password.isEmpty()) { return null; }
-        return userRepository.findOneEntityByLoginAndPassword(login, password);
+    public User findOneByNameAndPassword(@NotNull final String name, @NotNull final String password) {
+        if(name.isEmpty() || password.isEmpty()) { return null; }
+        return userRepository.findOneEntityByNameAndPassword(name, password);
     }
 }
