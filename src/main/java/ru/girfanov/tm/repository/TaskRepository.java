@@ -1,5 +1,6 @@
 package ru.girfanov.tm.repository;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
@@ -7,11 +8,12 @@ import ru.girfanov.tm.entity.Task;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@NoArgsConstructor
 public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
 
     @Override
     public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        Task task = map.get(uuid);
+        final Task task = map.get(uuid);
         task.setName(name);
         map.merge(uuid, task, (oldVal, newVal) -> newVal);
     }
@@ -28,7 +30,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
 
     @Override
     public Collection<Task> findAllTasksByProjectId(@NotNull final String projectId) {
-        Collection<Task> resultTasks = new ArrayList<>();
+        final Collection<Task> resultTasks = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getProjectId().equals(projectId)) {
                 resultTasks.add(value);
@@ -48,7 +50,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
 
     @Override
     public Collection<Task> findAllTasksByUserId(@NotNull final String userId) {
-        Collection<Task> resultTasks = new ArrayList<>();
+        final Collection<Task> resultTasks = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
                 resultTasks.add(value);

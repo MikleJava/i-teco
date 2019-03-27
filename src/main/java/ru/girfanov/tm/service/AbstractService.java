@@ -1,8 +1,8 @@
 package ru.girfanov.tm.service;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
@@ -11,7 +11,7 @@ import ru.girfanov.tm.entity.AbstractEntity;
 import java.util.Collection;
 
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public abstract class AbstractService<T extends AbstractEntity> implements Service<T> {
 
     @NonNull

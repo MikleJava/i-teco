@@ -1,38 +1,29 @@
 package ru.girfanov.tm.command.crud;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.User;
 
 import java.util.Collection;
 
-public final class SelectAllUsersCommand extends AbstractCrudCommand {
+@Getter
+@NoArgsConstructor
+public final class UsersSelectAllCommand extends AbstractCrudCommand {
 
     @NotNull
-    private static final String name = "-sau";
+    private final String name = "-sau";
+
     @NotNull
-    private static final String description = "select all users";
-
-    public SelectAllUsersCommand(@NotNull final ServiceLocator serviceLocator) {
-        super(serviceLocator);
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
+    private final String description = "select all users";
 
     @Override
     public void execute(@Nullable final String ... params) {
         System.out.println("\tid\t|\tlogin\t|\trole");
         System.out.println("___________________________________________________________________________________________________");
-        Collection<User> users = serviceLocator.getUserService().findAll();
+        final Collection<User> users = serviceLocator.getUserService().findAll();
         for (User user : users) {
             System.out.println("\t" + user.getUuid() + "\t|\t" + user.getName() + "\t|\t" + user.getRole());
         }

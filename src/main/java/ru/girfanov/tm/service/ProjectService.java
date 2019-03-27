@@ -13,6 +13,7 @@ import java.util.Collection;
 public final class ProjectService extends AbstractService<Project> implements IProjectService {
 
     private IProjectRepository projectRepository;
+
     private ITaskRepository taskRepository;
 
     public ProjectService(@NotNull final IProjectRepository projectRepository, @NotNull final ITaskRepository taskRepository) {

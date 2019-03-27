@@ -1,23 +1,25 @@
 package ru.girfanov.tm.repository;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
 
 import java.util.Map;
 
+@NoArgsConstructor
 public final class UserRepository extends AbstractRepository<User> implements IUserRepository {
 
     @Override
     public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        User user = map.get(uuid);
+        final User user = map.get(uuid);
         user.setName(name);
         map.merge(uuid, user, (oldVal, newVal) -> newVal);
     }
 
     @Override
     public void mergeEntityPassword(@NotNull final String uuid, @NotNull final String newPassword) {
-        User user = map.get(uuid);
+        final User user = map.get(uuid);
         user.setPassword(newPassword);
         map.merge(uuid, user, (oldVal, newVal) -> newVal);
     }

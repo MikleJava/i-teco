@@ -8,16 +8,16 @@ import ru.girfanov.tm.entity.enumeration.Role;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public final class User extends AbstractEntity {
 
     @NonNull
     @Setter
     private String name;
+
     @NonNull
     private String password;
+
     @NonNull
-    @Setter
     private Role role;
 
     public void setPassword(@NotNull final String password) {

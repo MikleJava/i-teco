@@ -13,7 +13,7 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
 
     @Override
     public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        Project project = map.get(uuid);
+        final Project project = map.get(uuid);
         project.setName(name);
         map.merge(uuid, project, (oldVal, newVal) -> newVal);
     }
@@ -30,7 +30,7 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
 
     @Override
     public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
-        Collection<Project> projects = new ArrayList<>();
+        final Collection<Project> projects = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
                 projects.add(value);

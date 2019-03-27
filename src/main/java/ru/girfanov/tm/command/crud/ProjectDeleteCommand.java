@@ -1,44 +1,36 @@
 package ru.girfanov.tm.command.crud;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.Project;
+import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public final class DeleteProjectCommnd extends AbstractCrudCommand {
+@Getter
+@NoArgsConstructor
+public final class ProjectDeleteCommand extends AbstractCrudCommand {
 
     @NotNull
-    private static final String name = "-dp";
+    private final String name = "-dp";
+
     @NotNull
-    private static final String description = "delete project";
-
-    public DeleteProjectCommnd(@NotNull final ServiceLocator serviceLocator) {
-        super(serviceLocator);
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
+    private final String description = "delete project";
 
     @Override
     public void execute(@NotNull final String ... params) {
         try {
             System.out.println("all available projects : ");
-            List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAllProjectsByUserId(params[0]));
+            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAllProjectsByUserId(params[0]));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id which you want to delete : ");
-            int id = scanner.nextInt();
+            final int id = scanner.nextInt();
             serviceLocator.getProjectService().remove(projects.get(id).getUuid());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

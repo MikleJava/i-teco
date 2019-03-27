@@ -1,7 +1,9 @@
 package ru.girfanov.tm.command.crud;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 
@@ -10,46 +12,36 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
+import static ru.girfanov.tm.util.Terminal.*;
 
-public final class CreateTaskCommand extends AbstractCrudCommand {
+@Getter
+@NoArgsConstructor
+public final class TaskCreateCommand extends AbstractCrudCommand {
 
     @NotNull
-    private static final String name = "-ct";
+    private final String name = "-ct";
+
     @NotNull
-    private static final String description = "create task";
-
-    public CreateTaskCommand(@NotNull final ServiceLocator serviceLocator) {
-        super(serviceLocator);
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
+    private final String description = "create task";
 
     @Override
     public void execute(@NotNull final String ... params) {
         try {
             System.out.print("input task name : ");
-            String name = scanner.next();
+            final String name = scanner.next();
             System.out.print("input task description : ");
-            String description = scanner.next();
+            final String description = scanner.next();
             System.out.println("all available projects : ");
-            List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll());
+            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll());
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id : ");
-            int projectID = scanner.nextInt();
+            final int projectID = scanner.nextInt();
             System.out.print("input date start : ");
-            Date dateStart = dateFormat.parse(scanner.next());
+            final Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
-            Date dateEnd = dateFormat.parse(scanner.next());
+            final Date dateEnd = dateFormat.parse(scanner.next());
             serviceLocator.getTaskService().persist(new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

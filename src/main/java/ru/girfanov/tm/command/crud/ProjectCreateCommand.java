@@ -1,44 +1,38 @@
 package ru.girfanov.tm.command.crud;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.Project;
+import static ru.girfanov.tm.util.Terminal.*;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.InputMismatchException;
 
-public final class CreateProjectCommand extends AbstractCrudCommand {
+
+@Getter
+@NoArgsConstructor
+public final class ProjectCreateCommand extends AbstractCrudCommand {
+
     @NotNull
-    private static final String name = "-cp";
+    private final String name = "-cp";
+
     @NotNull
-    private static final String description = "create project";
-
-    public CreateProjectCommand(@NotNull final ServiceLocator serviceLocator) {
-        super(serviceLocator);
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
+    private final String description = "create project";
 
     @Override
     public void execute(@NotNull final String ... params) {
         try {
             System.out.print("input project name : ");
-            String name = scanner.next();
+            final String name = scanner.next();
             System.out.print("input project description : ");
-            String description = scanner.next();
+            final String description = scanner.next();
             System.out.print("input date start : ");
-            Date dateStart = dateFormat.parse(scanner.next());
+            final Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
-            Date dateEnd = dateFormat.parse(scanner.next());
+            final Date dateEnd = dateFormat.parse(scanner.next());
             serviceLocator.getProjectService().persist(new Project(name, description, params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

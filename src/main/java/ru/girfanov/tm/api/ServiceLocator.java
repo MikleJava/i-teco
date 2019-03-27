@@ -10,5 +10,6 @@ public interface ServiceLocator {
     IProjectService getProjectService();
     ITaskService getTaskService();
     IUserService getUserService();
-    void init();
+    void init(Class [] commandClasses);
+    void registerCommand(Class clazz);
 }
