@@ -26,7 +26,7 @@ public final class UserSelectCommand extends AbstractCrudCommand {
     public void execute(@Nullable final String ... params) {
         try {
             System.out.println("all available users : ");
-            final List<User> users = new ArrayList<>(serviceLocator.getUserService().findAll());
+            final List<User> users = new ArrayList<>(serviceLocator.getUserService().findAll(params[0]));
             for (int i = 0; i < users.size(); i++) {
                 System.out.println(i + ") " + users.get(i).getUuid() + " | " + users.get(i).getName());
             }
@@ -34,7 +34,7 @@ public final class UserSelectCommand extends AbstractCrudCommand {
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tlogin\t|\trole");
             System.out.println("_______________________________________________________________________________________________");
-            final User user = serviceLocator.getUserService().findOne(users.get(id).getUuid());
+            final User user = serviceLocator.getUserService().findOne(users.get(id).getUuid(), params[0]);
             System.out.println("\t" + user.getUuid() + "\t|\t" + user.getName() + "\t|\t" + user.getRole());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

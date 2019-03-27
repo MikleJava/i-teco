@@ -32,7 +32,7 @@ public final class TaskUpdateCommand extends AbstractCrudCommand {
             final int id = scanner.nextInt();
             System.out.print("input new task name : ");
             final String name = scanner.next();
-            serviceLocator.getTaskService().merge(tasks.get(id).getUuid(), name);
+            serviceLocator.getTaskService().merge(tasks.get(id).getUuid(), name, params[0]);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

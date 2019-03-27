@@ -1,12 +1,14 @@
 package ru.girfanov.tm.command;
 
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
 
 @Getter
 @NoArgsConstructor
 public abstract class AbstractSystemCommand<T> {
 
+    @NotNull
     private final String name = "asc";
 
     @Setter

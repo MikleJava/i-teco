@@ -23,7 +23,7 @@ public final class UsersSelectAllCommand extends AbstractCrudCommand {
     public void execute(@Nullable final String ... params) {
         System.out.println("\tid\t|\tlogin\t|\trole");
         System.out.println("___________________________________________________________________________________________________");
-        final Collection<User> users = serviceLocator.getUserService().findAll();
+        final Collection<User> users = serviceLocator.getUserService().findAll(params[0]);
         for (User user : users) {
             System.out.println("\t" + user.getUuid() + "\t|\t" + user.getName() + "\t|\t" + user.getRole());
         }

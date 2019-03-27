@@ -23,14 +23,15 @@ public final class UserService extends AbstractService<User> implements IUserSer
     }
 
     @Override
-    public void remove(@NotNull final String uuid) {
-        if(uuid.isEmpty()) { return; }
+    public void remove(@NotNull final String uuid, @NotNull final String userId) {
+        if(repository.findEntityById(userId) == null || uuid.isEmpty()) { return; }
         repository.removeEntityById(uuid);
     }
 
     @Override
-    public void removeAll() {
-        repository.removeAllEntities();
+    public void removeAll(@NotNull final String userId) {
+        if(repository.findEntityById(userId) == null || userId.isEmpty()) { return; }
+        repository.removeAllEntitiesById(userId);
     }
 
     @Override

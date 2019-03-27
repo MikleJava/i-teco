@@ -7,8 +7,6 @@ import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 
-import java.util.Collection;
-
 @NoArgsConstructor
 public final class ProjectService extends AbstractService<Project> implements IProjectService {
 
@@ -23,21 +21,16 @@ public final class ProjectService extends AbstractService<Project> implements IP
     }
 
     @Override
-    public void remove(@NotNull final String uuid) {
-        if(uuid.isEmpty()) { return; }
+    public void remove(@NotNull final String uuid, @NotNull final String userId) {
+        if (repository.findEntityById(userId) == null || uuid.isEmpty()) { return; }
         taskRepository.removeAllTasksByProjectId(uuid);
-        repository.removeEntityById(uuid);
+        projectRepository.removeEntityById(uuid);
     }
 
     @Override
-    public void removeAll() {
-        taskRepository.removeAllEntities();
-        repository.removeAllEntities();
-    }
-
-    @Override
-    public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
-        if(userId.isEmpty()) { return null; }
-        return projectRepository.findAllProjectsByUserId(userId);
+    public void removeAll(String userId) {
+        if (repository.findEntityById(userId) == null || userId.isEmpty()) { return; }
+        taskRepository.removeAllEntitiesById(userId);
+        repository.removeAllEntitiesById(userId);
     }
 }

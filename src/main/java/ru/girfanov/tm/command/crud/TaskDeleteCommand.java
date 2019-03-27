@@ -31,7 +31,7 @@ public final class TaskDeleteCommand extends AbstractCrudCommand {
             }
             System.out.print("input task id which you want to delete : ");
             final int id = scanner.nextInt();
-            serviceLocator.getTaskService().remove(tasks.get(id).getUuid());
+            serviceLocator.getTaskService().remove(tasks.get(id).getUuid(), params[0]);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

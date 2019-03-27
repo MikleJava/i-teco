@@ -25,7 +25,7 @@ public final class ProjectSelectCommand extends AbstractCrudCommand {
     public void execute(@NotNull final String ... params) {
         try {
             System.out.println("all available projects : ");
-            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAllProjectsByUserId(params[0]));
+            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll(params[0]));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
@@ -33,7 +33,7 @@ public final class ProjectSelectCommand extends AbstractCrudCommand {
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tname\t|\tdescription\t|\tdate_start\t|\tdate_end");
             System.out.println("_______________________________________________________________________________");
-            final Project project = serviceLocator.getProjectService().findOne(projects.get(id).getUuid());
+            final Project project = serviceLocator.getProjectService().findOne(projects.get(id).getUuid(), params[0]);
             System.out.println("\t" + project.getUuid() + "\t|\t" + project.getName() + "\t|\t" + project.getDescription() + "\t|\t" + project.getDateStart() + "\t|\t" + project.getDateEnd());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

@@ -19,14 +19,15 @@ public final class TaskService extends AbstractService<Task> implements ITaskSer
     }
 
     @Override
-    public void remove(@NotNull final String uuid) {
-        if(uuid.isEmpty()) { return; }
+    public void remove(@NotNull final String uuid, @NotNull final String userId) {
+        if(repository.findEntityById(userId) == null || uuid.isEmpty()) { return; }
         repository.removeEntityById(uuid);
     }
 
     @Override
-    public void removeAll() {
-        repository.removeAllEntities();
+    public void removeAll(@NotNull final String userId) {
+        if(repository.findEntityById(userId) == null) { return; }
+        repository.removeAllEntitiesById(userId);
     }
 
     @Override

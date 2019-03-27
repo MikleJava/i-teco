@@ -30,6 +30,6 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
         user.setName(name);
         user.setPassword(password);
         user.setRole(role);
-        serviceLocator.getUserService().persist(user);
+        serviceLocator.getUserService().persist(user, params[0]);
     }
 }

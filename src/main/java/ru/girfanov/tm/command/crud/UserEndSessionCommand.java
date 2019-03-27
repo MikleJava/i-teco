@@ -17,6 +17,6 @@ public final class UserEndSessionCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
-        serviceLocator.getUserService().remove(params[0]);
+        serviceLocator.getUserService().remove(params[0], params[0]);
     }
 }

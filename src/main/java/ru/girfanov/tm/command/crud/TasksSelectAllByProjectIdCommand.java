@@ -27,7 +27,7 @@ public final class TasksSelectAllByProjectIdCommand extends AbstractCrudCommand 
     public void execute(@NotNull final String ... params) {
         try {
             System.out.println("all available projects : ");
-            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAllProjectsByUserId(params[0]));
+            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll(params[0]));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }

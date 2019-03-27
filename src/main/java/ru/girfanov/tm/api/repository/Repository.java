@@ -8,7 +8,7 @@ public interface Repository<T extends AbstractEntity> {
     void persistEntity(T entity);
     void mergeEntityName(String uuid, String name);
     void removeEntityById(String uuid);
-    void removeAllEntities();
-    Collection<T> findAllEntities();
+    void removeAllEntitiesById(String uuid);
+    Collection<T> findAllEntitiesById(String uuid);
     T findEntityById(String uuid);
 }

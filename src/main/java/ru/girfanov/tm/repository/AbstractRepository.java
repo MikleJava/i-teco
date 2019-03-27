@@ -21,7 +21,7 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements Re
     }
 
     @Override
-    public Collection<T> findAllEntities() {
+    public Collection<T> findAllEntitiesById(@NotNull final String uuid) {
         return map.values();
     }
 

@@ -5,9 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 @NoArgsConstructor
 public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
 
@@ -24,18 +21,18 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
     }
 
     @Override
-    public void removeAllEntities() {
+    public void removeAllEntitiesById(@NotNull final String uuid) {
         map.clear();
     }
 
-    @Override
-    public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
-        final Collection<Project> projects = new ArrayList<>();
-        map.forEach((key, value) -> {
-            if(value.getUserId().equals(userId)) {
-                projects.add(value);
-            }
-        });
-        return projects;
-    }
+//    @Override
+//    public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
+//        final Collection<Project> projects = new ArrayList<>();
+//        map.forEach((key, value) -> {
+//            if(value.getUserId().equals(userId)) {
+//                projects.add(value);
+//            }
+//        });
+//        return projects;
+//    }
 }
