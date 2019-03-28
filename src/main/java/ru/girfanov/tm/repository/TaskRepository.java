@@ -5,6 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @NoArgsConstructor
 public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
 
@@ -21,7 +24,47 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public void removeAllEntitiesById(String uuid) {
+    public void removeAllEntitiesById(@NotNull final String uuid) {
         map.clear();
+    }
+
+    @Override
+    public Collection<Task> findAllTasksByProjectId(@NotNull final String projectId) {
+        final Collection<Task> tasks = new ArrayList<>();
+        map.forEach((key, value) -> {
+            if(value.getProjectId().equals(projectId)) {
+                tasks.add(value);
+            }
+        });
+        return tasks;
+    }
+
+    @Override
+    public void removeAllTasksByProjectId(@NotNull final String projectId) {
+        map.forEach((key, value) -> {
+            if(value.getProjectId().equals(projectId)) {
+                map.remove(key);
+            }
+        });
+    }
+
+    @Override
+    public Collection<Task> findAllTasksByUserId(@NotNull final String userId) {
+        final Collection<Task> tasks = new ArrayList<>();
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId)) {
+                tasks.add(value);
+            }
+        });
+        return tasks;
+    }
+
+    @Override
+    public void removeAllTasksByUserId(@NotNull final String userId) {
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId)) {
+                map.remove(key);
+            }
+        });
     }
 }

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.Project;
-import ru.girfanov.tm.entity.User;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -26,7 +25,6 @@ public final class ProjectCreateCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
-        User user = serviceLocator.getUserService().findOne(params[0], params[0]);
         try {
             System.out.print("input project name : ");
             final String name = scanner.next();

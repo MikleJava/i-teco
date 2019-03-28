@@ -3,7 +3,6 @@ package ru.girfanov.tm.command.crud;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.User;
 
@@ -20,7 +19,7 @@ public final class UsersSelectAllCommand extends AbstractCrudCommand {
     private final String description = "select all users";
 
     @Override
-    public void execute(@Nullable final String ... params) {
+    public void execute(@NotNull final String ... params) {
         System.out.println("\tid\t|\tlogin\t|\trole");
         System.out.println("___________________________________________________________________________________________________");
         final Collection<User> users = serviceLocator.getUserService().findAll(params[0]);

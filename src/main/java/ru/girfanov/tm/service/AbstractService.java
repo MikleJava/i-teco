@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
 import ru.girfanov.tm.entity.AbstractEntity;
+import ru.girfanov.tm.entity.User;
 
 import java.util.Collection;
 
@@ -19,6 +20,10 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
 
     @Override
     public void persist(@NotNull final T entity, @NotNull final String userId) {
+        if(entity.getClass().equals(User.class)) {
+            repository.persistEntity(entity);
+            return;
+        }
         if(repository.findEntityById(userId) == null) { return; }
         repository.persistEntity(entity);
     }

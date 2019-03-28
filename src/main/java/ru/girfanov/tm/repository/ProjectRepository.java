@@ -22,17 +22,10 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
 
     @Override
     public void removeAllEntitiesById(@NotNull final String uuid) {
-        map.clear();
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(uuid)) {
+                map.remove(key);
+            }
+        });
     }
-
-//    @Override
-//    public Collection<Project> findAllProjectsByUserId(@NotNull final String userId) {
-//        final Collection<Project> projects = new ArrayList<>();
-//        map.forEach((key, value) -> {
-//            if(value.getUserId().equals(userId)) {
-//                projects.add(value);
-//            }
-//        });
-//        return projects;
-//    }
 }

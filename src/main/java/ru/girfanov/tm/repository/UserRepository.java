@@ -30,8 +30,8 @@ public final class UserRepository extends AbstractRepository<User> implements IU
     }
 
     @Override
-    public void removeAllEntities() {
-        map.clear();
+    public void removeAllEntitiesById(@NotNull final String uuid) {
+        //TODO
     }
 
     @Override

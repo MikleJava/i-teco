@@ -35,7 +35,7 @@ public final class TasksSelectAllByProjectIdCommand extends AbstractCrudCommand 
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
             System.out.println("___________________________________________________________________________________________________");
-            final Collection<Task> tasks = serviceLocator.getTaskService().findAllTasksByProjectId(projects.get(id).getUuid());
+            final Collection<Task> tasks = serviceLocator.getTaskService().findAllTasksByProjectId(projects.get(id).getUuid(), params[0]);
             for(Task task : tasks) {
                 System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
             }
