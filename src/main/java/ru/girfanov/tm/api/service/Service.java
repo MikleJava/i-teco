@@ -5,10 +5,10 @@ import ru.girfanov.tm.entity.AbstractEntity;
 import java.util.Collection;
 
 public interface Service<T extends AbstractEntity> {
-    void persist(T entity, String userId);
-    void merge(String uuid, String name, String userId);
-    void remove(String uuid, String userId);
-    void removeAll(String uuid);
-    Collection<T> findAll(String uuid);
-    T findOne(String uuid, String userId);
+    void persist(String userId, T entity);
+    void merge(String userId, T entity);
+    void remove(String userId, String uuid);
+    void removeAll(String userId);
+    T findOne(String userId, String uuid);
+    Collection<T> findAll(String userId);
 }

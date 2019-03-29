@@ -5,12 +5,17 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.api.repository.IProjectRepository;
+import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.api.repository.IUserRepository;
+import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.command.*;
 import ru.girfanov.tm.command.system.UserAuthCommand;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.repository.AbstractRepository;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -24,17 +29,26 @@ import java.util.*;
 @NoArgsConstructor
 public final class Bootstrap implements ServiceLocator {
 
-    @Getter
     @NotNull
-    private final IProjectService projectService = new ProjectService(new ProjectRepository(), new TaskRepository());
+    private final IProjectRepository projectRepository = new ProjectRepository();
 
-    @Getter
     @NotNull
-    private final ITaskService taskService = new TaskService(new TaskRepository());
+    private final ITaskRepository taskRepository = new TaskRepository();
 
-    @Getter
     @NotNull
-    private final IUserService userService = new UserService(new UserRepository());
+    private final IUserRepository userRepository = new UserRepository();
+
+    @NotNull
+    @Getter
+    private final IProjectService projectService = new ProjectService(userRepository, projectRepository, taskRepository);
+
+    @NotNull
+    @Getter
+    private final ITaskService taskService = new TaskService(taskRepository);
+
+    @NotNull
+    @Getter
+    private final IUserService userService = new UserService(userRepository);
 
     @NotNull
     private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();

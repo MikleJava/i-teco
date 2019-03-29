@@ -31,9 +31,14 @@ public final class ProjectUpdateCommand extends AbstractCrudCommand {
             }
             System.out.print("input project id which you want to update : ");
             final int id = scanner.nextInt();
+            final Project project = projects.get(id);
             System.out.print("input new project name : ");
             final String name = scanner.next();
-            serviceLocator.getProjectService().merge(projects.get(id).getUuid(), name, params[0]);
+            System.out.println("input new project description : ");
+            final String description = scanner.next();
+            project.setName(name);
+            project.setDescription(description);
+            serviceLocator.getProjectService().merge(params[0], project);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

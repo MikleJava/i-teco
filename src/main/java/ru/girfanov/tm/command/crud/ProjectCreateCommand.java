@@ -34,7 +34,7 @@ public final class ProjectCreateCommand extends AbstractCrudCommand {
             final Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             final Date dateEnd = dateFormat.parse(scanner.next());
-            serviceLocator.getProjectService().persist(new Project(name, description, params[0], dateStart, dateEnd), params[0]);
+            serviceLocator.getProjectService().persist(params[0], new Project(name, description, params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

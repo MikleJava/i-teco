@@ -22,10 +22,10 @@ public final class UserAuthCommand extends AbstractSystemCommand<String> {
     @Override
     public void execute(@Nullable final String ... params) {
         System.out.print("input user login : ");
-        final String name = scanner.next();
+        final String login = scanner.next();
         System.out.print("input user password : ");
         final String password = scanner.next();
-        final User user = serviceLocator.getUserService().findOneByNameAndPassword(name, DigestUtils.md5Hex(password));
+        final User user = serviceLocator.getUserService().findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
         if(user == null) {
             serviceLocator.setUser(null);
             System.out.println("This user does not exist");

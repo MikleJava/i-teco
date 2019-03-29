@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.App;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 
 @Getter
@@ -18,19 +19,13 @@ public final class HelpCommand extends AbstractSystemCommand<String> {
 
     @Override
     public void execute(@Nullable final String ... params) {
-        System.out.println
-                (
-                "-cp\t create project \n" +
-                "-ct\t create task \n" +
-                "-up\t update project \n" +
-                "-ut\t update task \n" +
-                "-dp\t delete project \n" +
-                "-dt\t delete task \n" +
-                "-spbi\t select project by id \n" +
-                "-stbi\t select task by id \n" +
-                "-sap\t select all projects \n" +
-                "-sat\t select all tasks \n" +
-                "-satbpi\t select all tasks by project id"
-                );
+        for (Class clazz : App.commandClasses) {
+            try {
+                AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) clazz.newInstance();
+                System.out.println(command.getName() + "\t" + command.getDescription());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

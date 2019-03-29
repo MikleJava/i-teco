@@ -5,27 +5,32 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @NoArgsConstructor
 public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
 
     @Override
-    public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        final Project project = map.get(uuid);
-        project.setName(name);
-        map.merge(uuid, project, (oldVal, newVal) -> newVal);
+    public void removeAll(@NotNull final String userId) {
+        //if(map.containsKey(userId)) {
+            map.forEach((key, value) -> {
+                if(value.getUserId().equals(userId)) {
+                    map.remove(key);
+                }
+            });
+        //}
     }
 
     @Override
-    public void removeEntityById(@NotNull final String uuid) {
-        map.remove(uuid);
-    }
-
-    @Override
-    public void removeAllEntitiesById(@NotNull final String uuid) {
+    public Collection<Project> findAll(@NotNull final String userId) {
+        //if(!map.containsKey(userId)) { return null; }
+        final Collection<Project> projects = new ArrayList<>();
         map.forEach((key, value) -> {
-            if(value.getUserId().equals(uuid)) {
-                map.remove(key);
+            if(value.getUserId().equals(userId)) {
+                projects.add(value);
             }
         });
+        return projects;
     }
 }

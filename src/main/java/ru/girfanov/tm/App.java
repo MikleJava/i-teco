@@ -14,7 +14,7 @@ public final class App {
     }
 
     @NotNull
-    private static final Class[] commandClasses = {
+    public static final Class[] commandClasses = {
             HelpCommand.class,
             AboutCommand.class,
             ExitCommand.class,

@@ -5,10 +5,10 @@ import ru.girfanov.tm.entity.AbstractEntity;
 import java.util.Collection;
 
 public interface Repository<T extends AbstractEntity> {
-    void persistEntity(T entity);
-    void mergeEntityName(String uuid, String name);
-    void removeEntityById(String uuid);
-    void removeAllEntitiesById(String uuid);
-    Collection<T> findAllEntitiesById(String uuid);
-    T findEntityById(String uuid);
+    void persist(String userId, T entity);
+    void merge(String userId, T entity);
+    void remove(String userId, String uuid);
+    void removeAll(String userId);
+    T findOne(String userId, String uuid);
+    Collection<T> findAll(String userId);
 }

@@ -17,26 +17,13 @@ public final class UserService extends AbstractService<User> implements IUserSer
     }
 
     @Override
-    public void mergeUserPassword(@NotNull final String uuid, @NotNull final String newPassword) {
-        if(uuid.isEmpty() || newPassword.isEmpty()) { return; }
-        userRepository.mergeEntityPassword(uuid, newPassword);
+    public void mergePassword(@NotNull final String userId, @NotNull final String newPassword) {
+        if (!userId.isEmpty() || !newPassword.isEmpty()) { userRepository.mergePassword(userId, newPassword); }
     }
 
     @Override
-    public void remove(@NotNull final String uuid, @NotNull final String userId) {
-        if(repository.findEntityById(userId) == null || uuid.isEmpty()) { return; }
-        repository.removeEntityById(uuid);
-    }
-
-    @Override
-    public void removeAll(@NotNull final String userId) {
-        if(repository.findEntityById(userId) == null || userId.isEmpty()) { return; }
-        repository.removeAllEntitiesById(userId);
-    }
-
-    @Override
-    public User findOneByNameAndPassword(@NotNull final String name, @NotNull final String password) {
-        if(name.isEmpty() || password.isEmpty()) { return null; }
-        return userRepository.findOneEntityByNameAndPassword(name, password);
+    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
+        if(login.isEmpty() || password.isEmpty()) { return null; }
+        return userRepository.findOneByLoginAndPassword(login, password);
     }
 }

@@ -12,44 +12,19 @@ import java.util.Collection;
 public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
 
     @Override
-    public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        final Task task = map.get(uuid);
-        task.setName(name);
-        map.merge(uuid, task, (oldVal, newVal) -> newVal);
+    public void removeAll(@NotNull final String userId) {
+        //if(map.containsKey(userId)) {
+            map.forEach((key, value) -> {
+                if(value.getUserId().equals(userId)) {
+                    map.remove(key);
+                }
+            });
+        //}
     }
 
     @Override
-    public void removeEntityById(@NotNull final String uuid) {
-        map.remove(uuid);
-    }
-
-    @Override
-    public void removeAllEntitiesById(@NotNull final String uuid) {
-        map.clear();
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByProjectId(@NotNull final String projectId) {
-        final Collection<Task> tasks = new ArrayList<>();
-        map.forEach((key, value) -> {
-            if(value.getProjectId().equals(projectId)) {
-                tasks.add(value);
-            }
-        });
-        return tasks;
-    }
-
-    @Override
-    public void removeAllTasksByProjectId(@NotNull final String projectId) {
-        map.forEach((key, value) -> {
-            if(value.getProjectId().equals(projectId)) {
-                map.remove(key);
-            }
-        });
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByUserId(@NotNull final String userId) {
+    public Collection<Task> findAll(@NotNull final String userId) {
+        //if(!map.containsKey(userId)) { return null; }
         final Collection<Task> tasks = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
@@ -60,9 +35,22 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public void removeAllTasksByUserId(@NotNull final String userId) {
+    public Collection<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        //if(!map.containsKey(userId)) { return  null; }
+        final Collection<Task> tasks = new ArrayList<>();
         map.forEach((key, value) -> {
-            if(value.getUserId().equals(userId)) {
+            if(value.getUserId().equals(userId) && value.getProjectId().equals(projectId)) {
+                tasks.add(value);
+            }
+        });
+        return tasks;
+    }
+
+    @Override
+    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        //if(!map.containsKey(userId)) { return; }
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId) && value.getProjectId().equals(projectId)) {
                 map.remove(key);
             }
         });

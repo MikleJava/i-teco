@@ -5,43 +5,45 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
 
+import java.util.Collection;
 import java.util.Map;
 
 @NoArgsConstructor
 public final class UserRepository extends AbstractRepository<User> implements IUserRepository {
 
     @Override
-    public void mergeEntityName(@NotNull final String uuid, @NotNull final String name) {
-        final User user = map.get(uuid);
-        user.setName(name);
-        map.merge(uuid, user, (oldVal, newVal) -> newVal);
-    }
-
-    @Override
-    public void mergeEntityPassword(@NotNull final String uuid, @NotNull final String newPassword) {
-        final User user = map.get(uuid);
-        user.setPassword(newPassword);
-        map.merge(uuid, user, (oldVal, newVal) -> newVal);
-    }
-
-    @Override
-    public void removeEntityById(@NotNull final String uuid) {
-        map.remove(uuid);
-    }
-
-    @Override
-    public void removeAllEntitiesById(@NotNull final String uuid) {
+    public void removeAll(@NotNull final String userId) {
         //TODO
     }
 
     @Override
-    public User findOneEntityByNameAndPassword(@NotNull final String name, @NotNull final String password) {
+    public Collection<User> findAll(@NotNull final String userId) {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public void mergePassword(@NotNull final String userId, @NotNull final String newPassword) {
+        if(map.containsKey(userId)) {
+            final User user = map.get(userId);
+            user.setPassword(newPassword);
+            merge(userId, user);
+        }
+    }
+
+    @Override
+    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
         User user = null;
         for(Map.Entry<String, User> entry : map.entrySet()) {
-            if(name.equals(entry.getValue().getName()) && password.equals(entry.getValue().getPassword())) {
+            if(login.equals(entry.getValue().getLogin()) && password.equals(entry.getValue().getPassword())) {
                 user = entry.getValue();
             }
         }
         return user;
     }
+
+//    @Override
+//    public boolean isAuthUser(String userId) {
+//        return map.containsKey(userId);
+//    }
 }

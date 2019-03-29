@@ -11,6 +11,9 @@ public abstract class AbstractSystemCommand<T> {
     @NotNull
     private final String name = "asc";
 
+    @NotNull
+    private final String description = "abstract system command";
+
     @Setter
     protected ServiceLocator serviceLocator;
 

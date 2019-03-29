@@ -24,7 +24,7 @@ public final class TaskUpdateCommand extends AbstractCrudCommand {
     public void execute(@NotNull final String ... params) {
         try {
             System.out.println("all available tasks : ");
-            final List<Task> tasks = new ArrayList<>(serviceLocator.getTaskService().findAllTasksByUserId(params[0]));
+            final List<Task> tasks = new ArrayList<>(serviceLocator.getTaskService().findAll(params[0]));
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
             }
@@ -32,7 +32,12 @@ public final class TaskUpdateCommand extends AbstractCrudCommand {
             final int id = scanner.nextInt();
             System.out.print("input new task name : ");
             final String name = scanner.next();
-            serviceLocator.getTaskService().merge(tasks.get(id).getUuid(), name, params[0]);
+            System.out.println("input new task description : ");
+            final String description = scanner.next();
+            Task task = tasks.get(id);
+            task.setName(name);
+            task.setDescription(description);
+            serviceLocator.getTaskService().merge(params[0], task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

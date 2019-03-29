@@ -24,7 +24,7 @@ public final class UsersSelectAllCommand extends AbstractCrudCommand {
         System.out.println("___________________________________________________________________________________________________");
         final Collection<User> users = serviceLocator.getUserService().findAll(params[0]);
         for (User user : users) {
-            System.out.println("\t" + user.getUuid() + "\t|\t" + user.getName() + "\t|\t" + user.getRole());
+            System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         }
     }
 }

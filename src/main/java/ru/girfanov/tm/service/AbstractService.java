@@ -4,10 +4,10 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
 import ru.girfanov.tm.entity.AbstractEntity;
-import ru.girfanov.tm.entity.User;
 
 import java.util.Collection;
 
@@ -18,31 +18,40 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     @NonNull
     protected Repository<T> repository;
 
+//    @NonNull
+//    protected IUserRepository userRepository;
+
     @Override
-    public void persist(@NotNull final T entity, @NotNull final String userId) {
-        if(entity.getClass().equals(User.class)) {
-            repository.persistEntity(entity);
-            return;
-        }
-        if(repository.findEntityById(userId) == null) { return; }
-        repository.persistEntity(entity);
+    public void persist(@NotNull final String userId, @NotNull final T entity) {
+        //if(userRepository.isAuthUser(userId)) {
+            repository.persist(userId, entity);
+        //}
     }
 
     @Override
-    public void merge(@NotNull final String uuid, @NotNull final String name, @NotNull final String userId) {
-        if(repository.findEntityById(userId) == null || uuid.isEmpty() || name.isEmpty()) { return; }
-        repository.mergeEntityName(uuid, name);
+    public void merge(@NotNull final String userId, @NotNull final T entity) {
+        if(!userId.isEmpty()) { repository.merge(userId, entity); }
     }
 
     @Override
-    public Collection<T> findAll(@NotNull final String uuid) {
-        if(repository.findAllEntitiesById(uuid) == null) { return null; }
-        return repository.findAllEntitiesById(uuid);
+    public void remove(@NotNull final String userId, @NotNull final String uuid) {
+        if(!userId.isEmpty() || !uuid.isEmpty()) { repository.remove(userId, uuid); }
     }
 
     @Override
-    public T findOne(@NotNull final String uuid, @NotNull final  String userId) {
-        if(repository.findEntityById(userId) == null || uuid.isEmpty()) { return null; }
-        return repository.findEntityById(uuid);
+    public void removeAll(@NotNull final String userId) {
+        if(!userId.isEmpty()) { repository.removeAll(userId); }
+    }
+
+    @Override
+    public T findOne(@NotNull final String userId, @NotNull final String uuid) {
+        if (userId.isEmpty() || uuid.isEmpty()) { return null; }
+        return repository.findOne(userId, uuid);
+    }
+
+    @Override
+    public Collection<T> findAll(@NotNull final String userId) {
+        if(userId.isEmpty()) { return null; }
+        return repository.findAll(userId);
     }
 }

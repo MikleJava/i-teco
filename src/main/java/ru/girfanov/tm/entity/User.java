@@ -12,7 +12,7 @@ public final class User extends AbstractEntity {
 
     @NonNull
     @Setter
-    private String name;
+    private String login;
 
     @NonNull
     private String password;

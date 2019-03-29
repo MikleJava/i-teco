@@ -42,7 +42,7 @@ public final class TaskCreateCommand extends AbstractCrudCommand {
             final Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             final Date dateEnd = dateFormat.parse(scanner.next());
-            serviceLocator.getTaskService().persist(new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd), params[0]);
+            serviceLocator.getTaskService().persist(params[0], new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

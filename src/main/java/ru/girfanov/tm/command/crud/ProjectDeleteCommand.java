@@ -31,7 +31,7 @@ public final class ProjectDeleteCommand extends AbstractCrudCommand {
             }
             System.out.print("input project id which you want to delete : ");
             final int id = scanner.nextInt();
-            serviceLocator.getProjectService().remove(projects.get(id).getUuid(), params[0]);
+            serviceLocator.getProjectService().remove(params[0], projects.get(id).getUuid());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

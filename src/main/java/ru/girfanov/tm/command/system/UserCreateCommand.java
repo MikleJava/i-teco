@@ -21,15 +21,15 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
     @Override
     public void execute(@Nullable final String ... params) {
         System.out.print("input user login : ");
-        final String name = scanner.next();
+        final String login = scanner.next();
         System.out.print("input user password : ");
         final String password = scanner.next();
         System.out.print("input user role : ");
         final String role = scanner.next();
         final User user = new User();
-        user.setName(name);
+        user.setLogin(login);
         user.setPassword(password);
         user.setRole(role);
-        serviceLocator.getUserService().persist(user, user.getUuid());
+        serviceLocator.getUserService().persist(user.getUuid(), user);
     }
 }

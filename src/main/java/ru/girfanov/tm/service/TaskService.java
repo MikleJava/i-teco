@@ -19,38 +19,13 @@ public final class TaskService extends AbstractService<Task> implements ITaskSer
     }
 
     @Override
-    public void remove(@NotNull final String uuid, @NotNull final String userId) {
-        if(repository.findEntityById(userId) == null || uuid.isEmpty()) { return; }
-        repository.removeEntityById(uuid);
+    public Collection<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        if(userId.isEmpty() || projectId.isEmpty()) { return null; }
+        return taskRepository.findAllTasksByProjectId(userId, projectId);
     }
 
     @Override
-    public void removeAll(@NotNull final String userId) {
-        if(repository.findEntityById(userId) == null) { return; }
-        repository.removeAllEntitiesById(userId);
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByProjectId(@NotNull final String projectId, @NotNull final String userId) {
-        if(repository.findEntityById(userId) == null || projectId.isEmpty()) { return null; }
-        return taskRepository.findAllTasksByProjectId(projectId);
-    }
-
-    @Override
-    public void removeAllTasksByProjectId(@NotNull final String projectId, @NotNull final String userId) {
-        if(repository.findEntityById(userId) == null || projectId.isEmpty()) { return; }
-        taskRepository.removeAllTasksByProjectId(projectId);
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByUserId(@NotNull final String userId) {
-        if(repository.findEntityById(userId) == null) { return null; }
-        return taskRepository.findAllTasksByUserId(userId);
-    }
-
-    @Override
-    public void removeAllTasksByUserId(@NotNull final String userId) {
-        if(repository.findEntityById(userId) == null) { return; }
-        taskRepository.removeAllTasksByUserId(userId);
+    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        if(!userId.isEmpty() || !projectId.isEmpty()) { taskRepository.removeAllTasksByProjectId(userId, projectId); }
     }
 }
