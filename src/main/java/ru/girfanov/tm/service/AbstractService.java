@@ -18,14 +18,9 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     @NonNull
     protected Repository<T> repository;
 
-//    @NonNull
-//    protected IUserRepository userRepository;
-
     @Override
     public void persist(@NotNull final String userId, @NotNull final T entity) {
-        //if(userRepository.isAuthUser(userId)) {
-            repository.persist(userId, entity);
-        //}
+        if(!userId.isEmpty()) { repository.persist(userId, entity); }
     }
 
     @Override

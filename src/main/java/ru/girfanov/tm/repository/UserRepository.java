@@ -41,9 +41,4 @@ public final class UserRepository extends AbstractRepository<User> implements IU
         }
         return user;
     }
-
-//    @Override
-//    public boolean isAuthUser(String userId) {
-//        return map.containsKey(userId);
-//    }
 }

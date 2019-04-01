@@ -18,7 +18,6 @@ public final class ProjectService extends AbstractService<Project> implements IP
     private IUserRepository userRepository;
 
     public ProjectService(@NotNull final IUserRepository userRepository, @NotNull final IProjectRepository projectRepository, @NotNull final ITaskRepository taskRepository) {
-        //super(projectRepository, userRepository);
         super(projectRepository);
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;

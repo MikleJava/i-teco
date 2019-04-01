@@ -13,18 +13,15 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
 
     @Override
     public void removeAll(@NotNull final String userId) {
-        //if(map.containsKey(userId)) {
             map.forEach((key, value) -> {
                 if(value.getUserId().equals(userId)) {
                     map.remove(key);
                 }
             });
-        //}
     }
 
     @Override
     public Collection<Project> findAll(@NotNull final String userId) {
-        //if(!map.containsKey(userId)) { return null; }
         final Collection<Project> projects = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {

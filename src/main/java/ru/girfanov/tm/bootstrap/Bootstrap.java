@@ -15,7 +15,6 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.command.*;
 import ru.girfanov.tm.command.system.UserAuthCommand;
 import ru.girfanov.tm.entity.User;
-import ru.girfanov.tm.repository.AbstractRepository;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;

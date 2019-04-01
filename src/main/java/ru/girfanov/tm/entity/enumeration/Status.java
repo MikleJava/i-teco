@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
-public enum Role {
+public enum Status {
 
-    ADMINISTRATOR("Администратор"), USER("Пользователь");
+    PLANNING("Запланировано"), PROCESS("В процессе"), READY("Готово");
 
     @NonNull
     private String displayName;
