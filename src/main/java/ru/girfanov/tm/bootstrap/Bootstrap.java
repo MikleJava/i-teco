@@ -15,6 +15,7 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.command.*;
 import ru.girfanov.tm.command.system.UserAuthCommand;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.AlreadyExistException;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -68,6 +69,7 @@ public final class Bootstrap implements ServiceLocator {
         try {
             AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) clazz.newInstance();
             command.setServiceLocator(this);
+            if(mapCommands.containsKey(command.getName())) throw new AlreadyExistException("Command " + command.getName() + " already exist");
             mapCommands.put(command.getName(), command);
         } catch (InstantiationException | IllegalAccessException  | ClassCastException e) {
             System.out.println("Does not correct command");
@@ -89,7 +91,11 @@ public final class Bootstrap implements ServiceLocator {
                         mapCommands.get(command).execute(user.getUuid());
                     }
                 } else {
-                    mapCommands.get(command).execute();
+                    try {
+                        mapCommands.get(command).execute();
+                    } catch (RuntimeException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         }

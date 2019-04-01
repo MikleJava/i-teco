@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.IncorrectRoleException;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
 @Getter
@@ -30,6 +32,7 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
         user.setLogin(login);
         user.setPassword(password);
         user.setRole(role);
+        if(user.getRole() == null) throw new IncorrectRoleException("Incorrect role");
         serviceLocator.getUserService().persist(user.getUuid(), user);
     }
 }
