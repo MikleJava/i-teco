@@ -8,7 +8,7 @@ import ru.girfanov.tm.entity.enumeration.Role;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public final class User extends AbstractEntity {
+public class User extends AbstractEntity {
 
     @NonNull
     @Setter

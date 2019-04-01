@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public final class Task extends AbstractSortedEntity {
+public class Task extends AbstractSortedEntity {
 
     @NonNull private String projectId;
 
