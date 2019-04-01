@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @NoArgsConstructor
@@ -17,7 +17,7 @@ public final class UserRepository extends AbstractRepository<User> implements IU
     }
 
     @Override
-    public Collection<User> findAll(@NotNull final String userId) {
+    public List<User> findAll(@NotNull final String userId) {
         //TODO
         return null;
     }

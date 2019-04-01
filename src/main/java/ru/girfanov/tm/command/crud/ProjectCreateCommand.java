@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.Project;
+import ru.girfanov.tm.entity.enumeration.Status;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -30,11 +31,13 @@ public final class ProjectCreateCommand extends AbstractCrudCommand {
             final String name = scanner.next();
             System.out.print("input project description : ");
             final String description = scanner.next();
+            System.out.print("input status : ");
+            final String status = scanner.next();
             System.out.print("input date start : ");
             final Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             final Date dateEnd = dateFormat.parse(scanner.next());
-            serviceLocator.getProjectService().persist(params[0], new Project(name, description, params[0], dateStart, dateEnd));
+            serviceLocator.getProjectService().persist(params[0], new Project(name, description, params[0], Status.valueOf(status), dateStart, dateEnd));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

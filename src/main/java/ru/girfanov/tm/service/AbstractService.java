@@ -4,12 +4,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.api.service.Service;
 import ru.girfanov.tm.entity.AbstractEntity;
 
-import java.util.Collection;
+import java.util.List;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -45,7 +44,7 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     }
 
     @Override
-    public Collection<T> findAll(@NotNull final String userId) {
+    public List<T> findAll(@NotNull final String userId) {
         if(userId.isEmpty()) { return null; }
         return repository.findAll(userId);
     }

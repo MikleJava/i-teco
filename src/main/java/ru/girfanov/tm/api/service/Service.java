@@ -2,7 +2,7 @@ package ru.girfanov.tm.api.service;
 
 import ru.girfanov.tm.entity.AbstractEntity;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface Service<T extends AbstractEntity> {
     void persist(String userId, T entity);
@@ -10,5 +10,5 @@ public interface Service<T extends AbstractEntity> {
     void remove(String userId, String uuid);
     void removeAll(String userId);
     T findOne(String userId, String uuid);
-    Collection<T> findAll(String userId);
+    List<T> findAll(String userId);
 }

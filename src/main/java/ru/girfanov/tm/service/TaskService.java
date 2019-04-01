@@ -6,7 +6,7 @@ import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
 
-import java.util.Collection;
+import java.util.List;
 
 @NoArgsConstructor
 public final class TaskService extends AbstractService<Task> implements ITaskService {
@@ -19,7 +19,7 @@ public final class TaskService extends AbstractService<Task> implements ITaskSer
     }
 
     @Override
-    public Collection<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+    public List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
         if(userId.isEmpty() || projectId.isEmpty()) { return null; }
         return taskRepository.findAllTasksByProjectId(userId, projectId);
     }
@@ -27,5 +27,11 @@ public final class TaskService extends AbstractService<Task> implements ITaskSer
     @Override
     public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
         if(!userId.isEmpty() || !projectId.isEmpty()) { taskRepository.removeAllTasksByProjectId(userId, projectId); }
+    }
+
+    @Override
+    public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
+        if(userId.isEmpty() || value.isEmpty()) { return null; }
+        return taskRepository.findAllSortedByValue(userId, value);
     }
 }

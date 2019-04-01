@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractCrudCommand;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
+import ru.girfanov.tm.entity.enumeration.Status;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,18 +32,20 @@ public final class TaskCreateCommand extends AbstractCrudCommand {
             final String name = scanner.next();
             System.out.print("input task description : ");
             final String description = scanner.next();
+            System.out.print("input status : ");
+            final String status = scanner.next();
+            System.out.print("input date start : ");
+            final Date dateStart = dateFormat.parse(scanner.next());
+            System.out.print("input date end : ");
+            final Date dateEnd = dateFormat.parse(scanner.next());
             System.out.println("all available projects : ");
             final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll(params[0]));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id : ");
-            final int projectID = scanner.nextInt();
-            System.out.print("input date start : ");
-            final Date dateStart = dateFormat.parse(scanner.next());
-            System.out.print("input date end : ");
-            final Date dateEnd = dateFormat.parse(scanner.next());
-            serviceLocator.getTaskService().persist(params[0], new Task(name, description, projects.get(projectID).getUuid(), params[0], dateStart, dateEnd));
+            final int projectId = scanner.nextInt();
+            serviceLocator.getTaskService().persist(params[0], new Task(name, description, params[0], Status.valueOf(status), dateEnd, dateEnd, projects.get(projectId).getUuid()));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

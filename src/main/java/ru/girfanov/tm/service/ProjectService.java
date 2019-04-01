@@ -8,6 +8,8 @@ import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 
+import java.util.List;
+
 @NoArgsConstructor
 public final class ProjectService extends AbstractService<Project> implements IProjectService {
 
@@ -22,5 +24,11 @@ public final class ProjectService extends AbstractService<Project> implements IP
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
+        if(userId.isEmpty() || value.isEmpty()) { return null; }
+        return projectRepository.findAllSortedByValue(userId, value);
     }
 }

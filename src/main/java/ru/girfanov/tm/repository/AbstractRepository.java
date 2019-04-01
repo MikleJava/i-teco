@@ -5,14 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.Repository;
 import ru.girfanov.tm.entity.AbstractEntity;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @NoArgsConstructor
 public abstract class AbstractRepository<T extends AbstractEntity> implements Repository<T> {
 
     @NotNull
-    final Map<String, T> map = new ConcurrentHashMap<>();
+    final Map<String, T> map = new LinkedHashMap<>();
 
     @Override
     public void persist(@NotNull final String userId, @NotNull final T entity) {

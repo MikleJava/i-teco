@@ -14,4 +14,6 @@ public class Terminal {
     @NotNull
     public static final DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
 
+    @NotNull
+    public static final String[] sortValue = {"date start", "date end", "status"};
 }
