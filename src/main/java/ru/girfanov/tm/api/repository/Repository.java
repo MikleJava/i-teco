@@ -2,6 +2,7 @@ package ru.girfanov.tm.api.repository;
 
 import ru.girfanov.tm.entity.AbstractEntity;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface Repository<T extends AbstractEntity> {
@@ -10,5 +11,6 @@ public interface Repository<T extends AbstractEntity> {
     void remove(String userId, String uuid);
     void removeAll(String userId);
     T findOne(String userId, String uuid);
-    List<T> findAll(String userId);
+    List<T> findAllByUserId(String userId);
+    Collection<T> findAll();
 }

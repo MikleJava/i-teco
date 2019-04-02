@@ -14,6 +14,24 @@ import java.util.*;
 public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
 
     @Override
+    public Project findOne(@NotNull final String userId, @NotNull final String uuid) {
+        if(!map.get(uuid).getUserId().equals(userId)) return null;
+        return map.get(uuid);
+    }
+
+    @Override
+    public void merge(@NotNull final String userId, @NotNull final Project entity) {
+        if(findOne(userId, entity.getUuid()) == null) return;
+        persist(userId, entity);
+    }
+
+    @Override
+    public void remove(@NotNull final String userId, @NotNull final String uuid) {
+        if(findOne(userId, uuid) == null) return;
+        map.remove(uuid);
+    }
+
+    @Override
     public void removeAll(@NotNull final String userId) {
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
@@ -23,7 +41,7 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
     }
 
     @Override
-    public List<Project> findAll(@NotNull final String userId) {
+    public List<Project> findAllByUserId(@NotNull final String userId) {
         final List<Project> projects = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
@@ -34,8 +52,14 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
     }
 
     @Override
+    public Collection<Project> findAll() {
+        //Сделать проверку на что, что только админ сможет использовать данный метод
+        return map.values();
+    }
+
+    @Override
     public List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
-        final List<Project> sortedProjects = findAll(userId);
+        final List<Project> sortedProjects = findAllByUserId(userId);
         if("date start".equals(value)) {
             Comparator<Project> comparator = new SortByStartDate<>();
             sortedProjects.sort(comparator);

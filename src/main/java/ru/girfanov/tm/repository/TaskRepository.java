@@ -9,11 +9,30 @@ import ru.girfanov.tm.comparator.SortByStatus;
 import ru.girfanov.tm.entity.Task;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
 @NoArgsConstructor
 public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
+
+    @Override
+    public Task findOne(@NotNull final String userId, @NotNull final String uuid) {
+        if(!map.get(uuid).getUserId().equals(userId)) return null;
+        return map.get(uuid);
+    }
+
+    @Override
+    public void merge(@NotNull final String userId, @NotNull final Task entity) {
+        if(findOne(userId, entity.getUuid()) == null) return;
+        persist(userId, entity);
+    }
+
+    @Override
+    public void remove(@NotNull final String userId, @NotNull final String uuid) {
+        if(findOne(userId, uuid) == null) return;
+        map.remove(uuid);
+    }
 
     @Override
     public void removeAll(@NotNull final String userId) {
@@ -25,7 +44,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
     }
 
     @Override
-    public List<Task> findAll(@NotNull final String userId) {
+    public List<Task> findAllByUserId(@NotNull final String userId) {
         final List<Task> tasks = new ArrayList<>();
         map.forEach((key, value) -> {
             if(value.getUserId().equals(userId)) {
@@ -33,6 +52,12 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
             }
         });
         return tasks;
+    }
+
+    @Override
+    public Collection<Task> findAll() {
+        //Сделать проверку на что, что только админ сможет использовать данный метод
+        return map.values();
     }
 
     @Override
@@ -57,7 +82,7 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
 
     @Override
     public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
-        final List<Task> sortedProjects = findAll(userId);
+        final List<Task> sortedProjects = findAllByUserId(userId);
         if("date start".equals(value)) {
             Comparator<Task> comparator = new SortByStartDate<>();
             sortedProjects.sort(comparator);

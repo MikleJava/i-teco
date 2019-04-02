@@ -20,17 +20,8 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements Re
     }
 
     @Override
-    public void merge(@NotNull final String userId, @NotNull final T entity) {
-        persist(userId, entity);
-    }
+    public abstract void merge(@NotNull final String userId, @NotNull final T entity);
 
     @Override
-    public void remove(@NotNull final String userId, @NotNull final String uuid) {
-            map.remove(uuid);
-    }
-
-    @Override
-    public T findOne(@NotNull final String userId, @NotNull final String uuid) {
-        return map.get(uuid);
-    }
+    public abstract void remove(@NotNull final String userId, @NotNull final String uuid);
 }

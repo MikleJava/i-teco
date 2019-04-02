@@ -5,11 +5,14 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.entity.enumeration.Role;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements Serializable {
 
+    private static final long serialVersionUID = -3316296014185311021L;
     @NonNull
     @Setter
     private String login;

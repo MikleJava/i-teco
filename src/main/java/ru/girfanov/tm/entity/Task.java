@@ -4,12 +4,15 @@ import lombok.*;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.entity.enumeration.Status;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class Task extends AbstractSortedEntity {
+public class Task extends AbstractSortedEntity implements Serializable {
+
+    private static final long serialVersionUID = -692039978108063466L;
 
     @NonNull private String projectId;
 

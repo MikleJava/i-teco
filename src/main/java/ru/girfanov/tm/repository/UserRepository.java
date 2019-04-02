@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +14,47 @@ import java.util.Map;
 public final class UserRepository extends AbstractRepository<User> implements IUserRepository {
 
     @Override
-    public void removeAll(@NotNull final String userId) {
-        //TODO
+    public User findOne(@NotNull final String userId, @NotNull final String uuid) {
+        if(!map.get(userId).getUuid().equals(userId)) return null;
+        return map.get(uuid);
     }
 
     @Override
-    public List<User> findAll(@NotNull final String userId) {
-        //TODO
-        return null;
+    public void merge(@NotNull final String userId, @NotNull final User entity) {
+        if(findOne(userId, entity.getUuid()) == null) return;
+        persist(userId, entity);
+    }
+
+    @Override
+    public void remove(@NotNull final String userId, @NotNull final String uuid) {
+        if(findOne(userId, uuid) == null) return;
+        map.remove(uuid);
+    }
+
+    @Override
+    public void removeAll(@NotNull final String userId) {
+        map.forEach((key, value) -> {
+            if(value.getUuid().equals(userId)) {
+                map.remove(key);
+            }
+        });
+    }
+
+    @Override
+    public List<User> findAllByUserId(@NotNull final String userId) {
+        final List<User> users = new ArrayList<>();
+        map.forEach((key, value) -> {
+            if(value.getUuid().equals(userId)) {
+                users.add(value);
+            }
+        });
+        return users;
+    }
+
+    @Override
+    public Collection<User> findAll() {
+        //Сделать проверку на что, что только админ сможет использовать данный метод
+        return map.values();
     }
 
     @Override
