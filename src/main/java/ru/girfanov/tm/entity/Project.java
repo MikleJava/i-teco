@@ -1,54 +1,18 @@
 package ru.girfanov.tm.entity;
 
+import lombok.*;
+import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.entity.enumeration.Status;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Project extends AbstractEntity {
+@NoArgsConstructor
+public class Project extends AbstractSortedEntity implements Serializable {
 
-    private String name;
-    private String description;
-    private Date dateStart;
-    private Date dateEnd;
+    private static final long serialVersionUID = 6794340542978134826L;
 
-    public Project() {
-    }
-
-    public Project(String name, String description, Date dateStart, Date dateEnd) {
-        this.name = name;
-        this.description = description;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Project setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
+    public Project(@NonNull final String name, @Nullable final String description, @NonNull final String userId, @NonNull final Status status, @Nullable final Date dateStart, @Nullable final Date dateEnd) {
+        super(name, description, userId, status, dateStart, dateEnd);
     }
 }

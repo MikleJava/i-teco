@@ -1,60 +1,23 @@
 package ru.girfanov.tm.entity;
 
+import lombok.*;
+import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.entity.enumeration.Status;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task extends AbstractEntity {
+@Getter
+@Setter
+@NoArgsConstructor
+public class Task extends AbstractSortedEntity implements Serializable {
 
-    private String name;
-    private String description;
-    private String projectId;
-    private Date dateStart;
-    private Date dateEnd;
+    private static final long serialVersionUID = -692039978108063466L;
 
-    public Task() {
-    }
+    @NonNull private String projectId;
 
-    public Task(String name, String description, String projectId, Date dateStart, Date dateEnd) {
-        this.name = name;
-        this.description = description;
+    public Task(@NonNull final String name, @Nullable final String description, @NonNull final String userId, @NonNull final Status status, @Nullable final Date dateStart, @Nullable final Date dateEnd, @NonNull final String projectId) {
+        super(name, description, userId, status, dateStart, dateEnd);
         this.projectId = projectId;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public Task setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
     }
 }

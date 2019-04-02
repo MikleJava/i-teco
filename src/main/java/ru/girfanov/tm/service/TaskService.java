@@ -1,59 +1,37 @@
 package ru.girfanov.tm.service;
 
-import ru.girfanov.tm.api.ITaskRepository;
-import ru.girfanov.tm.api.ITaskService;
-import ru.girfanov.tm.api.Service;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
-import ru.girfanov.tm.api.Repository;
-import ru.girfanov.tm.repository.TaskRepository;
 
-import java.util.Collection;
+import java.util.List;
 
-public class TaskService implements ITaskService {
+@NoArgsConstructor
+public final class TaskService extends AbstractService<Task> implements ITaskService {
 
-    private ITaskRepository repository;
+    private ITaskRepository taskRepository;
 
-    public TaskService(ITaskRepository repository) {
-        this.repository = repository;
+    public TaskService(@NotNull final ITaskRepository taskRepository) {
+        super(taskRepository);
+        this.taskRepository = taskRepository;
     }
 
     @Override
-    public void persist(Task entity) {
-        if(entity == null) { return; }
-        repository.persistEntity(entity);
+    public List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        if(userId.isEmpty() || projectId.isEmpty()) { return null; }
+        return taskRepository.findAllTasksByProjectId(userId, projectId);
     }
 
     @Override
-    public void merge(String uuid, String name) {
-        if(uuid == null || name == null || uuid.isEmpty() || name.isEmpty()) { return; }
-        repository.mergeEntityName(uuid, name);
+    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        if(!userId.isEmpty() || !projectId.isEmpty()) { taskRepository.removeAllTasksByProjectId(userId, projectId); }
     }
 
     @Override
-    public void remove(String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return; }
-        repository.removeEntityById(uuid);
-    }
-
-    @Override
-    public void removeAll() {
-        repository.removeAllEntities();
-    }
-
-    @Override
-    public Collection<Task> findAll() {
-        return repository.findAllEntities();
-    }
-
-    @Override
-    public Task findOne(String uuid) {
-        if(uuid == null || uuid.isEmpty()) { return null; }
-        return repository.findEntityById(uuid);
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByProjectId(String projectUuid) {
-        if(projectUuid == null || projectUuid.isEmpty()) { return null; }
-        return repository.findAllTasksByEntityId(projectUuid);
+    public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
+        if(userId.isEmpty() || value.isEmpty()) { return null; }
+        return taskRepository.findAllSortedByValue(userId, value);
     }
 }

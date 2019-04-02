@@ -1,70 +1,100 @@
 package ru.girfanov.tm.repository;
 
-import ru.girfanov.tm.api.ITaskRepository;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.comparator.SortByEndDate;
+import ru.girfanov.tm.comparator.SortByStartDate;
+import ru.girfanov.tm.comparator.SortByStatus;
 import ru.girfanov.tm.entity.Task;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Comparator;
+import java.util.List;
 
-public class TaskRepository implements ITaskRepository {
-
-    private Map<String, Task> taskMap = new ConcurrentHashMap<>();
+@NoArgsConstructor
+public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
 
     @Override
-    public void persistEntity(Task entity) {
-        taskMap.put(entity.getUuid(), entity);
+    public Task findOne(@NotNull final String userId, @NotNull final String uuid) {
+        if(!map.get(uuid).getUserId().equals(userId)) return null;
+        return map.get(uuid);
     }
 
     @Override
-    public void mergeEntityName(String uuid, String name) {
-        taskMap.merge(uuid, taskMap.get(uuid).setName(name), (oldVal, newVal) -> newVal);
+    public void merge(@NotNull final String userId, @NotNull final Task entity) {
+        if(findOne(userId, entity.getUuid()) == null) return;
+        persist(userId, entity);
     }
 
     @Override
-    public void removeEntityById(String uuid) {
-        taskMap.remove(uuid);
+    public void remove(@NotNull final String userId, @NotNull final String uuid) {
+        if(findOne(userId, uuid) == null) return;
+        map.remove(uuid);
     }
 
     @Override
-    public void removeAllEntities() {
-        taskMap.clear();
-    }
-
-    @Override
-    public Collection<Task> findAllEntities() {
-        return taskMap.values();
-    }
-
-    @Override
-    public Task findEntityById(String uuid) {
-        Task resultTask = null;
-        for(Map.Entry<String, Task> entry : taskMap.entrySet()) {
-            if(uuid.equals(entry.getValue().getUuid())) {
-                resultTask = entry.getValue();
+    public void removeAll(@NotNull final String userId) {
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId)) {
+                map.remove(key);
             }
+        });
+    }
+
+    @Override
+    public List<Task> findAllByUserId(@NotNull final String userId) {
+        final List<Task> tasks = new ArrayList<>();
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId)) {
+                tasks.add(value);
+            }
+        });
+        return tasks;
+    }
+
+    @Override
+    public Collection<Task> findAll() {
+        //Сделать проверку на что, что только админ сможет использовать данный метод
+        return map.values();
+    }
+
+    @Override
+    public List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        final List<Task> tasks = new ArrayList<>();
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId) && value.getProjectId().equals(projectId)) {
+                tasks.add(value);
+            }
+        });
+        return tasks;
+    }
+
+    @Override
+    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        map.forEach((key, value) -> {
+            if(value.getUserId().equals(userId) && value.getProjectId().equals(projectId)) {
+                map.remove(key);
+            }
+        });
+    }
+
+    @Override
+    public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
+        final List<Task> sortedProjects = findAllByUserId(userId);
+        if("date start".equals(value)) {
+            Comparator<Task> comparator = new SortByStartDate<>();
+            sortedProjects.sort(comparator);
         }
-        return resultTask;
-    }
-
-    @Override
-    public Collection<Task> findAllTasksByEntityId(String entityUuid) {
-        Collection<Task> resultTasks = new ArrayList<>();
-        taskMap.forEach((key, value) -> {
-            if(value.getProjectId().equals(entityUuid)) {
-                resultTasks.add(value);
-            }
-        });
-        return resultTasks;
-    }
-
-    @Override
-    public void removeAllTasksByEntityId(String entityUuid) {
-        taskMap.forEach((key, value) -> {
-            if (value.getProjectId().equals(entityUuid)) {
-                taskMap.remove(key, value);
-            }
-        });
+        if("date end".equals(value)) {
+            Comparator<Task> comparator = new SortByEndDate<>();
+            sortedProjects.sort(comparator);
+        }
+        if("status".equals(value)) {
+            Comparator<Task> comparator = new SortByStatus<>();
+            sortedProjects.sort(comparator);
+        }
+        return sortedProjects;
     }
 }
