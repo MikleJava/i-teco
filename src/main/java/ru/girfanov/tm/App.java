@@ -37,7 +37,18 @@ public final class App {
             UserEndSessionCommand.class,
             UserPasswordUpdateCommand.class,
             UserSelectCommand.class,
-            UsersSelectAllCommand.class
+            UsersSelectAllCommand.class,
+
+            DataDomainGetByFasterInJson.class,
+            DataDomainGetByFasterInXml.class,
+            DataDomainGetByJaxbInJson.class,
+            DataDomainGetByJaxbInXml.class,
+            DataDomainGetBySerialization.class,
+            DataDomainSaveByFasterInJson.class,
+            DataDomainSaveByFasterInXml.class,
+            DataDomainSaveByJaxbInJson.class,
+            DataDomainSaveByJaxbInXml.class,
+            DataDomainSaveBySerialization.class
     };
 
     public static void main(String[] args) {

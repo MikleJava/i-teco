@@ -46,6 +46,6 @@ public abstract class AbstractService<T extends AbstractEntity> implements Servi
     @Override
     public List<T> findAll(@NotNull final String userId) {
         if(userId.isEmpty()) { return null; }
-        return repository.findAll(userId);
+        return repository.findAllByUserId(userId);
     }
 }

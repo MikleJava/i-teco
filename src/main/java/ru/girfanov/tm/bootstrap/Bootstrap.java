@@ -8,7 +8,7 @@ import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.repository.IUserRepository;
-import ru.girfanov.tm.api.repository.Repository;
+import ru.girfanov.tm.api.service.IDataDomainService;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
@@ -19,6 +19,7 @@ import ru.girfanov.tm.exception.AlreadyExistException;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.service.DataDomainService;
 import ru.girfanov.tm.service.ProjectService;
 import ru.girfanov.tm.service.TaskService;
 import ru.girfanov.tm.service.UserService;
@@ -49,6 +50,10 @@ public final class Bootstrap implements ServiceLocator {
     @NotNull
     @Getter
     private final IUserService userService = new UserService(userRepository);
+
+    @NotNull
+    @Getter
+    private final IDataDomainService dataDomainService = new DataDomainService(projectRepository, taskRepository, userRepository);
 
     @NotNull
     private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();

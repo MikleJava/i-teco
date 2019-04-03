@@ -3,8 +3,8 @@ package ru.girfanov.tm.api.service;
 public interface IDataDomainService {
     void saveDataBySerialization();
     void getDataBySerialization();
-    void saveDataByJaxbInXML();
-    void getDataByJaxbInXML();
+    void saveDataByJaxbInXml();
+    void getDataByJaxbInXml();
     void saveDataByJaxbInJson();
     void getDataByJaxbInJson();
     void saveDataByFasterInXml();

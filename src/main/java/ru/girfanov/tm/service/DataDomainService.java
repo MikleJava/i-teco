@@ -81,7 +81,7 @@ public final class DataDomainService implements IDataDomainService {
     }
 
     @Override
-    public void saveDataByJaxbInXML() {
+    public void saveDataByJaxbInXml() {
         try {
             final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
             final Marshaller marshaller = jaxbContext.createMarshaller();
@@ -93,7 +93,7 @@ public final class DataDomainService implements IDataDomainService {
     }
 
     @Override
-    public void getDataByJaxbInXML() {
+    public void getDataByJaxbInXml() {
         try {
             final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
             final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
