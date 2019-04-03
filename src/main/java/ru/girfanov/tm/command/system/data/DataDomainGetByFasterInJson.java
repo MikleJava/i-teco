@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command.system;
+package ru.girfanov.tm.command.system.data;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,18 +9,17 @@ import ru.girfanov.tm.command.AbstractSystemCommand;
 
 @Getter
 @NoArgsConstructor
-public class DataDomainSaveByFasterInJson extends AbstractSystemCommand<String> {
+public class DataDomainGetByFasterInJson extends AbstractSystemCommand<String> {
 
     @NotNull
-    private final String name = "--dd sfj";
+    private final String name = "--dd gfj";
 
     @NotNull
-    private final String description = "save data by fasterXML in json";
+    private final String description = "get data by fasterXML in json";
 
     @Override
     public void execute(@Nullable final String ... params) {
         IDataDomainService dataDomainService = serviceLocator.getDataDomainService();
-        dataDomainService.saveDataByFasterInJson();
+        dataDomainService.getDataByFasterInJson();
     }
 }
-

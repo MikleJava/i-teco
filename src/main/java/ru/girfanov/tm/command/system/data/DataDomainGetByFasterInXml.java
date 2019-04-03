@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command.system;
+package ru.girfanov.tm.command.system.data;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,17 +9,18 @@ import ru.girfanov.tm.command.AbstractSystemCommand;
 
 @Getter
 @NoArgsConstructor
-public class DataDomainGetBySerialization extends AbstractSystemCommand<String> {
+public class DataDomainGetByFasterInXml extends AbstractSystemCommand<String> {
 
     @NotNull
-    private final String name = "--dd gs";
+    private final String name = "--dd gfx";
 
     @NotNull
-    private final String description = "get data by serialization";
+    private final String description = "get data by fasterXML in xml";
 
     @Override
     public void execute(@Nullable final String ... params) {
         IDataDomainService dataDomainService = serviceLocator.getDataDomainService();
-        dataDomainService.getDataBySerialization();
+        dataDomainService.getDataByFasterInXml();
     }
 }
+

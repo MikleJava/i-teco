@@ -1,4 +1,4 @@
-package ru.girfanov.tm.command.system;
+package ru.girfanov.tm.command.system.data;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

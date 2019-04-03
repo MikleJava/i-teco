@@ -33,11 +33,11 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public final class DataDomainService implements IDataDomainService {
 
-    @NotNull private static final String SERIALIZE_FILE = "src\\main\\resources\\data\\DataDomain.ser";
-    @NotNull private static final String JAXB_XML_FILE = "src\\main\\resources\\data\\DataDomainJaxb.xml";
-    @NotNull private static final String JAXB_JSON_FILE = "src\\main\\resources\\data\\DataDomainJaxb.json";
-    @NotNull private static final String FASTER_XML_FILE = "src\\main\\resources\\data\\DataDomainFaster.xml";
-    @NotNull private static final String FASTER_JSON_FILE = "src\\main\\resources\\data\\DataDomainFaster.json";
+    @NotNull private static final String SERIALIZE_FILE = "./DataDomain.ser";
+    @NotNull private static final String JAXB_XML_FILE = "./DataDomainJaxb.xml";
+    @NotNull private static final String JAXB_JSON_FILE = "./DataDomainJaxb.json";
+    @NotNull private static final String FASTER_XML_FILE = "./DataDomainFaster.xml";
+    @NotNull private static final String FASTER_JSON_FILE = "./DataDomainFaster.json";
 
     @NonNull private IProjectRepository projectRepository;
     @NonNull private ITaskRepository taskRepository;
@@ -46,12 +46,12 @@ public final class DataDomainService implements IDataDomainService {
     @Override
     public void saveDataBySerialization() {
         final File file = new File(SERIALIZE_FILE);
-        try(final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+        try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             final Collection<AbstractEntity> list = new ArrayList<>();
             list.addAll(projectRepository.findAll());
             list.addAll(taskRepository.findAll());
             list.addAll(userRepository.findAll());
-            for(AbstractEntity entity : list) {
+            for (AbstractEntity entity : list) {
                 objectOutputStream.writeObject(entity);
             }
         } catch (IOException e) {
@@ -65,13 +65,13 @@ public final class DataDomainService implements IDataDomainService {
         try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
             Object object;
             while ((object = objectInputStream.readObject()) != null) {
-                if(object instanceof Project) {
+                if (object instanceof Project) {
                     projectRepository.merge(((Project) object).getUserId(), (Project) object);
                 }
-                if(object instanceof Task) {
+                if (object instanceof Task) {
                     taskRepository.merge(((Task) object).getUserId(), (Task) object);
                 }
-                if(object instanceof User) {
+                if (object instanceof User) {
                     userRepository.merge(((User) object).getUuid(), (User) object);
                 }
             }
@@ -107,8 +107,8 @@ public final class DataDomainService implements IDataDomainService {
     @Override
     public void saveDataByJaxbInJson() {
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
-            Marshaller marshaller = jaxbContext.createMarshaller();
+            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
+            final Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
             marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

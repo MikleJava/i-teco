@@ -5,6 +5,7 @@ import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.command.crud.*;
 import ru.girfanov.tm.command.system.*;
+import ru.girfanov.tm.command.system.data.*;
 
 public final class App {
 
