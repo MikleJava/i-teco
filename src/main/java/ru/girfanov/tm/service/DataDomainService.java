@@ -33,11 +33,11 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public final class DataDomainService implements IDataDomainService {
 
-    @NotNull private static final String SERIALIZE_FILE = "../data/DataDomain.ser";
-    @NotNull private static final String JAXB_XML_FILE = "../data/DataDomainJaxb.xml";
-    @NotNull private static final String JAXB_JSON_FILE = "../data/DataDomainJaxb.json";
-    @NotNull private static final String FASTER_XML_FILE = "../data/DataDomainFaster.xml";
-    @NotNull private static final String FASTER_JSON_FILE = "../data/DataDomainFaster.json";
+    @NotNull private static final String SERIALIZE_FILE = "src\\main\\resources\\data\\DataDomain.ser";
+    @NotNull private static final String JAXB_XML_FILE = "src\\main\\resources\\data\\DataDomainJaxb.xml";
+    @NotNull private static final String JAXB_JSON_FILE = "src\\main\\resources\\data\\DataDomainJaxb.json";
+    @NotNull private static final String FASTER_XML_FILE = "src\\main\\resources\\data\\DataDomainFaster.xml";
+    @NotNull private static final String FASTER_JSON_FILE = "src\\main\\resources\\data\\DataDomainFaster.json";
 
     @NonNull private IProjectRepository projectRepository;
     @NonNull private ITaskRepository taskRepository;
