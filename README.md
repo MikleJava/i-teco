@@ -8,7 +8,7 @@
 
 ```mvn clean install```
 
-```mvn exec:java -Dexec.mainClass="ru.girfanov.tm.App"```
+```mvn exec:java -Dexec.mainClass="ru.girfanov.tmserver.App"```
 
 **Описание программы:**
 

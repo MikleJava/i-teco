@@ -6,8 +6,12 @@
 
     <groupId>i-teco</groupId>
     <artifactId>i-teco</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>1.0</version>
+    <modules>
+        <module>tm-server</module>
+        <module>tm-client</module>
+    </modules>
 
     <name>i-teco</name>
 
@@ -79,7 +83,6 @@
         <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>
         <tag>HEAD</tag>
         <url>http://127.0.0.1/dummy</url>
-
     </scm>
 
     <build>
@@ -115,7 +118,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>../lib/</classpathPrefix>
-                            <mainClass>ru.girfanov.tm.App</mainClass>
+                            <mainClass>ru.girfanov.tmserver.App</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
