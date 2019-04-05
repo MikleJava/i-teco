@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmserver.api.repository.Repository;
 import ru.girfanov.tmserver.api.service.Service;
+import ru.girfanov.tmserver.entity.AbstractEntity;
 
 import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
-public abstract class AbstractService<T extends Serializable> implements Service<T> {
+public abstract class AbstractService<T extends AbstractEntity> implements Service<T> {
 
     @NonNull
     protected Repository<T> repository;
