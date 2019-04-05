@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmclient.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.entity.Project;
-import static ru.girfanov.tmserver.util.Terminal.*;
+import ru.girfanov.tmserver.endpoint.Project;
+import ru.girfanov.tmserver.endpoint.ProjectEndPoint;
+
+import static ru.girfanov.tmclient.util.Terminal.*;
 
 import java.util.Collection;
 
@@ -21,11 +23,12 @@ public final class ProjectsSelectAllCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
+        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         Collection<Project> projects = null;
         System.out.print("Sort data? : ");
         String sort = scanner.next();
         if("n".equals(sort)) {
-            projects = serviceLocator.getProjectService().findAll(params[0]);
+            projects = projectEndPoint.findAllProjects(params[0]);
         }
         if("y".equals(sort)) {
             System.out.println("Choose value to sort :");
@@ -33,7 +36,7 @@ public final class ProjectsSelectAllCommand extends AbstractCrudCommand {
                 System.out.println(i + ") " + sortValue[i]);
             }
             final int index = scanner.nextInt();
-            projects = serviceLocator.getProjectService().findAllSortedByValue(params[0], sortValue[index]);
+            projects = projectEndPoint.findAllProjectsSortedByValue(params[0], sortValue[index]);
         }
         System.out.println("\tid\t|\tname\t|\tdescription\t|\tuser_id\t|\tdate_start\t|\tdate_end");
         System.out.println("____________________________________________________________________________________________________________________________________");

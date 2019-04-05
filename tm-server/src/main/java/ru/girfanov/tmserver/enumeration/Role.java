@@ -1,4 +1,4 @@
-package ru.girfanov.tmserver.entity.enumeration;
+package ru.girfanov.tmserver.enumeration;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
-public enum Status {
+public enum Role {
 
-    PLANNING("Запланировано"), PROCESS("В процессе"), READY("Готово");
+    ADMINISTRATOR("Администратор"), USER("Пользователь");
 
     @NonNull
     private String displayName;

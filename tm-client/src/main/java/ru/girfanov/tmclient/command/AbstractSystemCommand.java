@@ -2,7 +2,7 @@ package ru.girfanov.tmclient.command;
 
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tmserver.api.ServiceLocator;
+import ru.girfanov.tmclient.api.ServiceLocator;
 
 @Getter
 @NoArgsConstructor

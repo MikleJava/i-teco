@@ -3,9 +3,9 @@ package ru.girfanov.tmserver.entity;
 import lombok.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tmserver.entity.enumeration.Role;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class User extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -3316296014185311021L;
+
     @NonNull
     @Setter
     private String login;
@@ -21,14 +22,15 @@ public class User extends AbstractEntity implements Serializable {
     private String password;
 
     @NonNull
-    private Role role;
+    @Setter //temporary
+    private String role;
 
     public void setPassword(@NotNull final String password) {
         this.password = DigestUtils.md5Hex(password);
     }
 
-    public void setRole(@NotNull final String role) {
-        if("Администратор".equals(role)) { this.role = Role.ADMINISTRATOR; }
-        if("Пользователь".equals(role)) { this.role = Role.USER; }
-    }
+//    public void setRole(@NotNull final String role) {
+//        if("Администратор".equals(role)) { this.role = Role.ADMINISTRATOR; }
+//        if("Пользователь".equals(role)) { this.role = Role.USER; }
+//    }
 }

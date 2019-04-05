@@ -3,7 +3,6 @@ package ru.girfanov.tmserver.bootstrap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tmserver.api.ServiceLocator;
 import ru.girfanov.tmserver.api.repository.IProjectRepository;
 import ru.girfanov.tmserver.api.repository.ITaskRepository;
@@ -16,7 +15,6 @@ import ru.girfanov.tmserver.endpoint.DataDomainEndPoint;
 import ru.girfanov.tmserver.endpoint.ProjectEndPoint;
 import ru.girfanov.tmserver.endpoint.TaskEndPoint;
 import ru.girfanov.tmserver.endpoint.UserEndPoint;
-import ru.girfanov.tmserver.entity.User;
 import ru.girfanov.tmserver.repository.ProjectRepository;
 import ru.girfanov.tmserver.repository.TaskRepository;
 import ru.girfanov.tmserver.repository.UserRepository;
@@ -44,22 +42,15 @@ public final class Bootstrap implements ServiceLocator {
     @NotNull @Getter private final IUserService userService = new UserService(userRepository);
     @NotNull @Getter private final IDataDomainService dataDomainService = new DataDomainService(projectRepository, taskRepository, userRepository);
 
-    @Nullable
-    private User user;
-
-    @Nullable
-    private String command = null;
-
-    @Override
-    public void setUser(@Nullable final User user) {
-        this.user = user;
-    }
-
     @Override
     public void init() {
         Endpoint.publish(PROJECT_ENDPOINT, new ProjectEndPoint(projectService));
+        System.out.println(PROJECT_ENDPOINT + " has been started");
         Endpoint.publish(TASK_ENDPOINT, new TaskEndPoint(taskService));
+        System.out.println(TASK_ENDPOINT + " has been started");
         Endpoint.publish(USER_ENDPOINT, new UserEndPoint(userService));
+        System.out.println(USER_ENDPOINT + " has been started");
         Endpoint.publish(DATA_DOMAIN_ENDPOINT, new DataDomainEndPoint(dataDomainService));
+        System.out.println(DATA_DOMAIN_ENDPOINT + " has been started");
     }
 }

@@ -2,6 +2,8 @@ package ru.girfanov.tmclient;
 
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import ru.girfanov.tmclient.api.ServiceLocator;
+import ru.girfanov.tmclient.bootstrap.Bootstrap;
 import ru.girfanov.tmclient.command.crud.*;
 import ru.girfanov.tmclient.command.system.*;
 import ru.girfanov.tmclient.command.system.data.*;

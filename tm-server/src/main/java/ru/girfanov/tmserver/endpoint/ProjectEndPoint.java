@@ -19,37 +19,37 @@ public class ProjectEndPoint {
     @NonNull private IProjectService projectService;
 
     @WebMethod
-    public void persist(@WebParam(name = "userId") final String userId, @WebParam(name = "entity") final Project entity) {
-        projectService.persist(userId, entity);
+    public void persistProject(@WebParam(name = "userId") final String userId, @WebParam(name = "project") final Project project) {
+        projectService.persist(userId, project);
     }
 
     @WebMethod
-    public void merge(@WebParam(name = "userId") final String userId, @WebParam(name = "entity") final Project entity) {
-        projectService.merge(userId, entity);
+    public void mergeProject(@WebParam(name = "userId") final String userId, @WebParam(name = "project") final Project project) {
+        projectService.merge(userId, project);
     }
 
     @WebMethod
-    public void remove(@WebParam(name = "userId") final String userId, @WebParam(name = "uuid") final String uuid) {
-        projectService.remove(userId, uuid);
+    public void removeProject(@WebParam(name = "userId") final String userId, @WebParam(name = "projectUuid") final String projectUuid) {
+        projectService.remove(userId, projectUuid);
     }
 
     @WebMethod
-    public void removeAll(@WebParam(name = "userId") final String userId) {
+    public void removeAllProjects(@WebParam(name = "userId") final String userId) {
         projectService.removeAll(userId);
     }
 
     @WebMethod
-    public Project findOne(@WebParam(name = "userId") final String userId, @WebParam(name = "uuid") final String uuid) {
-        return projectService.findOne(userId, uuid);
+    public Project findOneProject(@WebParam(name = "userId") final String userId, @WebParam(name = "projectUuid") final String projectUuid) {
+        return projectService.findOne(userId, projectUuid);
     }
 
     @WebMethod
-    public List<Project> findAll(@WebParam(name = "userId") final String userId) {
+    public List<Project> findAllProjects(@WebParam(name = "userId") final String userId) {
         return projectService.findAll(userId);
     }
 
     @WebMethod
-    public List<Project> findAllSortedByValue(@WebParam(name = "userId") final String userId, @WebParam(name = "value") final String value) {
+    public List<Project> findAllProjectsSortedByValue(@WebParam(name = "userId") final String userId, @WebParam(name = "value") final String value) {
         return projectService.findAllSortedByValue(userId, value);
     }
 }

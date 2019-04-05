@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmserver.api.repository.Repository;
 import ru.girfanov.tmserver.entity.AbstractEntity;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

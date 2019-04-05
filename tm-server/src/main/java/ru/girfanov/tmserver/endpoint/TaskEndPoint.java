@@ -19,32 +19,32 @@ public class TaskEndPoint {
     @NonNull private ITaskService taskService;
 
     @WebMethod
-    public void persist(@WebParam(name = "userId") final String userId, @WebParam(name = "entity") final Task entity) {
-        taskService.persist(userId, entity);
+    public void persistTask(@WebParam(name = "userId") final String userId, @WebParam(name = "task") final Task task) {
+        taskService.persist(userId, task);
     }
 
     @WebMethod
-    public void merge(@WebParam(name = "userId") final String userId, @WebParam(name = "entity") final Task entity) {
-        taskService.merge(userId, entity);
+    public void mergeTask(@WebParam(name = "userId") final String userId, @WebParam(name = "task") final Task task) {
+        taskService.merge(userId, task);
     }
 
     @WebMethod
-    public void remove(@WebParam(name = "userId") final String userId, @WebParam(name = "uuid") final String uuid) {
-        taskService.remove(userId, uuid);
+    public void removeTask(@WebParam(name = "userId") final String userId, @WebParam(name = "taskUuid") final String taskUuid) {
+        taskService.remove(userId, taskUuid);
     }
 
     @WebMethod
-    public void removeAll(@WebParam(name = "userId") final String userId) {
+    public void removeAllTasks(@WebParam(name = "userId") final String userId) {
         taskService.removeAll(userId);
     }
 
     @WebMethod
-    public Task findOne(@WebParam(name = "userId") final String userId, @WebParam(name = "uuid") final String uuid) {
-        return taskService.findOne(userId, uuid);
+    public Task findOneTask(@WebParam(name = "userId") final String userId, @WebParam(name = "taskUuid") final String taskUuid) {
+        return taskService.findOne(userId, taskUuid);
     }
 
     @WebMethod
-    public List<Task> findAll(@WebParam(name = "userId") final String userId) {
+    public List<Task> findAllTasks(@WebParam(name = "userId") final String userId) {
         return taskService.findAll(userId);
     }
 
@@ -59,7 +59,7 @@ public class TaskEndPoint {
     }
 
     @WebMethod
-    public List<Task> findAllSortedByValue(@WebParam(name = "userId") final String userId, @WebParam(name = "value") final String value) {
+    public List<Task> findAllTasksSortedByValue(@WebParam(name = "userId") final String userId, @WebParam(name = "value") final String value) {
         return taskService.findAllSortedByValue(userId, value);
     }
 }

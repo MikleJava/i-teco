@@ -4,10 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmclient.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.entity.Project;
-import ru.girfanov.tmserver.entity.enumeration.Status;
+import ru.girfanov.tmserver.endpoint.Project;
+import ru.girfanov.tmserver.endpoint.ProjectEndPoint;
 
-import static ru.girfanov.tmserver.util.Terminal.*;
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import static ru.girfanov.tmclient.util.DateConverterGregorianCalendar.*;
+import static ru.girfanov.tmclient.util.Terminal.*;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -26,6 +29,7 @@ public final class ProjectCreateCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
+        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.print("input project name : ");
             final String name = scanner.next();
@@ -37,11 +41,19 @@ public final class ProjectCreateCommand extends AbstractCrudCommand {
             final Date dateStart = dateFormat.parse(scanner.next());
             System.out.print("input date end : ");
             final Date dateEnd = dateFormat.parse(scanner.next());
-            serviceLocator.getProjectService().persist(params[0], new Project(name, description, params[0], Status.valueOf(status), dateStart, dateEnd));
+            final Project project = new Project();
+            project.setName(name);
+            project.setDescription(description);
+            project.setUserId(params[0]);
+            project.setDateStart(convert(dateStart));
+            project.setDateEnd(convert(dateEnd));
+            projectEndPoint.persistProject(params[0], project);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {
             System.out.println("Incorrect date");
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
         }
     }
 }

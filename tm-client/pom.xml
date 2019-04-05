@@ -14,6 +14,22 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.webcohesion.enunciate</groupId>
+                <artifactId>enunciate-maven-plugin</artifactId>
+                <version>2.11.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>docs</goal>
+                        </goals>
+                        <configuration>
+                            <docsDir>${project.build.directory}/docs</docsDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
                 <version>3.2.7</version>
@@ -26,11 +42,6 @@
                             <wsdlOptions>
                                 <wsdlOption>
                                     <wsdl>
-                                        http://localhost:8080/UserEndpoint?wsdl
-                                    </wsdl>
-                                </wsdlOption>
-                                <wsdlOption>
-                                    <wsdl>
                                         http://localhost:8080/ProjectEndpoint?wsdl
                                     </wsdl>
                                 </wsdlOption>
@@ -41,12 +52,12 @@
                                 </wsdlOption>
                                 <wsdlOption>
                                     <wsdl>
-                                        http://localhost:8080/DomainEndpoint?wsdl
+                                        http://localhost:8080/UserEndpoint?wsdl
                                     </wsdl>
                                 </wsdlOption>
                                 <wsdlOption>
                                     <wsdl>
-                                        http://localhost:8080/SessionEndpoint?wsdl
+                                        http://localhost:8080/DataDomainEndpoint?wsdl
                                     </wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
@@ -56,6 +67,26 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>../lib/</classpathPrefix>
+                            <mainClass>ru.girfanov.tmclient.App</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Build>${buildNumber}</Implementation-Build>
+                        </manifestEntries>
+                    </archive>
+                    <outputDirectory>${project.build.directory}/release/bin</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmclient.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.entity.User;
-import static ru.girfanov.tmserver.util.Terminal.*;
+import ru.girfanov.tmserver.endpoint.User;
+import ru.girfanov.tmserver.endpoint.UserEndPoint;
+
+import static ru.girfanov.tmclient.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -23,9 +25,10 @@ public final class UserSelectCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
+        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         try {
             System.out.println("all available users : ");
-            final List<User> users = new ArrayList<>(serviceLocator.getUserService().findAll(params[0]));
+            final List<User> users = new ArrayList<>(userEndPoint.findAllUsers(params[0]));
             for (int i = 0; i < users.size(); i++) {
                 System.out.println(i + ") " + users.get(i).getUuid() + " | " + users.get(i).getLogin());
             }
@@ -33,7 +36,7 @@ public final class UserSelectCommand extends AbstractCrudCommand {
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tlogin\t|\trole");
             System.out.println("_______________________________________________________________________________________________");
-            final User user = serviceLocator.getUserService().findOne(params[0], users.get(id).getUuid());
+            final User user = userEndPoint.findOneUser(params[0], users.get(id).getUuid());
             System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmclient.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.entity.User;
+import ru.girfanov.tmserver.endpoint.User;
+import ru.girfanov.tmserver.endpoint.UserEndPoint;
 
 import java.util.Collection;
 
@@ -20,9 +21,10 @@ public final class UsersSelectAllCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
+        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.println("\tid\t|\tlogin\t|\trole");
         System.out.println("___________________________________________________________________________________________________");
-        final Collection<User> users = serviceLocator.getUserService().findAll(params[0]);
+        final Collection<User> users = userEndPoint.findAllUsers(params[0]);
         for (User user : users) {
             System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         }

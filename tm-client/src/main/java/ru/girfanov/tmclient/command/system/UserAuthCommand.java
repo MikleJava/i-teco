@@ -6,8 +6,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tmclient.command.AbstractSystemCommand;
-import ru.girfanov.tmserver.entity.User;
-import static ru.girfanov.tmserver.util.Terminal.*;
+import ru.girfanov.tmserver.endpoint.User;
+import ru.girfanov.tmserver.endpoint.UserEndPoint;
+
+import static ru.girfanov.tmclient.util.Terminal.*;
 
 @Getter
 @NoArgsConstructor
@@ -21,16 +23,18 @@ public final class UserAuthCommand extends AbstractSystemCommand<String> {
 
     @Override
     public void execute(@Nullable final String ... params) {
+        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.print("input user login : ");
         final String login = scanner.next();
         System.out.print("input user password : ");
         final String password = scanner.next();
-        final User user = serviceLocator.getUserService().findOneByLoginAndPassword(login, DigestUtils.md5Hex(password));
+        final User user = userEndPoint.findOneUserByLoginAndPassword(login, DigestUtils.md5Hex(password));
         if(user == null) {
             serviceLocator.setUser(null);
             System.out.println("This user does not exist");
         }
         else {
-            serviceLocator.setUser(user);}
+            serviceLocator.setUser(user);
+        }
     }
 }

@@ -1,11 +1,10 @@
 package ru.girfanov.tmserver.api.repository;
 
-import ru.girfanov.tmserver.entity.AbstractEntity;
-
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-public interface Repository<T extends AbstractEntity> {
+public interface Repository<T extends Serializable> {
     void persist(String userId, T entity);
     void merge(String userId, T entity);
     void remove(String userId, String uuid);

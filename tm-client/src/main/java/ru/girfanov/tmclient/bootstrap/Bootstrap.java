@@ -1,36 +1,33 @@
 package ru.girfanov.tmclient.bootstrap;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tmclient.api.ServiceLocator;
 import ru.girfanov.tmclient.command.AbstractSystemCommand;
 import ru.girfanov.tmclient.command.system.UserAuthCommand;
+import ru.girfanov.tmclient.exception.AlreadyExistException;
+import ru.girfanov.tmserver.endpoint.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static ru.girfanov.tmserver.util.Terminal.*;
-import static ru.girfanov.tmserver.util.Terminal.scanner;
+import static ru.girfanov.tmclient.util.Terminal.*;
 
 @NoArgsConstructor
 public final class Bootstrap implements ServiceLocator {
 
-    @NonNull private ProjectE
+    @Getter @NotNull private ProjectEndPoint projectEndPoint = new ProjectEndPointService().getProjectEndPointPort();
+    @Getter @NotNull private TaskEndPoint taskEndPoint = new TaskEndPointService().getTaskEndPointPort();
+    @Getter @NotNull private UserEndPoint userEndPoint = new UserEndPointService().getUserEndPointPort();
+    @Getter @NotNull private DataDomainEndPoint dataDomainEndPoint = new DataDomainEndPointService().getDataDomainEndPointPort();
 
     @NotNull
     private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();
 
     @Nullable
-    private User user;
-
-    @Nullable
     private String command = null;
-
-    @Override
-    public void setUser(@Nullable final User user) {
-        this.user = user;
-    }
 
     @Override
     public void registerCommand(@NotNull final Class clazz) {
@@ -42,6 +39,13 @@ public final class Bootstrap implements ServiceLocator {
         } catch (InstantiationException | IllegalAccessException  | ClassCastException e) {
             System.out.println("Does not correct command");
         }
+    }
+
+    @Nullable private User user;
+
+    @Override
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

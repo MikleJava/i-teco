@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmclient.command.AbstractCrudCommand;
+import ru.girfanov.tmserver.endpoint.UserEndPoint;
 
 @Getter
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public final class UserEndSessionCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
-        serviceLocator.getUserService().remove(params[0], params[0]);
+        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
+        userEndPoint.removeUser(params[0], params[0]);
     }
 }

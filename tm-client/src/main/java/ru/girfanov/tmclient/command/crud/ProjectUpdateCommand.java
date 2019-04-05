@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tmclient.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.entity.Project;
-import static ru.girfanov.tmserver.util.Terminal.*;
+import ru.girfanov.tmserver.endpoint.Project;
+import ru.girfanov.tmserver.endpoint.ProjectEndPoint;
+
+import static ru.girfanov.tmclient.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -23,9 +25,10 @@ public final class ProjectUpdateCommand extends AbstractCrudCommand {
 
     @Override
     public void execute(@NotNull final String ... params) {
+        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.println("all available projects : ");
-            final List<Project> projects = new ArrayList<>(serviceLocator.getProjectService().findAll(params[0]));
+            final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(params[0]));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
@@ -38,7 +41,7 @@ public final class ProjectUpdateCommand extends AbstractCrudCommand {
             final String description = scanner.next();
             project.setName(name);
             project.setDescription(description);
-            serviceLocator.getProjectService().merge(params[0], project);
+            projectEndPoint.mergeProject(params[0], project);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }
