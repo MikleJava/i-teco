@@ -9,7 +9,7 @@ import ru.girfanov.tm.command.system.*;
 import ru.girfanov.tm.command.system.data.*;
 
 @NoArgsConstructor
-public class App {
+public class ApplicationClient {
 
     static {
         System.out.println("input --help to get info");

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.girfanov.tm.App;
+import ru.girfanov.tm.ApplicationClient;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 
 @Getter
@@ -19,7 +19,7 @@ public final class HelpCommand extends AbstractSystemCommand<String> {
 
     @Override
     public void execute(@Nullable final String ... params) {
-        for (Class clazz : App.commandClasses) {
+        for (Class clazz : ApplicationClient.commandClasses) {
             try {
                 AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) clazz.newInstance();
                 System.out.println(command.getName() + "\t\t" + command.getDescription());
