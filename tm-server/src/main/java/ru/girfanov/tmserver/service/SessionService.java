@@ -5,11 +5,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tmserver.api.repository.ISessionRepository;
+import ru.girfanov.tmserver.api.repository.IUserRepository;
 import ru.girfanov.tmserver.api.service.ISessionService;
 import ru.girfanov.tmserver.entity.Session;
 import ru.girfanov.tmserver.entity.User;
-import ru.girfanov.tmserver.repository.SessionRepository;
-import ru.girfanov.tmserver.repository.UserRepository;
 import  ru.girfanov.tmserver.util.SignatureUtil;
 
 import java.util.Date;
@@ -18,8 +18,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class SessionService implements ISessionService {
 
-    @NonNull private SessionRepository sessionRepository;
-    @NonNull private UserRepository userRepository;
+    @NonNull private ISessionRepository sessionRepository;
+    @NonNull private IUserRepository userRepository;
 
     @NotNull private static final String SALT = "SALT";
     @NotNull private static final Integer CYCLE = 100;

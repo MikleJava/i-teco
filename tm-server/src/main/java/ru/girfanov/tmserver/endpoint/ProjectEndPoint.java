@@ -3,7 +3,6 @@ package ru.girfanov.tmserver.endpoint;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ru.girfanov.tmserver.api.service.IDataDomainService;
 import ru.girfanov.tmserver.api.service.IProjectService;
 import ru.girfanov.tmserver.api.service.ISessionService;
 import ru.girfanov.tmserver.entity.Project;

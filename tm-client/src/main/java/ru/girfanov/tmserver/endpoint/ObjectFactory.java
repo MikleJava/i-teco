@@ -24,26 +24,22 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GetDataByFasterInJson_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByFasterInJson");
-    private final static QName _GetDataByFasterInJsonResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByFasterInJsonResponse");
-    private final static QName _GetDataByFasterInXml_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByFasterInXml");
-    private final static QName _GetDataByFasterInXmlResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByFasterInXmlResponse");
-    private final static QName _GetDataByJaxbInJson_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByJaxbInJson");
-    private final static QName _GetDataByJaxbInJsonResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByJaxbInJsonResponse");
-    private final static QName _GetDataByJaxbInXml_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByJaxbInXml");
-    private final static QName _GetDataByJaxbInXmlResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataByJaxbInXmlResponse");
-    private final static QName _GetDataBySerialization_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataBySerialization");
-    private final static QName _GetDataBySerializationResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "getDataBySerializationResponse");
-    private final static QName _SaveDataByFasterInJson_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByFasterInJson");
-    private final static QName _SaveDataByFasterInJsonResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByFasterInJsonResponse");
-    private final static QName _SaveDataByFasterInXml_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByFasterInXml");
-    private final static QName _SaveDataByFasterInXmlResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByFasterInXmlResponse");
-    private final static QName _SaveDataByJaxbInJson_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByJaxbInJson");
-    private final static QName _SaveDataByJaxbInJsonResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByJaxbInJsonResponse");
-    private final static QName _SaveDataByJaxbInXml_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByJaxbInXml");
-    private final static QName _SaveDataByJaxbInXmlResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataByJaxbInXmlResponse");
-    private final static QName _SaveDataBySerialization_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataBySerialization");
-    private final static QName _SaveDataBySerializationResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "saveDataBySerializationResponse");
+    private final static QName _FindAllUsers_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "findAllUsers");
+    private final static QName _FindAllUsersResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "findAllUsersResponse");
+    private final static QName _FindOneUser_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "findOneUser");
+    private final static QName _FindOneUserByLoginAndPassword_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "findOneUserByLoginAndPassword");
+    private final static QName _FindOneUserByLoginAndPasswordResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "findOneUserByLoginAndPasswordResponse");
+    private final static QName _FindOneUserResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "findOneUserResponse");
+    private final static QName _MergeUser_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "mergeUser");
+    private final static QName _MergeUserPassword_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "mergeUserPassword");
+    private final static QName _MergeUserPasswordResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "mergeUserPasswordResponse");
+    private final static QName _MergeUserResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "mergeUserResponse");
+    private final static QName _PersistUser_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "persistUser");
+    private final static QName _PersistUserResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "persistUserResponse");
+    private final static QName _RemoveAllUsers_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "removeAllUsers");
+    private final static QName _RemoveAllUsersResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "removeAllUsersResponse");
+    private final static QName _RemoveUser_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "removeUser");
+    private final static QName _RemoveUserResponse_QNAME = new QName("http://endpoint.tmserver.girfanov.ru/", "removeUserResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.girfanov.tmserver.endpoint
@@ -53,343 +49,299 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetDataByFasterInJson }
+     * Create an instance of {@link FindAllUsers }
      * 
      */
-    public GetDataByFasterInJson createGetDataByFasterInJson() {
-        return new GetDataByFasterInJson();
+    public FindAllUsers createFindAllUsers() {
+        return new FindAllUsers();
     }
 
     /**
-     * Create an instance of {@link GetDataByFasterInJsonResponse }
+     * Create an instance of {@link FindAllUsersResponse }
      * 
      */
-    public GetDataByFasterInJsonResponse createGetDataByFasterInJsonResponse() {
-        return new GetDataByFasterInJsonResponse();
+    public FindAllUsersResponse createFindAllUsersResponse() {
+        return new FindAllUsersResponse();
     }
 
     /**
-     * Create an instance of {@link GetDataByFasterInXml }
+     * Create an instance of {@link FindOneUser }
      * 
      */
-    public GetDataByFasterInXml createGetDataByFasterInXml() {
-        return new GetDataByFasterInXml();
+    public FindOneUser createFindOneUser() {
+        return new FindOneUser();
     }
 
     /**
-     * Create an instance of {@link GetDataByFasterInXmlResponse }
+     * Create an instance of {@link FindOneUserByLoginAndPassword }
      * 
      */
-    public GetDataByFasterInXmlResponse createGetDataByFasterInXmlResponse() {
-        return new GetDataByFasterInXmlResponse();
+    public FindOneUserByLoginAndPassword createFindOneUserByLoginAndPassword() {
+        return new FindOneUserByLoginAndPassword();
     }
 
     /**
-     * Create an instance of {@link GetDataByJaxbInJson }
+     * Create an instance of {@link FindOneUserByLoginAndPasswordResponse }
      * 
      */
-    public GetDataByJaxbInJson createGetDataByJaxbInJson() {
-        return new GetDataByJaxbInJson();
+    public FindOneUserByLoginAndPasswordResponse createFindOneUserByLoginAndPasswordResponse() {
+        return new FindOneUserByLoginAndPasswordResponse();
     }
 
     /**
-     * Create an instance of {@link GetDataByJaxbInJsonResponse }
+     * Create an instance of {@link FindOneUserResponse }
      * 
      */
-    public GetDataByJaxbInJsonResponse createGetDataByJaxbInJsonResponse() {
-        return new GetDataByJaxbInJsonResponse();
+    public FindOneUserResponse createFindOneUserResponse() {
+        return new FindOneUserResponse();
     }
 
     /**
-     * Create an instance of {@link GetDataByJaxbInXml }
+     * Create an instance of {@link MergeUser }
      * 
      */
-    public GetDataByJaxbInXml createGetDataByJaxbInXml() {
-        return new GetDataByJaxbInXml();
+    public MergeUser createMergeUser() {
+        return new MergeUser();
     }
 
     /**
-     * Create an instance of {@link GetDataByJaxbInXmlResponse }
+     * Create an instance of {@link MergeUserPassword }
      * 
      */
-    public GetDataByJaxbInXmlResponse createGetDataByJaxbInXmlResponse() {
-        return new GetDataByJaxbInXmlResponse();
+    public MergeUserPassword createMergeUserPassword() {
+        return new MergeUserPassword();
     }
 
     /**
-     * Create an instance of {@link GetDataBySerialization }
+     * Create an instance of {@link MergeUserPasswordResponse }
      * 
      */
-    public GetDataBySerialization createGetDataBySerialization() {
-        return new GetDataBySerialization();
+    public MergeUserPasswordResponse createMergeUserPasswordResponse() {
+        return new MergeUserPasswordResponse();
     }
 
     /**
-     * Create an instance of {@link GetDataBySerializationResponse }
+     * Create an instance of {@link MergeUserResponse }
      * 
      */
-    public GetDataBySerializationResponse createGetDataBySerializationResponse() {
-        return new GetDataBySerializationResponse();
+    public MergeUserResponse createMergeUserResponse() {
+        return new MergeUserResponse();
     }
 
     /**
-     * Create an instance of {@link SaveDataByFasterInJson }
+     * Create an instance of {@link PersistUser }
      * 
      */
-    public SaveDataByFasterInJson createSaveDataByFasterInJson() {
-        return new SaveDataByFasterInJson();
+    public PersistUser createPersistUser() {
+        return new PersistUser();
     }
 
     /**
-     * Create an instance of {@link SaveDataByFasterInJsonResponse }
+     * Create an instance of {@link PersistUserResponse }
      * 
      */
-    public SaveDataByFasterInJsonResponse createSaveDataByFasterInJsonResponse() {
-        return new SaveDataByFasterInJsonResponse();
+    public PersistUserResponse createPersistUserResponse() {
+        return new PersistUserResponse();
     }
 
     /**
-     * Create an instance of {@link SaveDataByFasterInXml }
+     * Create an instance of {@link RemoveAllUsers }
      * 
      */
-    public SaveDataByFasterInXml createSaveDataByFasterInXml() {
-        return new SaveDataByFasterInXml();
+    public RemoveAllUsers createRemoveAllUsers() {
+        return new RemoveAllUsers();
     }
 
     /**
-     * Create an instance of {@link SaveDataByFasterInXmlResponse }
+     * Create an instance of {@link RemoveAllUsersResponse }
      * 
      */
-    public SaveDataByFasterInXmlResponse createSaveDataByFasterInXmlResponse() {
-        return new SaveDataByFasterInXmlResponse();
+    public RemoveAllUsersResponse createRemoveAllUsersResponse() {
+        return new RemoveAllUsersResponse();
     }
 
     /**
-     * Create an instance of {@link SaveDataByJaxbInJson }
+     * Create an instance of {@link RemoveUser }
      * 
      */
-    public SaveDataByJaxbInJson createSaveDataByJaxbInJson() {
-        return new SaveDataByJaxbInJson();
+    public RemoveUser createRemoveUser() {
+        return new RemoveUser();
     }
 
     /**
-     * Create an instance of {@link SaveDataByJaxbInJsonResponse }
+     * Create an instance of {@link RemoveUserResponse }
      * 
      */
-    public SaveDataByJaxbInJsonResponse createSaveDataByJaxbInJsonResponse() {
-        return new SaveDataByJaxbInJsonResponse();
+    public RemoveUserResponse createRemoveUserResponse() {
+        return new RemoveUserResponse();
     }
 
     /**
-     * Create an instance of {@link SaveDataByJaxbInXml }
+     * Create an instance of {@link Session }
      * 
      */
-    public SaveDataByJaxbInXml createSaveDataByJaxbInXml() {
-        return new SaveDataByJaxbInXml();
+    public Session createSession() {
+        return new Session();
     }
 
     /**
-     * Create an instance of {@link SaveDataByJaxbInXmlResponse }
+     * Create an instance of {@link AbstractEntity }
      * 
      */
-    public SaveDataByJaxbInXmlResponse createSaveDataByJaxbInXmlResponse() {
-        return new SaveDataByJaxbInXmlResponse();
+    public AbstractEntity createAbstractEntity() {
+        return new AbstractEntity();
     }
 
     /**
-     * Create an instance of {@link SaveDataBySerialization }
+     * Create an instance of {@link User }
      * 
      */
-    public SaveDataBySerialization createSaveDataBySerialization() {
-        return new SaveDataBySerialization();
+    public User createUser() {
+        return new User();
     }
 
     /**
-     * Create an instance of {@link SaveDataBySerializationResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllUsers }{@code >}}
      * 
      */
-    public SaveDataBySerializationResponse createSaveDataBySerializationResponse() {
-        return new SaveDataBySerializationResponse();
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "findAllUsers")
+    public JAXBElement<FindAllUsers> createFindAllUsers(FindAllUsers value) {
+        return new JAXBElement<FindAllUsers>(_FindAllUsers_QNAME, FindAllUsers.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByFasterInJson }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllUsersResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByFasterInJson")
-    public JAXBElement<GetDataByFasterInJson> createGetDataByFasterInJson(GetDataByFasterInJson value) {
-        return new JAXBElement<GetDataByFasterInJson>(_GetDataByFasterInJson_QNAME, GetDataByFasterInJson.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "findAllUsersResponse")
+    public JAXBElement<FindAllUsersResponse> createFindAllUsersResponse(FindAllUsersResponse value) {
+        return new JAXBElement<FindAllUsersResponse>(_FindAllUsersResponse_QNAME, FindAllUsersResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByFasterInJsonResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUser }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByFasterInJsonResponse")
-    public JAXBElement<GetDataByFasterInJsonResponse> createGetDataByFasterInJsonResponse(GetDataByFasterInJsonResponse value) {
-        return new JAXBElement<GetDataByFasterInJsonResponse>(_GetDataByFasterInJsonResponse_QNAME, GetDataByFasterInJsonResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "findOneUser")
+    public JAXBElement<FindOneUser> createFindOneUser(FindOneUser value) {
+        return new JAXBElement<FindOneUser>(_FindOneUser_QNAME, FindOneUser.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByFasterInXml }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUserByLoginAndPassword }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByFasterInXml")
-    public JAXBElement<GetDataByFasterInXml> createGetDataByFasterInXml(GetDataByFasterInXml value) {
-        return new JAXBElement<GetDataByFasterInXml>(_GetDataByFasterInXml_QNAME, GetDataByFasterInXml.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "findOneUserByLoginAndPassword")
+    public JAXBElement<FindOneUserByLoginAndPassword> createFindOneUserByLoginAndPassword(FindOneUserByLoginAndPassword value) {
+        return new JAXBElement<FindOneUserByLoginAndPassword>(_FindOneUserByLoginAndPassword_QNAME, FindOneUserByLoginAndPassword.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByFasterInXmlResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUserByLoginAndPasswordResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByFasterInXmlResponse")
-    public JAXBElement<GetDataByFasterInXmlResponse> createGetDataByFasterInXmlResponse(GetDataByFasterInXmlResponse value) {
-        return new JAXBElement<GetDataByFasterInXmlResponse>(_GetDataByFasterInXmlResponse_QNAME, GetDataByFasterInXmlResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "findOneUserByLoginAndPasswordResponse")
+    public JAXBElement<FindOneUserByLoginAndPasswordResponse> createFindOneUserByLoginAndPasswordResponse(FindOneUserByLoginAndPasswordResponse value) {
+        return new JAXBElement<FindOneUserByLoginAndPasswordResponse>(_FindOneUserByLoginAndPasswordResponse_QNAME, FindOneUserByLoginAndPasswordResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByJaxbInJson }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUserResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByJaxbInJson")
-    public JAXBElement<GetDataByJaxbInJson> createGetDataByJaxbInJson(GetDataByJaxbInJson value) {
-        return new JAXBElement<GetDataByJaxbInJson>(_GetDataByJaxbInJson_QNAME, GetDataByJaxbInJson.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "findOneUserResponse")
+    public JAXBElement<FindOneUserResponse> createFindOneUserResponse(FindOneUserResponse value) {
+        return new JAXBElement<FindOneUserResponse>(_FindOneUserResponse_QNAME, FindOneUserResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByJaxbInJsonResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUser }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByJaxbInJsonResponse")
-    public JAXBElement<GetDataByJaxbInJsonResponse> createGetDataByJaxbInJsonResponse(GetDataByJaxbInJsonResponse value) {
-        return new JAXBElement<GetDataByJaxbInJsonResponse>(_GetDataByJaxbInJsonResponse_QNAME, GetDataByJaxbInJsonResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "mergeUser")
+    public JAXBElement<MergeUser> createMergeUser(MergeUser value) {
+        return new JAXBElement<MergeUser>(_MergeUser_QNAME, MergeUser.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByJaxbInXml }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUserPassword }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByJaxbInXml")
-    public JAXBElement<GetDataByJaxbInXml> createGetDataByJaxbInXml(GetDataByJaxbInXml value) {
-        return new JAXBElement<GetDataByJaxbInXml>(_GetDataByJaxbInXml_QNAME, GetDataByJaxbInXml.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "mergeUserPassword")
+    public JAXBElement<MergeUserPassword> createMergeUserPassword(MergeUserPassword value) {
+        return new JAXBElement<MergeUserPassword>(_MergeUserPassword_QNAME, MergeUserPassword.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataByJaxbInXmlResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUserPasswordResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataByJaxbInXmlResponse")
-    public JAXBElement<GetDataByJaxbInXmlResponse> createGetDataByJaxbInXmlResponse(GetDataByJaxbInXmlResponse value) {
-        return new JAXBElement<GetDataByJaxbInXmlResponse>(_GetDataByJaxbInXmlResponse_QNAME, GetDataByJaxbInXmlResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "mergeUserPasswordResponse")
+    public JAXBElement<MergeUserPasswordResponse> createMergeUserPasswordResponse(MergeUserPasswordResponse value) {
+        return new JAXBElement<MergeUserPasswordResponse>(_MergeUserPasswordResponse_QNAME, MergeUserPasswordResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataBySerialization }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUserResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataBySerialization")
-    public JAXBElement<GetDataBySerialization> createGetDataBySerialization(GetDataBySerialization value) {
-        return new JAXBElement<GetDataBySerialization>(_GetDataBySerialization_QNAME, GetDataBySerialization.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "mergeUserResponse")
+    public JAXBElement<MergeUserResponse> createMergeUserResponse(MergeUserResponse value) {
+        return new JAXBElement<MergeUserResponse>(_MergeUserResponse_QNAME, MergeUserResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetDataBySerializationResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link PersistUser }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "getDataBySerializationResponse")
-    public JAXBElement<GetDataBySerializationResponse> createGetDataBySerializationResponse(GetDataBySerializationResponse value) {
-        return new JAXBElement<GetDataBySerializationResponse>(_GetDataBySerializationResponse_QNAME, GetDataBySerializationResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "persistUser")
+    public JAXBElement<PersistUser> createPersistUser(PersistUser value) {
+        return new JAXBElement<PersistUser>(_PersistUser_QNAME, PersistUser.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByFasterInJson }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link PersistUserResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByFasterInJson")
-    public JAXBElement<SaveDataByFasterInJson> createSaveDataByFasterInJson(SaveDataByFasterInJson value) {
-        return new JAXBElement<SaveDataByFasterInJson>(_SaveDataByFasterInJson_QNAME, SaveDataByFasterInJson.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "persistUserResponse")
+    public JAXBElement<PersistUserResponse> createPersistUserResponse(PersistUserResponse value) {
+        return new JAXBElement<PersistUserResponse>(_PersistUserResponse_QNAME, PersistUserResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByFasterInJsonResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveAllUsers }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByFasterInJsonResponse")
-    public JAXBElement<SaveDataByFasterInJsonResponse> createSaveDataByFasterInJsonResponse(SaveDataByFasterInJsonResponse value) {
-        return new JAXBElement<SaveDataByFasterInJsonResponse>(_SaveDataByFasterInJsonResponse_QNAME, SaveDataByFasterInJsonResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "removeAllUsers")
+    public JAXBElement<RemoveAllUsers> createRemoveAllUsers(RemoveAllUsers value) {
+        return new JAXBElement<RemoveAllUsers>(_RemoveAllUsers_QNAME, RemoveAllUsers.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByFasterInXml }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveAllUsersResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByFasterInXml")
-    public JAXBElement<SaveDataByFasterInXml> createSaveDataByFasterInXml(SaveDataByFasterInXml value) {
-        return new JAXBElement<SaveDataByFasterInXml>(_SaveDataByFasterInXml_QNAME, SaveDataByFasterInXml.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "removeAllUsersResponse")
+    public JAXBElement<RemoveAllUsersResponse> createRemoveAllUsersResponse(RemoveAllUsersResponse value) {
+        return new JAXBElement<RemoveAllUsersResponse>(_RemoveAllUsersResponse_QNAME, RemoveAllUsersResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByFasterInXmlResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveUser }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByFasterInXmlResponse")
-    public JAXBElement<SaveDataByFasterInXmlResponse> createSaveDataByFasterInXmlResponse(SaveDataByFasterInXmlResponse value) {
-        return new JAXBElement<SaveDataByFasterInXmlResponse>(_SaveDataByFasterInXmlResponse_QNAME, SaveDataByFasterInXmlResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "removeUser")
+    public JAXBElement<RemoveUser> createRemoveUser(RemoveUser value) {
+        return new JAXBElement<RemoveUser>(_RemoveUser_QNAME, RemoveUser.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByJaxbInJson }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveUserResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByJaxbInJson")
-    public JAXBElement<SaveDataByJaxbInJson> createSaveDataByJaxbInJson(SaveDataByJaxbInJson value) {
-        return new JAXBElement<SaveDataByJaxbInJson>(_SaveDataByJaxbInJson_QNAME, SaveDataByJaxbInJson.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByJaxbInJsonResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByJaxbInJsonResponse")
-    public JAXBElement<SaveDataByJaxbInJsonResponse> createSaveDataByJaxbInJsonResponse(SaveDataByJaxbInJsonResponse value) {
-        return new JAXBElement<SaveDataByJaxbInJsonResponse>(_SaveDataByJaxbInJsonResponse_QNAME, SaveDataByJaxbInJsonResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByJaxbInXml }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByJaxbInXml")
-    public JAXBElement<SaveDataByJaxbInXml> createSaveDataByJaxbInXml(SaveDataByJaxbInXml value) {
-        return new JAXBElement<SaveDataByJaxbInXml>(_SaveDataByJaxbInXml_QNAME, SaveDataByJaxbInXml.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataByJaxbInXmlResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataByJaxbInXmlResponse")
-    public JAXBElement<SaveDataByJaxbInXmlResponse> createSaveDataByJaxbInXmlResponse(SaveDataByJaxbInXmlResponse value) {
-        return new JAXBElement<SaveDataByJaxbInXmlResponse>(_SaveDataByJaxbInXmlResponse_QNAME, SaveDataByJaxbInXmlResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataBySerialization }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataBySerialization")
-    public JAXBElement<SaveDataBySerialization> createSaveDataBySerialization(SaveDataBySerialization value) {
-        return new JAXBElement<SaveDataBySerialization>(_SaveDataBySerialization_QNAME, SaveDataBySerialization.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SaveDataBySerializationResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "saveDataBySerializationResponse")
-    public JAXBElement<SaveDataBySerializationResponse> createSaveDataBySerializationResponse(SaveDataBySerializationResponse value) {
-        return new JAXBElement<SaveDataBySerializationResponse>(_SaveDataBySerializationResponse_QNAME, SaveDataBySerializationResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tmserver.girfanov.ru/", name = "removeUserResponse")
+    public JAXBElement<RemoveUserResponse> createRemoveUserResponse(RemoveUserResponse value) {
+        return new JAXBElement<RemoveUserResponse>(_RemoveUserResponse_QNAME, RemoveUserResponse.class, null, value);
     }
 
 }
