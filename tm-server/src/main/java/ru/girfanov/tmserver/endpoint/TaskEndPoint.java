@@ -3,7 +3,9 @@ package ru.girfanov.tmserver.endpoint;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import ru.girfanov.tmserver.api.service.ISessionService;
 import ru.girfanov.tmserver.api.service.ITaskService;
+import ru.girfanov.tmserver.entity.Session;
 import ru.girfanov.tmserver.entity.Task;
 
 import javax.jws.WebMethod;
@@ -17,49 +19,54 @@ import java.util.List;
 public class TaskEndPoint {
 
     @NonNull private ITaskService taskService;
+    @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void persistTask(@WebParam(name = "userId") final String userId, @WebParam(name = "task") final Task task) {
-        taskService.persist(userId, task);
+    public void persistTask(@WebParam(name = "session") final Session session, @WebParam(name = "task") final Task task) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) taskService.persist(session.getUserId(), task);
     }
 
     @WebMethod
-    public void mergeTask(@WebParam(name = "userId") final String userId, @WebParam(name = "task") final Task task) {
-        taskService.merge(userId, task);
+    public void mergeTask(@WebParam(name = "session") final Session session, @WebParam(name = "task") final Task task) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) taskService.merge(session.getUserId(), task);
     }
 
     @WebMethod
-    public void removeTask(@WebParam(name = "userId") final String userId, @WebParam(name = "taskUuid") final String taskUuid) {
-        taskService.remove(userId, taskUuid);
+    public void removeTask(@WebParam(name = "session") final Session session, @WebParam(name = "taskUuid") final String taskUuid) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) taskService.remove(session.getUserId(), taskUuid);
     }
 
     @WebMethod
-    public void removeAllTasks(@WebParam(name = "userId") final String userId) {
-        taskService.removeAll(userId);
+    public void removeAllTasks(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) taskService.removeAll(session.getUserId());
     }
 
     @WebMethod
-    public Task findOneTask(@WebParam(name = "userId") final String userId, @WebParam(name = "taskUuid") final String taskUuid) {
-        return taskService.findOne(userId, taskUuid);
+    public Task findOneTask(@WebParam(name = "session") final Session session, @WebParam(name = "taskUuid") final String taskUuid) {
+        if(!sessionService.existSession(session.getUserId(), session.getUuid())) return null;
+        return taskService.findOne(session.getUserId(), taskUuid);
     }
 
     @WebMethod
-    public List<Task> findAllTasks(@WebParam(name = "userId") final String userId) {
-        return taskService.findAll(userId);
+    public List<Task> findAllTasks(@WebParam(name = "session") final Session session) {
+        if(!sessionService.existSession(session.getUserId(), session.getUuid())) return null;
+        return taskService.findAll(session.getUserId());
     }
 
     @WebMethod
-    public List<Task> findAllTasksByProjectId(@WebParam(name = "userId") final String userId, @WebParam(name = "projectId") final String projectId) {
-        return taskService.findAllTasksByProjectId(userId, projectId);
+    public List<Task> findAllTasksByProjectId(@WebParam(name = "session") final Session session, @WebParam(name = "projectId") final String projectId) {
+        if(!sessionService.existSession(session.getUserId(), session.getUuid())) return null;
+        return taskService.findAllTasksByProjectId(session.getUserId(), projectId);
     }
 
     @WebMethod
-    public void removeAllTasksByProjectId(@WebParam(name = "userId") final String userId, @WebParam(name = "projectId") final String projectId) {
-        taskService.removeAllTasksByProjectId(userId, projectId);
+    public void removeAllTasksByProjectId(@WebParam(name = "session") final Session session, @WebParam(name = "projectId") final String projectId) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) taskService.removeAllTasksByProjectId(session.getUserId(), projectId);
     }
 
     @WebMethod
-    public List<Task> findAllTasksSortedByValue(@WebParam(name = "userId") final String userId, @WebParam(name = "value") final String value) {
-        return taskService.findAllSortedByValue(userId, value);
+    public List<Task> findAllTasksSortedByValue(@WebParam(name = "session") final Session session, @WebParam(name = "value") final String value) {
+        if(!sessionService.existSession(session.getUserId(), session.getUuid())) return null;
+        return taskService.findAllSortedByValue(session.getUserId(), value);
     }
 }

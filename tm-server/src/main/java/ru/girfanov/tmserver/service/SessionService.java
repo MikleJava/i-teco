@@ -27,21 +27,25 @@ public class SessionService implements ISessionService {
     @Override
     public Session createSession(@NotNull final String login, @NotNull final String password) {
         @Nullable final User user = userRepository.findOneByLoginAndPassword(login, password);
-        if(user != null) {
-            final Session session = new Session();
-            session.setTimeStamp(new Date());
-            session.setUserId(user.getUuid());
-            session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
-        }
+        if(user == null) return null;
+        final Session session = new Session();
+        session.setTimeStamp(new Date());
+        session.setUserId(user.getUuid());
+        session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
+        return session;
     }
 
     @Override
-    public void removeSession(String sessionId) {
-
+    public void removeSession(@NotNull final String userId, @NotNull final String sessionId) {
+        @Nullable final User user = userRepository.findOne(userId, userId);
+        @Nullable final Session session = sessionRepository.findOne(userId, sessionId);
+        if(user == null || session == null) return;
+        sessionRepository.remove(userId, sessionId);
     }
 
     @Override
-    public boolean existSession(Session session) {
-
+    public boolean existSession(@NotNull final String userId, @NotNull final String sessionId) {
+        @Nullable final Session session = sessionRepository.findOne(userId, sessionId);
+        return session != null;
     }
 }

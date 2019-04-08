@@ -4,8 +4,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ru.girfanov.tmserver.api.service.IDataDomainService;
+import ru.girfanov.tmserver.api.service.ISessionService;
+import ru.girfanov.tmserver.entity.Session;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService
@@ -14,54 +17,55 @@ import javax.jws.WebService;
 public class DataDomainEndPoint {
 
     @NonNull private IDataDomainService dataDomainService;
+    @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void saveDataBySerialization() {
-        dataDomainService.saveDataBySerialization();
+    public void saveDataBySerialization(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.saveDataBySerialization();
     }
 
     @WebMethod
-    public void getDataBySerialization() {
-        dataDomainService.getDataBySerialization();
+    public void getDataBySerialization(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.getDataBySerialization();
     }
 
     @WebMethod
-    public void saveDataByJaxbInXml() {
-        dataDomainService.saveDataByJaxbInXml();
+    public void saveDataByJaxbInXml(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.saveDataByJaxbInXml();
     }
 
     @WebMethod
-    public void getDataByJaxbInXml() {
-        dataDomainService.getDataByJaxbInXml();
+    public void getDataByJaxbInXml(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.getDataByJaxbInXml();
     }
 
     @WebMethod
-    public void saveDataByJaxbInJson() {
-        dataDomainService.saveDataByJaxbInJson();
+    public void saveDataByJaxbInJson(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.saveDataByJaxbInJson();
     }
 
     @WebMethod
-    public void getDataByJaxbInJson() {
-        dataDomainService.getDataByJaxbInJson();
+    public void getDataByJaxbInJson(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.getDataByJaxbInJson();
     }
 
     @WebMethod
-    public void saveDataByFasterInXml() {
-        dataDomainService.saveDataByFasterInXml();
+    public void saveDataByFasterInXml(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.saveDataByFasterInXml();
     }
 
     @WebMethod
-    public void getDataByFasterInXml() {
-        dataDomainService.getDataByFasterInXml();
+    public void getDataByFasterInXml(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.getDataByFasterInXml();
     }
 
     @WebMethod
-    public void saveDataByFasterInJson() {
-        dataDomainService.saveDataByFasterInJson();
+    public void saveDataByFasterInJson(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.saveDataByFasterInJson();
     }
 
     @WebMethod
-    public void getDataByFasterInJson() {
-        dataDomainService.getDataByFasterInJson();
+    public void getDataByFasterInJson(@WebParam(name = "session") final Session session) {
+        if(sessionService.existSession(session.getUserId(), session.getUuid())) dataDomainService.getDataByFasterInJson();
     }
 }

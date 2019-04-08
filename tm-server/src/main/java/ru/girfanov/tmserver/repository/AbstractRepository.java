@@ -19,10 +19,4 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements Re
     public void persist(@NotNull final String userId, @NotNull final T entity) {
         map.put(entity.getUuid(), entity);
     }
-
-    @Override
-    public abstract void merge(@NotNull final String userId, @NotNull final T entity);
-
-    @Override
-    public abstract void remove(@NotNull final String userId, @NotNull final String uuid);
 }

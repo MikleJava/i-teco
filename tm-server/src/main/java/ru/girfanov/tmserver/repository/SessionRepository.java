@@ -13,31 +13,35 @@ public class SessionRepository extends AbstractRepository<Session> implements IS
 
     @Override
     public void merge(@NotNull String userId, @NotNull Session entity) {
-
+        //TODO
     }
 
     @Override
     public void remove(@NotNull String userId, @NotNull String uuid) {
-
+        if(findOne(userId, uuid) == null) return;
+        map.remove(uuid);
     }
 
     @Override
-    public void removeAll(String userId) {
-
+    public void removeAll(@NotNull final String userId) {
+        //TODO
     }
 
     @Override
-    public Session findOne(String userId, String uuid) {
-        return null;
+    public Session findOne(@NotNull final String userId, @NotNull final String uuid) {
+        if(!map.get(uuid).getUserId().equals(userId)) return null;
+        return map.get(uuid);
     }
 
     @Override
     public List<Session> findAllByUserId(String userId) {
+        //TODO
         return null;
     }
 
     @Override
     public Collection<Session> findAll() {
+        //TODO
         return null;
     }
 }

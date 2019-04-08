@@ -4,6 +4,6 @@ import ru.girfanov.tmserver.entity.Session;
 
 public interface ISessionService {
     Session createSession(String login, String password);
-    void removeSession(String sessionId);
-    boolean existSession(Session session);
+    void removeSession(String userId, String sessionId);
+    boolean existSession(String userId, String sessionId);
 }
