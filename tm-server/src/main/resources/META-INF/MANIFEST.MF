@@ -7,5 +7,5 @@ Implementation-Vendor-Id: i-teco
 developer: GirfanovMikhail
 Created-By: Apache Maven 3.3.9
 Build-Jdk: 1.8.0_192
-Main-Class: ru.girfanov.tmserver.App
+Main-Class: ru.girfanov.tm.App
 
