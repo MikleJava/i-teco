@@ -41,12 +41,12 @@
                                 </wsdlOption>
                                 <wsdlOption>
                                     <wsdl>
-                                        http://localhost:8080/SessionEndpoint?wsdl
+                                        http://localhost:8080/DataDomainEndpoint?wsdl
                                     </wsdl>
                                 </wsdlOption>
                                 <wsdlOption>
                                     <wsdl>
-                                        http://localhost:8080/DataDomainEndpoint?wsdl
+                                        http://localhost:8080/SessionEndPoint?wsdl
                                     </wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
@@ -54,22 +54,6 @@
                         <goals>
                             <goal>wsdl2java</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.webcohesion.enunciate</groupId>
-                <artifactId>enunciate-maven-plugin</artifactId>
-                <version>2.11.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>docs</goal>
-                        </goals>
-                        <configuration>
-                            <docsDir>${project.build.directory}/docs</docsDir>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -24,22 +24,10 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _FindAllUsers_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "findAllUsers");
-    private final static QName _FindAllUsersResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "findAllUsersResponse");
-    private final static QName _FindOneUser_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "findOneUser");
-    private final static QName _FindOneUserByLoginAndPassword_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "findOneUserByLoginAndPassword");
-    private final static QName _FindOneUserByLoginAndPasswordResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "findOneUserByLoginAndPasswordResponse");
-    private final static QName _FindOneUserResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "findOneUserResponse");
-    private final static QName _MergeUser_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "mergeUser");
-    private final static QName _MergeUserPassword_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "mergeUserPassword");
-    private final static QName _MergeUserPasswordResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "mergeUserPasswordResponse");
-    private final static QName _MergeUserResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "mergeUserResponse");
-    private final static QName _PersistUser_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "persistUser");
-    private final static QName _PersistUserResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "persistUserResponse");
-    private final static QName _RemoveAllUsers_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "removeAllUsers");
-    private final static QName _RemoveAllUsersResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "removeAllUsersResponse");
-    private final static QName _RemoveUser_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "removeUser");
-    private final static QName _RemoveUserResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "removeUserResponse");
+    private final static QName _CreateSession_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "createSession");
+    private final static QName _CreateSessionResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "createSessionResponse");
+    private final static QName _RemoveSession_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "removeSession");
+    private final static QName _RemoveSessionResponse_QNAME = new QName("http://endpoint.tm.girfanov.ru/", "removeSessionResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.girfanov.tm.endpoint
@@ -49,131 +37,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link FindAllUsers }
+     * Create an instance of {@link CreateSession }
      * 
      */
-    public FindAllUsers createFindAllUsers() {
-        return new FindAllUsers();
+    public CreateSession createCreateSession() {
+        return new CreateSession();
     }
 
     /**
-     * Create an instance of {@link FindAllUsersResponse }
+     * Create an instance of {@link CreateSessionResponse }
      * 
      */
-    public FindAllUsersResponse createFindAllUsersResponse() {
-        return new FindAllUsersResponse();
+    public CreateSessionResponse createCreateSessionResponse() {
+        return new CreateSessionResponse();
     }
 
     /**
-     * Create an instance of {@link FindOneUser }
+     * Create an instance of {@link RemoveSession }
      * 
      */
-    public FindOneUser createFindOneUser() {
-        return new FindOneUser();
+    public RemoveSession createRemoveSession() {
+        return new RemoveSession();
     }
 
     /**
-     * Create an instance of {@link FindOneUserByLoginAndPassword }
+     * Create an instance of {@link RemoveSessionResponse }
      * 
      */
-    public FindOneUserByLoginAndPassword createFindOneUserByLoginAndPassword() {
-        return new FindOneUserByLoginAndPassword();
-    }
-
-    /**
-     * Create an instance of {@link FindOneUserByLoginAndPasswordResponse }
-     * 
-     */
-    public FindOneUserByLoginAndPasswordResponse createFindOneUserByLoginAndPasswordResponse() {
-        return new FindOneUserByLoginAndPasswordResponse();
-    }
-
-    /**
-     * Create an instance of {@link FindOneUserResponse }
-     * 
-     */
-    public FindOneUserResponse createFindOneUserResponse() {
-        return new FindOneUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link MergeUser }
-     * 
-     */
-    public MergeUser createMergeUser() {
-        return new MergeUser();
-    }
-
-    /**
-     * Create an instance of {@link MergeUserPassword }
-     * 
-     */
-    public MergeUserPassword createMergeUserPassword() {
-        return new MergeUserPassword();
-    }
-
-    /**
-     * Create an instance of {@link MergeUserPasswordResponse }
-     * 
-     */
-    public MergeUserPasswordResponse createMergeUserPasswordResponse() {
-        return new MergeUserPasswordResponse();
-    }
-
-    /**
-     * Create an instance of {@link MergeUserResponse }
-     * 
-     */
-    public MergeUserResponse createMergeUserResponse() {
-        return new MergeUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link PersistUser }
-     * 
-     */
-    public PersistUser createPersistUser() {
-        return new PersistUser();
-    }
-
-    /**
-     * Create an instance of {@link PersistUserResponse }
-     * 
-     */
-    public PersistUserResponse createPersistUserResponse() {
-        return new PersistUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemoveAllUsers }
-     * 
-     */
-    public RemoveAllUsers createRemoveAllUsers() {
-        return new RemoveAllUsers();
-    }
-
-    /**
-     * Create an instance of {@link RemoveAllUsersResponse }
-     * 
-     */
-    public RemoveAllUsersResponse createRemoveAllUsersResponse() {
-        return new RemoveAllUsersResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemoveUser }
-     * 
-     */
-    public RemoveUser createRemoveUser() {
-        return new RemoveUser();
-    }
-
-    /**
-     * Create an instance of {@link RemoveUserResponse }
-     * 
-     */
-    public RemoveUserResponse createRemoveUserResponse() {
-        return new RemoveUserResponse();
+    public RemoveSessionResponse createRemoveSessionResponse() {
+        return new RemoveSessionResponse();
     }
 
     /**
@@ -193,155 +85,39 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link User }
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateSession }{@code >}}
      * 
      */
-    public User createUser() {
-        return new User();
+    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "createSession")
+    public JAXBElement<CreateSession> createCreateSession(CreateSession value) {
+        return new JAXBElement<CreateSession>(_CreateSession_QNAME, CreateSession.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllUsers }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateSessionResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "findAllUsers")
-    public JAXBElement<FindAllUsers> createFindAllUsers(FindAllUsers value) {
-        return new JAXBElement<FindAllUsers>(_FindAllUsers_QNAME, FindAllUsers.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "createSessionResponse")
+    public JAXBElement<CreateSessionResponse> createCreateSessionResponse(CreateSessionResponse value) {
+        return new JAXBElement<CreateSessionResponse>(_CreateSessionResponse_QNAME, CreateSessionResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllUsersResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveSession }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "findAllUsersResponse")
-    public JAXBElement<FindAllUsersResponse> createFindAllUsersResponse(FindAllUsersResponse value) {
-        return new JAXBElement<FindAllUsersResponse>(_FindAllUsersResponse_QNAME, FindAllUsersResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "removeSession")
+    public JAXBElement<RemoveSession> createRemoveSession(RemoveSession value) {
+        return new JAXBElement<RemoveSession>(_RemoveSession_QNAME, RemoveSession.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUser }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveSessionResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "findOneUser")
-    public JAXBElement<FindOneUser> createFindOneUser(FindOneUser value) {
-        return new JAXBElement<FindOneUser>(_FindOneUser_QNAME, FindOneUser.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUserByLoginAndPassword }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "findOneUserByLoginAndPassword")
-    public JAXBElement<FindOneUserByLoginAndPassword> createFindOneUserByLoginAndPassword(FindOneUserByLoginAndPassword value) {
-        return new JAXBElement<FindOneUserByLoginAndPassword>(_FindOneUserByLoginAndPassword_QNAME, FindOneUserByLoginAndPassword.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUserByLoginAndPasswordResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "findOneUserByLoginAndPasswordResponse")
-    public JAXBElement<FindOneUserByLoginAndPasswordResponse> createFindOneUserByLoginAndPasswordResponse(FindOneUserByLoginAndPasswordResponse value) {
-        return new JAXBElement<FindOneUserByLoginAndPasswordResponse>(_FindOneUserByLoginAndPasswordResponse_QNAME, FindOneUserByLoginAndPasswordResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FindOneUserResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "findOneUserResponse")
-    public JAXBElement<FindOneUserResponse> createFindOneUserResponse(FindOneUserResponse value) {
-        return new JAXBElement<FindOneUserResponse>(_FindOneUserResponse_QNAME, FindOneUserResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUser }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "mergeUser")
-    public JAXBElement<MergeUser> createMergeUser(MergeUser value) {
-        return new JAXBElement<MergeUser>(_MergeUser_QNAME, MergeUser.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUserPassword }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "mergeUserPassword")
-    public JAXBElement<MergeUserPassword> createMergeUserPassword(MergeUserPassword value) {
-        return new JAXBElement<MergeUserPassword>(_MergeUserPassword_QNAME, MergeUserPassword.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUserPasswordResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "mergeUserPasswordResponse")
-    public JAXBElement<MergeUserPasswordResponse> createMergeUserPasswordResponse(MergeUserPasswordResponse value) {
-        return new JAXBElement<MergeUserPasswordResponse>(_MergeUserPasswordResponse_QNAME, MergeUserPasswordResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link MergeUserResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "mergeUserResponse")
-    public JAXBElement<MergeUserResponse> createMergeUserResponse(MergeUserResponse value) {
-        return new JAXBElement<MergeUserResponse>(_MergeUserResponse_QNAME, MergeUserResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PersistUser }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "persistUser")
-    public JAXBElement<PersistUser> createPersistUser(PersistUser value) {
-        return new JAXBElement<PersistUser>(_PersistUser_QNAME, PersistUser.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PersistUserResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "persistUserResponse")
-    public JAXBElement<PersistUserResponse> createPersistUserResponse(PersistUserResponse value) {
-        return new JAXBElement<PersistUserResponse>(_PersistUserResponse_QNAME, PersistUserResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveAllUsers }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "removeAllUsers")
-    public JAXBElement<RemoveAllUsers> createRemoveAllUsers(RemoveAllUsers value) {
-        return new JAXBElement<RemoveAllUsers>(_RemoveAllUsers_QNAME, RemoveAllUsers.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveAllUsersResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "removeAllUsersResponse")
-    public JAXBElement<RemoveAllUsersResponse> createRemoveAllUsersResponse(RemoveAllUsersResponse value) {
-        return new JAXBElement<RemoveAllUsersResponse>(_RemoveAllUsersResponse_QNAME, RemoveAllUsersResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveUser }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "removeUser")
-    public JAXBElement<RemoveUser> createRemoveUser(RemoveUser value) {
-        return new JAXBElement<RemoveUser>(_RemoveUser_QNAME, RemoveUser.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveUserResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "removeUserResponse")
-    public JAXBElement<RemoveUserResponse> createRemoveUserResponse(RemoveUserResponse value) {
-        return new JAXBElement<RemoveUserResponse>(_RemoveUserResponse_QNAME, RemoveUserResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://endpoint.tm.girfanov.ru/", name = "removeSessionResponse")
+    public JAXBElement<RemoveSessionResponse> createRemoveSessionResponse(RemoveSessionResponse value) {
+        return new JAXBElement<RemoveSessionResponse>(_RemoveSessionResponse_QNAME, RemoveSessionResponse.class, null, value);
     }
 
 }

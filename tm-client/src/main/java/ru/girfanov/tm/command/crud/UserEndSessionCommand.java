@@ -3,22 +3,21 @@ package ru.girfanov.tm.command.crud;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.endpoint.UserEndPoint;
+import ru.girfanov.tm.command.AbstractSecureCommand;
+import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.UserEndPoint;
 
 @Getter
 @NoArgsConstructor
-public final class UserEndSessionCommand extends AbstractCrudCommand {
+public final class UserEndSessionCommand extends AbstractSecureCommand {
 
-    @NotNull
-    private final String name = "-esu";
+    @NotNull private final String name = "-esu";
 
-    @NotNull
-    private final String description = "end session user";
+    @NotNull private final String description = "end session user";
 
     @Override
-    public void execute(@NotNull final String ... params) {
+    public void execute(@NotNull final Session session) {
         final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
-        userEndPoint.removeUser(params[0], params[0]);
+        userEndPoint.removeUser(session, session.getUserId());
     }
 }

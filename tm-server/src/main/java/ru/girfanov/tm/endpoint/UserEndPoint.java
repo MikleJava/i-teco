@@ -23,9 +23,8 @@ public class UserEndPoint {
     @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void persistUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) throws WrongSessionException {
-        sessionService.existSession(session);
-        userService.persist(session.getUserId(), user);
+    public void persistUser(@WebParam(name = "user") final User user) throws WrongSessionException {
+        userService.persist(user.getUuid(), user);
     }
 
     @WebMethod

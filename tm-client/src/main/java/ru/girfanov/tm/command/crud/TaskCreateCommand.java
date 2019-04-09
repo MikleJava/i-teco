@@ -3,11 +3,8 @@ package ru.girfanov.tm.command.crud;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.endpoint.Project;
-import ru.girfanov.tmserver.endpoint.ProjectEndPoint;
-import ru.girfanov.tmserver.endpoint.Task;
-import ru.girfanov.tmserver.endpoint.TaskEndPoint;
+import ru.girfanov.tm.command.AbstractSecureCommand;
+import ru.girfanov.tm.endpoint.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.text.ParseException;
@@ -21,16 +18,14 @@ import static ru.girfanov.tm.util.Terminal.*;
 
 @Getter
 @NoArgsConstructor
-public final class TaskCreateCommand extends AbstractCrudCommand {
+public final class TaskCreateCommand extends AbstractSecureCommand {
 
-    @NotNull
-    private final String name = "-ct";
+    @NotNull private final String name = "-ct";
 
-    @NotNull
-    private final String description = "create task";
+    @NotNull private final String description = "create task";
 
     @Override
-    public void execute(@NotNull final String ... params) {
+    public void execute(@NotNull final Session session) {
         final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
@@ -45,7 +40,7 @@ public final class TaskCreateCommand extends AbstractCrudCommand {
             System.out.print("input date end : ");
             final Date dateEnd = dateFormat.parse(scanner.next());
             System.out.println("all available projects : ");
-            final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(params[0]));
+            final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
             }
@@ -54,12 +49,12 @@ public final class TaskCreateCommand extends AbstractCrudCommand {
             final Task task = new Task();
             task.setName(name);
             task.setDescription(description);
-            task.setUserId(params[0]);
+            task.setUserId(session.getUserId());
             task.setStatus(status);
             task.setDateStart(convert(dateStart));
             task.setDateEnd(convert(dateEnd));
             task.setProjectId(projects.get(projectId).getUuid());
-            taskEndPoint.persistTask(params[0], task);
+            taskEndPoint.persistTask(session, task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (ParseException e) {

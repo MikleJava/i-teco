@@ -3,19 +3,17 @@ package ru.girfanov.tm.command;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.endpoint.Session;
 
 @Getter
 @NoArgsConstructor
 public abstract class AbstractSystemCommand<T> {
 
-    @NotNull
-    private final String name = "asc";
+    @NotNull private final String name = "asc";
 
-    @NotNull
-    private final String description = "abstract system command";
+    @NotNull private final String description = "abstract system command";
 
-    @Setter
-    protected ServiceLocator serviceLocator;
+    @Setter protected ServiceLocator serviceLocator;
 
     private final boolean isSecure = false;
 
@@ -23,5 +21,5 @@ public abstract class AbstractSystemCommand<T> {
         return isSecure;
     }
 
-    public abstract void execute(final T ... parameters);
+    public abstract void execute(@NotNull final Session session);
 }

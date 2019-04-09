@@ -3,23 +3,23 @@ package ru.girfanov.tm.command.crud;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.command.AbstractCrudCommand;
-import ru.girfanov.tmserver.endpoint.User;
-import ru.girfanov.tmserver.endpoint.UserEndPoint;
+import ru.girfanov.tm.command.AbstractSecureCommand;
+import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.User;
+import ru.girfanov.tm.endpoint.UserEndPoint;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
 @Getter
 @NoArgsConstructor
-public final class UserPasswordUpdateCommand extends AbstractCrudCommand {
+public final class UserPasswordUpdateCommand extends AbstractSecureCommand {
 
-    @NotNull
-    private final String name = "-uup";
-    @NotNull
-    private final String description = "update user password";
+    @NotNull private final String name = "-uup";
+
+    @NotNull private final String description = "update user password";
 
     @Override
-    public void execute(@NotNull final String ... params) {
+    public void execute(@NotNull final Session session) {
         final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.print("input user login : ");
         final String login = scanner.next();
@@ -29,7 +29,7 @@ public final class UserPasswordUpdateCommand extends AbstractCrudCommand {
         if(user != null) {
             System.out.print("input new password : ");
             final String newPassword = scanner.next();
-            userEndPoint.mergeUserPassword(params[0], newPassword);
+            userEndPoint.mergeUserPassword(session, newPassword);
         }
     }
 }
