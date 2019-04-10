@@ -1,44 +1,29 @@
 package ru.girfanov.tm.entity;
 
 import lombok.*;
+import ru.girfanov.tm.enumeration.Status;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class AbstractSortedEntity extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 3974430357120257949L;
 
-    @Setter
-    @NonNull
-    private String name;
+    @NonNull private String name;
 
-    @Setter
-    @NonNull
-    private String description;
+    @NonNull private String description;
 
-    @Setter
-    @NonNull
-    private String userId;
+    @NonNull private Status status;
 
-    @Setter //temporary
-    @NonNull
-    private String status;
+    @NonNull private Date dateStart;
 
-    @Setter
-    @NonNull
-    private Date dateStart;
+    @NonNull private Date dateEnd;
 
-    @Setter
-    @NonNull
-    private Date dateEnd;
+    @NonNull private String userId;
 
-//    public void setStatus(@NotNull final String status) {
-//        if(status.isEmpty()) { this.status = Status.PLANNING; }
-//        if("В процессе".equals(status)) { this.status = Status.PROCESS; }
-//        if("Готово".equals(status)) { this.status = Status.READY; }
-//    }
 }

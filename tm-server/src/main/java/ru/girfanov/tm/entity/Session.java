@@ -16,8 +16,7 @@ public class Session extends AbstractEntity implements Serializable {
 
     @NonNull private Date timeStamp;
 
-    @NonNull private String userId;
-
     @Nullable private String signature;
 
+    @NonNull private String userId;
 }

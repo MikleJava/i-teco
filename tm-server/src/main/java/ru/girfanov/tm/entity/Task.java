@@ -1,7 +1,7 @@
 package ru.girfanov.tm.entity;
 
 import lombok.*;
-import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.enumeration.Status;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,8 +15,8 @@ public class Task extends AbstractSortedEntity implements Serializable {
 
     @NonNull private String projectId;
 
-    public Task(@NonNull final String name, @Nullable final String description, @NonNull final String userId, @NonNull final String status, @Nullable final Date dateStart, @Nullable final Date dateEnd, @NonNull final String projectId) {
-        super(name, description, userId, status, dateStart, dateEnd);
+    public Task(@NonNull final String name, @NonNull final String description, @NonNull final Status status, @NonNull final Date dateStart, @NonNull final Date dateEnd, @NonNull final String userId, @NonNull final String projectId) {
+        super(name, description, status, dateStart, dateEnd, userId);
         this.projectId = projectId;
     }
 }
