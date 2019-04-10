@@ -1,6 +1,7 @@
 package ru.girfanov.tm.entity;
 
 import lombok.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,6 @@ public class Session extends AbstractEntity implements Serializable {
 
     @NonNull private String userId;
 
-    @NonNull private String signature;
+    @Nullable private String signature;
 
 }

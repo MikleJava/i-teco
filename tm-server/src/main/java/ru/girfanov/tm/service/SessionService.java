@@ -34,6 +34,7 @@ public class SessionService extends AbstractService<Session> implements ISession
         session.setTimeStamp(new Date());
         session.setUserId(user.getUuid());
         session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
+        sessionRepository.persist(session.getUserId(), session);
         return session;
     }
 
@@ -45,7 +46,12 @@ public class SessionService extends AbstractService<Session> implements ISession
 
     @Override
     public boolean existSession(@NotNull final Session session) throws WrongSessionException {
-        if(!session.getSignature().equals(SignatureUtil.sign(session, SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+        System.out.println(session.getSignature());
+        System.out.println(SignatureUtil.sign(session, SALT, CYCLE));
+        final String signature = session.getSignature();
+        session.setSignature(null);
+        if(!signature.equals(SignatureUtil.sign(session, SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+        session.setSignature(signature);
         return true;
     }
 }
