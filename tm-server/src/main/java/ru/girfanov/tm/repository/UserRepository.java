@@ -14,9 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public final class UserRepository implements IUserRepository {
 
     @NonNull Connection connection;
 
-    @NotNull private static final String TABLE = "user";
+    @NotNull private static final String TABLE = "app_user";
 
     @NotNull private static final String ID = "id";
     @NotNull private static final String LOGIN = "login";
@@ -111,7 +109,7 @@ public final class UserRepository implements IUserRepository {
 
     @Override
     @SneakyThrows
-    public Collection<User> findAll() {
+    public List<User> findAll() {
         @NotNull final String query = "SELECT * FROM " + TABLE;
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();

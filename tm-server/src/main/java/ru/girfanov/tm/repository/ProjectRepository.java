@@ -21,7 +21,7 @@ public final class ProjectRepository implements IProjectRepository {
 
     @NonNull Connection connection;
 
-    @NotNull private static final String TABLE = "project";
+    @NotNull private static final String TABLE = "app_project";
 
     @NotNull private static final String ID = "id";
     @NotNull private static final String NAME = "name";
@@ -124,7 +124,7 @@ public final class ProjectRepository implements IProjectRepository {
 
     @Override
     @SneakyThrows
-    public Collection<Project> findAll() {
+    public List<Project> findAll() {
         @NotNull final String query = "SELECT * FROM " + TABLE;
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();

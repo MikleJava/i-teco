@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -23,7 +22,7 @@ public final class TaskRepository implements ITaskRepository {
 
     @NonNull Connection connection;
 
-    @NotNull private static final String TABLE = "task";
+    @NotNull private static final String TABLE = "app_task";
 
     @NotNull private static final String ID = "id";
     @NotNull private static final String NAME = "name";
@@ -69,7 +68,7 @@ public final class TaskRepository implements ITaskRepository {
                 DATE_START + " = ?, " +
                 DATE_END + " = ?, " +
                 USER_ID + " = ?, " +
-                PROJECT_ID+ " = ? WHERE " + ID + " = ?";
+                PROJECT_ID + " = ? WHERE " + ID + " = ?";
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, task.getName());
         preparedStatement.setString(2, task.getDescription());
@@ -131,7 +130,7 @@ public final class TaskRepository implements ITaskRepository {
 
     @Override
     @SneakyThrows
-    public Collection<Task> findAll() {
+    public List<Task> findAll() {
         @NotNull final String query = "SELECT * FROM " + TABLE;
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
