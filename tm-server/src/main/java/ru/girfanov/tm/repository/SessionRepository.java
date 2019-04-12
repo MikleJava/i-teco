@@ -82,6 +82,7 @@ public final class SessionRepository implements ISessionRepository {
     }
 
     @Override
+    @Nullable
     @SneakyThrows
     public Session findOne(@NotNull final String userId, @NotNull final String sessionId) {
         @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + ID + " = ? AND " + USER_ID + " = ?";
@@ -89,7 +90,8 @@ public final class SessionRepository implements ISessionRepository {
         preparedStatement.setString(1, sessionId);
         preparedStatement.setString(2, userId);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable final Session session = fetch(resultSet);
+        @Nullable Session session = null;
+        while (resultSet.next()) { session = fetch(resultSet); }
         preparedStatement.close();
         return session;
     }

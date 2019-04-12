@@ -56,6 +56,10 @@ public final class UserEndPoint {
         sessionService.existSession(session);
         return userService.findAllByUserId(session.getUserId());
     }
+    @WebMethod
+    public List<User> findAll() {
+        return userService.findAll();
+    }
 
     @WebMethod
     public User findOneUserByLoginAndPassword(@WebParam(name = "login") final String login, @WebParam(name = "password") final String password) {

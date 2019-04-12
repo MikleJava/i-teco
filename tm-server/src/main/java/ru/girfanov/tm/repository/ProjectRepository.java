@@ -97,6 +97,7 @@ public final class ProjectRepository implements IProjectRepository {
     }
 
     @Override
+    @Nullable
     @SneakyThrows
     public Project findOne(@NotNull final String userId, @NotNull final String projectId) {
         @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + ID + " = ? AND " + USER_ID + " = ?";
@@ -104,7 +105,8 @@ public final class ProjectRepository implements IProjectRepository {
         preparedStatement.setString(1, projectId);
         preparedStatement.setString(2, userId);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable final Project project = fetch(resultSet);
+        @Nullable Project project = null;
+        while (resultSet.next()) { project = fetch(resultSet); }
         preparedStatement.close();
         return project;
     }

@@ -103,6 +103,7 @@ public final class TaskRepository implements ITaskRepository {
     }
 
     @Override
+    @Nullable
     @SneakyThrows
     public Task findOne(@NotNull final String userId, @NotNull final String taskId) {
         @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + ID + " = ? AND " + USER_ID + " = ?";
@@ -110,7 +111,8 @@ public final class TaskRepository implements ITaskRepository {
         preparedStatement.setString(1, taskId);
         preparedStatement.setString(2, userId);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable final Task task = fetch(resultSet);
+        @Nullable Task task = null;
+        while (resultSet.next()) { task = fetch(resultSet); }
         preparedStatement.close();
         return task;
     }

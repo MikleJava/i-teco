@@ -83,13 +83,15 @@ public final class UserRepository implements IUserRepository {
     }
 
     @Override
+    @Nullable
     @SneakyThrows
     public User findOne(@NotNull final String userId, @Nullable final String entityId) {
         @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + ID + " = ?";
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, userId);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable final User user = fetch(resultSet);
+        @Nullable User user = null;
+        while (resultSet.next()) { user = fetch(resultSet); }
         preparedStatement.close();
         return user;
     }
@@ -120,6 +122,7 @@ public final class UserRepository implements IUserRepository {
     }
 
     @Override
+    @Nullable
     @SneakyThrows
     public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
         @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + LOGIN + " = ? AND " + PASSWORD + " = ?";
@@ -127,7 +130,8 @@ public final class UserRepository implements IUserRepository {
         preparedStatement.setString(1, login);
         preparedStatement.setString(2, password);
         @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable final User user = fetch(resultSet);
+        @Nullable User user = null;
+        while (resultSet.next()) { user = fetch(resultSet); }
         preparedStatement.close();
         return user;
     }

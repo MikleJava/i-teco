@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractSystemCommand;
+import ru.girfanov.tm.command.crud.UsersSelectAllCommand;
 import ru.girfanov.tm.command.system.UserAuthCommand;
 import ru.girfanov.tm.exception.AlreadyExistException;
 import ru.girfanov.tm.endpoint.*;
