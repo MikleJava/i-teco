@@ -23,7 +23,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="dateStart" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="status" type="{http://endpoint.tm.girfanov.ru/}status" minOccurs="0"/&gt;
  *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -55,7 +55,8 @@ public class AbstractSortedEntity
     protected XMLGregorianCalendar dateStart;
     protected String description;
     protected String name;
-    protected String status;
+    @XmlSchemaType(name = "string")
+    protected Status status;
     protected String userId;
 
     /**
@@ -159,10 +160,10 @@ public class AbstractSortedEntity
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Status }
      *     
      */
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -171,10 +172,10 @@ public class AbstractSortedEntity
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Status }
      *     
      */
-    public void setStatus(String value) {
+    public void setStatus(Status value) {
         this.status = value;
     }
 

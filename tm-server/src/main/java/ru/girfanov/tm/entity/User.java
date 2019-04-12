@@ -1,8 +1,6 @@
 package ru.girfanov.tm.entity;
 
 import lombok.*;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.enumeration.Role;
 
 import java.io.Serializable;

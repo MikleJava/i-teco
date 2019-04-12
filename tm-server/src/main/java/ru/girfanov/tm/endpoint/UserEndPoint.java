@@ -17,7 +17,7 @@ import java.util.List;
 @WebService
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class UserEndPoint {
+public final class UserEndPoint {
 
     @NonNull private IUserService userService;
     @NonNull private ISessionService sessionService;
@@ -34,15 +34,15 @@ public class UserEndPoint {
     }
 
     @WebMethod
-    public void removeUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String userUuid) throws WrongSessionException {
+    public void removeUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) throws WrongSessionException {
         sessionService.existSession(session);
-        userService.remove(session.getUserId(), userUuid);
+        userService.remove(session.getUserId(), user);
     }
 
     @WebMethod
     public void removeAllUsers(@WebParam(name = "session") final Session session) throws WrongSessionException {
         sessionService.existSession(session);
-        userService.removeAll(session.getUserId());
+        userService.removeAllByUserId(session.getUserId());
     }
 
     @WebMethod
@@ -54,13 +54,7 @@ public class UserEndPoint {
     @WebMethod
     public List<User> findAllUsers(@WebParam(name = "session") final Session session) throws WrongSessionException {
         sessionService.existSession(session);
-        return userService.findAll(session.getUserId());
-    }
-
-    @WebMethod
-    public void mergeUserPassword(@WebParam(name = "session") final Session session, @WebParam(name = "newPassword") String newPassword) throws WrongSessionException {
-        sessionService.existSession(session);
-        userService.mergePassword(session.getUserId(), newPassword);
+        return userService.findAllByUserId(session.getUserId());
     }
 
     @WebMethod

@@ -26,7 +26,7 @@ public final class UserRepository implements IUserRepository {
 
     @NotNull private static final String ID = "id";
     @NotNull private static final String LOGIN = "login";
-    @NotNull private static final String PASSWORD = "password";
+    @NotNull private static final String PASSWORD = "password_hash";
     @NotNull private static final String ROLE = "role";
 
     @Override

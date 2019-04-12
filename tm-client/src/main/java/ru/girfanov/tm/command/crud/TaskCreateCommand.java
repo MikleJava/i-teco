@@ -50,7 +50,7 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             task.setName(name);
             task.setDescription(description);
             task.setUserId(session.getUserId());
-            task.setStatus(status);
+            task.setStatus(Status.valueOf(status));
             task.setDateStart(convert(dateStart));
             task.setDateEnd(convert(dateEnd));
             task.setProjectId(projects.get(projectId).getUuid());

@@ -14,7 +14,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @XmlRootElement(name = "DataDomain")
-public class DataDomain {
+public final class DataDomain {
 
     @NotNull Collection<Project> projects = new ArrayList<>();
 

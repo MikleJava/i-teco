@@ -26,7 +26,7 @@ public final class ProjectRepository implements IProjectRepository {
     @NotNull private static final String ID = "id";
     @NotNull private static final String NAME = "name";
     @NotNull private static final String DESCRIPTION = "description";
-    @NotNull private static final String STATUS = "status";
+    @NotNull private static final String STATUS = "status_project";
     @NotNull private static final String DATE_START = "date_start";
     @NotNull private static final String DATE_END = "date_end";
     @NotNull private static final String USER_ID = "user_id";

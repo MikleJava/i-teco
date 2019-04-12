@@ -33,7 +33,7 @@ public final class ProjectDeleteCommand extends AbstractSecureCommand {
             }
             System.out.print("input project id which you want to delete : ");
             final int id = scanner.nextInt();
-            projectEndPoint.removeProject(session, projects.get(id).getUuid());
+            projectEndPoint.removeProject(session, projects.get(id));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

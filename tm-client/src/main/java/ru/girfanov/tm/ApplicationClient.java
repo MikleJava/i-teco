@@ -37,8 +37,8 @@ public class ApplicationClient {
 
         UserCreateCommand.class,
         UserAuthCommand.class,
-        UserEndSessionCommand.class,
-        UserPasswordUpdateCommand.class,
+        UserDeleteCommand.class,
+        UserUpdateCommand.class,
         UserSelectCommand.class,
         UsersSelectAllCommand.class,
 

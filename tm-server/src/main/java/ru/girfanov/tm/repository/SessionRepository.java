@@ -17,7 +17,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class SessionRepository implements ISessionRepository {
+public final class SessionRepository implements ISessionRepository {
 
     @NonNull Connection connection;
 

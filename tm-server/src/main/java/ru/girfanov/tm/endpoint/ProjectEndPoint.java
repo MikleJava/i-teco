@@ -17,7 +17,7 @@ import java.util.List;
 @WebService
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class ProjectEndPoint {
+public final class ProjectEndPoint {
 
     @NonNull private IProjectService projectService;
     @NonNull private ISessionService sessionService;
@@ -35,15 +35,15 @@ public class ProjectEndPoint {
     }
 
     @WebMethod
-    public void removeProject(@WebParam(name = "session") final Session session, @WebParam(name = "projectUuid") final String projectUuid) throws WrongSessionException {
+    public void removeProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) throws WrongSessionException {
         sessionService.existSession(session);
-        projectService.remove(session.getUserId(), projectUuid);
+        projectService.remove(session.getUserId(), project);
     }
 
     @WebMethod
     public void removeAllProjects(@WebParam(name = "session") final Session session) throws WrongSessionException {
         sessionService.existSession(session);
-        projectService.removeAll(session.getUserId());
+        projectService.removeAllByUserId(session.getUserId());
     }
 
     @WebMethod
@@ -55,7 +55,7 @@ public class ProjectEndPoint {
     @WebMethod
     public List<Project> findAllProjects(@WebParam(name = "session") final Session session) throws WrongSessionException {
         sessionService.existSession(session);
-        return projectService.findAll(session.getUserId());
+        return projectService.findAllByUserId(session.getUserId());
     }
 
     @WebMethod

@@ -2,6 +2,7 @@ package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.repository.IUserRepository;
@@ -26,6 +27,7 @@ public final class ProjectService extends AbstractService<Project> implements IP
         this.userRepository = userRepository;
     }
 
+    @Nullable
     @Override
     public List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
         if(userId.isEmpty() || value.isEmpty()) { return null; }

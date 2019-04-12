@@ -15,8 +15,10 @@ import ru.girfanov.tm.service.*;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
+import ru.girfanov.tm.util.DbConnectorUtil;
 
 import javax.xml.ws.Endpoint;
+import java.sql.Connection;
 
 @NoArgsConstructor
 public final class Bootstrap implements ServiceLocator {
@@ -27,10 +29,12 @@ public final class Bootstrap implements ServiceLocator {
     @NotNull private static final String DATA_DOMAIN_ENDPOINT = "http://localhost:8080/DataDomainEndpoint?wsdl";
     @NotNull private static final String SESSION_ENDPOINT = "http://localhost:8080/SessionEndPoint?wsdl";
 
-    @NotNull private final IProjectRepository projectRepository = new ProjectRepository();
-    @NotNull private final ITaskRepository taskRepository = new TaskRepository();
-    @NotNull private final IUserRepository userRepository = new UserRepository();
-    @NotNull private final ISessionRepository sessionRepository = new SessionRepository();
+    @NotNull private final Connection connection = DbConnectorUtil.getConnection();
+
+    @NotNull private final IProjectRepository projectRepository = new ProjectRepository(connection);
+    @NotNull private final ITaskRepository taskRepository = new TaskRepository(connection);
+    @NotNull private final IUserRepository userRepository = new UserRepository(connection);
+    @NotNull private final ISessionRepository sessionRepository = new SessionRepository(connection);
 
     @NotNull @Getter private final IProjectService projectService = new ProjectService(userRepository, projectRepository, taskRepository);
     @NotNull @Getter private final ITaskService taskService = new TaskService(taskRepository);

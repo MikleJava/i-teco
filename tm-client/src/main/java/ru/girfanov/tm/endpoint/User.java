@@ -3,6 +3,7 @@ package ru.girfanov.tm.endpoint;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence&gt;
  *         &lt;element name="login" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="role" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="role" type="{http://endpoint.tm.girfanov.ru/}role" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -39,7 +40,8 @@ public class User
 
     protected String login;
     protected String password;
-    protected String role;
+    @XmlSchemaType(name = "string")
+    protected Role role;
 
     /**
      * Gets the value of the login property.
@@ -94,10 +96,10 @@ public class User
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Role }
      *     
      */
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -106,10 +108,10 @@ public class User
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Role }
      *     
      */
-    public void setRole(String value) {
+    public void setRole(Role value) {
         this.role = value;
     }
 

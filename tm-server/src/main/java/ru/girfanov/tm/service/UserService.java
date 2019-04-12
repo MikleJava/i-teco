@@ -2,6 +2,7 @@ package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IUserService;
@@ -16,11 +17,7 @@ public final class UserService extends AbstractService<User> implements IUserSer
         this.userRepository = userRepository;
     }
 
-    @Override
-    public void mergePassword(@NotNull final String userId, @NotNull final String newPassword) {
-        if (!userId.isEmpty() || !newPassword.isEmpty()) { userRepository.mergePassword(userId, newPassword); }
-    }
-
+    @Nullable
     @Override
     public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
         if(login.isEmpty() || password.isEmpty()) { return null; }

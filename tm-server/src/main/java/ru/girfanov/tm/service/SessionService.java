@@ -18,7 +18,7 @@ import java.util.Date;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class SessionService extends AbstractService<Session> implements ISessionService {
+public final class SessionService extends AbstractService<Session> implements ISessionService {
 
     @NonNull private ISessionRepository sessionRepository;
     @NonNull private IUserRepository userRepository;
@@ -34,21 +34,20 @@ public class SessionService extends AbstractService<Session> implements ISession
         session.setTimeStamp(new Date());
         session.setUserId(user.getUuid());
         session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
-        sessionRepository.persist(session.getUserId(), session);
+        sessionRepository.persist(session);
         return session;
     }
 
     @Override
     public void removeSession(@NotNull final Session session) throws WrongSessionException {
         existSession(session);
-        sessionRepository.remove(session.getUserId(), session.getUuid());
+        sessionRepository.remove(session);
     }
 
     @Override
     public boolean existSession(@NotNull final Session session) throws WrongSessionException {
-        System.out.println(session.getSignature());
-        System.out.println(SignatureUtil.sign(session, SALT, CYCLE));
         final String signature = session.getSignature();
+        if(signature == null || signature.isEmpty()) throw new WrongSessionException("Wrong session");
         session.setSignature(null);
         if(!signature.equals(SignatureUtil.sign(session, SALT, CYCLE))) throw new WrongSessionException("Wrong session");
         session.setSignature(signature);

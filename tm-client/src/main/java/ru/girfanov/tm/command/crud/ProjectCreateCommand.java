@@ -7,6 +7,7 @@ import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.Project;
 import ru.girfanov.tm.endpoint.ProjectEndPoint;
 import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.Status;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
@@ -45,7 +46,7 @@ public final class ProjectCreateCommand extends AbstractSecureCommand {
             project.setUuid(UUID.randomUUID().toString());
             project.setName(name);
             project.setDescription(description);
-            project.setStatus(status);
+            project.setStatus(Status.valueOf(status));
             project.setUserId(session.getUserId());
             project.setDateStart(convert(dateStart));
             project.setDateEnd(convert(dateEnd));

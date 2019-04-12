@@ -6,8 +6,7 @@ import ru.girfanov.tm.bootstrap.Bootstrap;
 
 public final class ApplicationServer {
     public static void main(String[] args) {
-        @NotNull
-        ServiceLocator serviceLocator = new Bootstrap();
+        @NotNull final ServiceLocator serviceLocator = new Bootstrap();
         serviceLocator.init();
     }
 }

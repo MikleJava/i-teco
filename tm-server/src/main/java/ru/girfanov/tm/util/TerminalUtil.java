@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-public class Terminal {
+public class TerminalUtil {
 
     @NotNull
     public static final Scanner scanner = new Scanner(System.in);

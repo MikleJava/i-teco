@@ -2,15 +2,12 @@ package ru.girfanov.tm.command.system;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
-import ru.girfanov.tm.endpoint.Session;
-import ru.girfanov.tm.endpoint.SessionEndPoint;
+import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.exception.IncorrectRoleException;
-import ru.girfanov.tm.endpoint.User;
-import ru.girfanov.tm.endpoint.UserEndPoint;
+import ru.girfanov.tm.util.PasswordHashUtil;
 
 import java.util.UUID;
 
@@ -31,17 +28,17 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
         System.out.print("input user login : ");
         final String login = scanner.next();
         System.out.print("input user password : ");
-        final String password = scanner.next();
+        final String password = PasswordHashUtil.md5(scanner.next());
         System.out.print("input user role : ");
         final String role = scanner.next();
         final User user = new User();
         user.setUuid(UUID.randomUUID().toString());
         user.setLogin(login);
         user.setPassword(password);
-        user.setRole(role);
+        user.setRole(Role.valueOf(role));
         if(user.getRole() == null) throw new IncorrectRoleException("Incorrect role");
         userEndPoint.persistUser(user);
-        final Session userSession = sessionEndPoint.createSession(login, DigestUtils.md5Hex(password));
+        final Session userSession = sessionEndPoint.createSession(login, password);
         serviceLocator.setSession(userSession);
     }
 }

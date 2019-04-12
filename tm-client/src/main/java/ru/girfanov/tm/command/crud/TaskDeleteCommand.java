@@ -33,7 +33,7 @@ public final class TaskDeleteCommand extends AbstractSecureCommand {
             }
             System.out.print("input task id which you want to delete : ");
             final int id = scanner.nextInt();
-            taskEndPoint.removeTask(session, tasks.get(id).getUuid());
+            taskEndPoint.removeTask(session, tasks.get(id));
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

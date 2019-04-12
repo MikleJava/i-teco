@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
- *         &lt;element name="taskUuid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="task" type="{http://endpoint.tm.girfanov.ru/}task" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -29,12 +29,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "removeTask", propOrder = {
     "session",
-    "taskUuid"
+    "task"
 })
 public class RemoveTask {
 
     protected Session session;
-    protected String taskUuid;
+    protected Task task;
 
     /**
      * Gets the value of the session property.
@@ -61,27 +61,27 @@ public class RemoveTask {
     }
 
     /**
-     * Gets the value of the taskUuid property.
+     * Gets the value of the task property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Task }
      *     
      */
-    public String getTaskUuid() {
-        return taskUuid;
+    public Task getTask() {
+        return task;
     }
 
     /**
-     * Sets the value of the taskUuid property.
+     * Sets the value of the task property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Task }
      *     
      */
-    public void setTaskUuid(String value) {
-        this.taskUuid = value;
+    public void setTask(Task value) {
+        this.task = value;
     }
 
 }

@@ -66,13 +66,13 @@ public final class DataDomainService implements IDataDomainService {
             Object object;
             while ((object = objectInputStream.readObject()) != null) {
                 if (object instanceof Project) {
-                    projectRepository.merge(((Project) object).getUserId(), (Project) object);
+                    projectRepository.merge((Project) object);
                 }
                 if (object instanceof Task) {
-                    taskRepository.merge(((Task) object).getUserId(), (Task) object);
+                    taskRepository.merge((Task) object);
                 }
                 if (object instanceof User) {
-                    userRepository.merge(((User) object).getUuid(), (User) object);
+                    userRepository.merge((User) object);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -188,13 +188,13 @@ public final class DataDomainService implements IDataDomainService {
 
     private void updateDataDomain(DataDomain dataDomain) {
         for(Project project : dataDomain.getProjects()) {
-            projectRepository.merge(project.getUserId(), project);
+            projectRepository.merge(project);
         }
         for(Task task : dataDomain.getTasks()) {
-            taskRepository.merge(task.getUserId(), task);
+            taskRepository.merge(task);
         }
         for(User user : dataDomain.getUsers()) {
-            userRepository.merge(user.getUuid(), user);
+            userRepository.merge(user);
         }
     }
 }

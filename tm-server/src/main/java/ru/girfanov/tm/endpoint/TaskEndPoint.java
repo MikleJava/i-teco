@@ -17,7 +17,7 @@ import java.util.List;
 @WebService
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class TaskEndPoint {
+public final class TaskEndPoint {
 
     @NonNull private ITaskService taskService;
     @NonNull private ISessionService sessionService;
@@ -35,15 +35,15 @@ public class TaskEndPoint {
     }
 
     @WebMethod
-    public void removeTask(@WebParam(name = "session") final Session session, @WebParam(name = "taskUuid") final String taskUuid) throws WrongSessionException {
+    public void removeTask(@WebParam(name = "session") final Session session, @WebParam(name = "task") final Task task) throws WrongSessionException {
         sessionService.existSession(session);
-        taskService.remove(session.getUserId(), taskUuid);
+        taskService.remove(session.getUserId(), task);
     }
 
     @WebMethod
     public void removeAllTasks(@WebParam(name = "session") final Session session) throws WrongSessionException {
         sessionService.existSession(session);
-        taskService.removeAll(session.getUserId());
+        taskService.removeAllByUserId(session.getUserId());
     }
 
     @WebMethod
@@ -55,7 +55,7 @@ public class TaskEndPoint {
     @WebMethod
     public List<Task> findAllTasks(@WebParam(name = "session") final Session session) throws WrongSessionException {
         sessionService.existSession(session);
-        return taskService.findAll(session.getUserId());
+        return taskService.findAllByUserId(session.getUserId());
     }
 
     @WebMethod
