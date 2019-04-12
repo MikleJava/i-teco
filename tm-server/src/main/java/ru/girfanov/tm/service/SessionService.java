@@ -23,8 +23,8 @@ public final class SessionService extends AbstractService<Session> implements IS
     @NonNull private ISessionRepository sessionRepository;
     @NonNull private IUserRepository userRepository;
 
-    @NotNull private static final String SALT = "SALT";
-    @NotNull private static final Integer CYCLE = 100;
+    @Nullable private static final String SALT = PropertyService.getSalt();
+    @Nullable private static final Integer CYCLE = Integer.valueOf(PropertyService.getCycle());
 
     @Override
     public Session createSession(@NotNull final String login, @NotNull final String password) throws UserNotFoundException {

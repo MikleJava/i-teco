@@ -171,7 +171,8 @@ public final class TaskRepository implements ITaskRepository {
     @Nullable
     @SneakyThrows
     public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
-        if(value.equals(NAME) || value.equals(DESCRIPTION) || value.equals(STATUS) || value.equals(DATE_START) || value.equals(DATE_END)) {
+        boolean isChecked = value.equals(NAME) || value.equals(DESCRIPTION) || value.equals(STATUS) || value.equals(DATE_START) || value.equals(DATE_END);
+        if(isChecked) {
             @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = ? ORDER BY " + value;
             @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, userId);
