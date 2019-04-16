@@ -19,7 +19,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractEntity"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="signature" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="timeStamp" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -32,7 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "session", propOrder = {
     "signature",
-    "timeStamp",
+    "timestamp",
     "userId"
 })
 public class Session
@@ -41,7 +41,7 @@ public class Session
 
     protected String signature;
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar timeStamp;
+    protected XMLGregorianCalendar timestamp;
     protected String userId;
 
     /**
@@ -69,27 +69,27 @@ public class Session
     }
 
     /**
-     * Gets the value of the timeStamp property.
+     * Gets the value of the timestamp property.
      * 
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getTimeStamp() {
-        return timeStamp;
+    public XMLGregorianCalendar getTimestamp() {
+        return timestamp;
     }
 
     /**
-     * Sets the value of the timeStamp property.
+     * Sets the value of the timestamp property.
      * 
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setTimeStamp(XMLGregorianCalendar value) {
-        this.timeStamp = value;
+    public void setTimestamp(XMLGregorianCalendar value) {
+        this.timestamp = value;
     }
 
     /**

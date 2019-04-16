@@ -25,7 +25,7 @@ public final class UsersSelectAllCommand extends AbstractSecureCommand {
         System.out.println("___________________________________________________________________________________________________");
         final Collection<User> users = userEndPoint.findAllUsers(session);
         for (User user : users) {
-            System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
+            System.out.println("\t" + user.getId() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         }
     }
 }

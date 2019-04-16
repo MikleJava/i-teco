@@ -29,15 +29,15 @@ public final class TasksSelectAllByProjectIdCommand extends AbstractSecureComman
             System.out.println("all available projects : ");
             final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
             for (int i = 0; i < projects.size(); i++) {
-                System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                System.out.println(i + ") " + projects.get(i).getId() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id : ");
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
             System.out.println("___________________________________________________________________________________________________");
-            final Collection<Task> tasks = taskEndPoint.findAllTasksByProjectId(session, projects.get(id).getUuid());
+            final Collection<Task> tasks = taskEndPoint.findAllTasksByProjectId(session, projects.get(id).getId());
             for(Task task : tasks) {
-                System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+                System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
             }
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

@@ -29,14 +29,14 @@ public final class UserSelectCommand extends AbstractSecureCommand {
             System.out.println("all available users : ");
             final List<User> users = new ArrayList<>(userEndPoint.findAllUsers(session));
             for (int i = 0; i < users.size(); i++) {
-                System.out.println(i + ") " + users.get(i).getUuid() + " | " + users.get(i).getLogin());
+                System.out.println(i + ") " + users.get(i).getId() + " | " + users.get(i).getLogin());
             }
             System.out.print("input user id : ");
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tlogin\t|\trole");
             System.out.println("_______________________________________________________________________________________________");
-            final User user = userEndPoint.findOneUser(session, users.get(id).getUuid());
-            System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
+            final User user = userEndPoint.findOneUser(session, users.get(id).getId());
+            System.out.println("\t" + user.getId() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

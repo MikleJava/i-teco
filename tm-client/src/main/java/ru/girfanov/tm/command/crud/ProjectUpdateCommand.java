@@ -29,7 +29,7 @@ public final class ProjectUpdateCommand extends AbstractSecureCommand {
             System.out.println("all available projects : ");
             final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
             for (int i = 0; i < projects.size(); i++) {
-                System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                System.out.println(i + ") " + projects.get(i).getId() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id which you want to update : ");
             final int id = scanner.nextInt();

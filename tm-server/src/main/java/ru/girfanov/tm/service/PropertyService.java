@@ -48,25 +48,6 @@ public final class PropertyService {
     }
 
     @Nullable
-    public static String loadDataBaseConnection() {
-        @Nullable String result = null;
-        try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {
-            Properties properties = new Properties();
-            properties.load(input);
-            result =
-                    properties.getProperty("db.url") +
-                    properties.getProperty("db.host") + ":" +
-                    properties.getProperty("db.port") + "/" +
-                    properties.getProperty("db.name") + "?user=" +
-                    properties.getProperty("db.user") + "&password=" +
-                    properties.getProperty("db.password");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
-    @Nullable
     public static String getJdbcDriver() {
         @Nullable String driver = null;
         try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {

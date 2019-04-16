@@ -41,7 +41,7 @@ public final class ProjectsSelectAllCommand extends AbstractSecureCommand {
         System.out.println("\tid\t|\tname\t|\tdescription\t|\tuser_id\t|\tdate_start\t|\tdate_end");
         System.out.println("____________________________________________________________________________________________________________________________________");
         for (Project project : Objects.requireNonNull(projects)) {
-            System.out.println("\t" + project.getUuid() + "\t|\t" + project.getName() + "\t|\t" + project.getDescription() + "\t|\t" + project.getUserId() + "\t|\t" + project.getDateStart() + "\t|\t" + project.getDateEnd());
+            System.out.println("\t" + project.getId() + "\t|\t" + project.getName() + "\t|\t" + project.getDescription() + "\t|\t" + project.getUserId() + "\t|\t" + project.getDateStart() + "\t|\t" + project.getDateEnd());
         }
     }
 }

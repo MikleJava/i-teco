@@ -31,7 +31,7 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
         System.out.print("input user role : ");
         final String role = scanner.next();
         final User user = new User();
-        user.setUuid(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID().toString());
         user.setLogin(login);
         user.setPassword(password);
         user.setRole(Role.valueOf(role));

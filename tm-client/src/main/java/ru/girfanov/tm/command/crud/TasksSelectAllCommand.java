@@ -25,7 +25,7 @@ public final class TasksSelectAllCommand extends AbstractSecureCommand {
         System.out.println("__________________________________________________________________________________________________________________________________________________________");
         final Collection<Task> tasks = taskEndPoint.findAllTasks(session);
         for (Task task : tasks) {
-            System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
         }
     }
 }

@@ -3,22 +3,12 @@ package ru.girfanov.tm.bootstrap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.repository.IProjectRepository;
-import ru.girfanov.tm.api.repository.ISessionRepository;
-import ru.girfanov.tm.api.repository.ITaskRepository;
-import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.*;
 import ru.girfanov.tm.endpoint.*;
-import ru.girfanov.tm.repository.SessionRepository;
-import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.service.*;
 import ru.girfanov.tm.api.ServiceLocator;
-import ru.girfanov.tm.repository.ProjectRepository;
-import ru.girfanov.tm.repository.TaskRepository;
-import ru.girfanov.tm.util.DbConnectorUtil;
 
 import javax.xml.ws.Endpoint;
-import java.sql.Connection;
 
 @NoArgsConstructor
 public final class Bootstrap implements ServiceLocator {
@@ -29,18 +19,11 @@ public final class Bootstrap implements ServiceLocator {
     @NotNull private static final String DATA_DOMAIN_ENDPOINT = "http://localhost:8080/DataDomainEndpoint?wsdl";
     @NotNull private static final String SESSION_ENDPOINT = "http://localhost:8080/SessionEndPoint?wsdl";
 
-    @NotNull private final Connection connection = DbConnectorUtil.getConnection();
-
-    @NotNull private final IProjectRepository projectRepository = new ProjectRepository(connection);
-    @NotNull private final ITaskRepository taskRepository = new TaskRepository(connection);
-    @NotNull private final IUserRepository userRepository = new UserRepository(connection);
-    @NotNull private final ISessionRepository sessionRepository = new SessionRepository(connection);
-
-    @NotNull @Getter private final IProjectService projectService = new ProjectService(userRepository, projectRepository, taskRepository);
-    @NotNull @Getter private final ITaskService taskService = new TaskService(taskRepository);
-    @NotNull @Getter private final IUserService userService = new UserService(userRepository);
-    @NotNull @Getter private final IDataDomainService dataDomainService = new DataDomainService(projectRepository, taskRepository, userRepository);
-    @NotNull @Getter private final ISessionService sessionService = new SessionService(sessionRepository, userRepository);
+    @NotNull @Getter private final IProjectService projectService = new ProjectService();
+    @NotNull @Getter private final ITaskService taskService = new TaskService();
+    @NotNull @Getter private final IUserService userService = new UserService();
+    @NotNull @Getter private final IDataDomainService dataDomainService = new DataDomainService();
+    @NotNull @Getter private final ISessionService sessionService = new SessionService();
 
     @Override
     public void init() {

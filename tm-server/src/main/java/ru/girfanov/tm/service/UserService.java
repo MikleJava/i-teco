@@ -1,26 +1,99 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.entity.User;
-import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IUserService;
+import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.util.MyBatisConnectorUtil;
+
+import java.util.List;
 
 @NoArgsConstructor
-public final class UserService extends AbstractService<User> implements IUserService {
+public final class UserService implements IUserService {
 
-    private IUserRepository userRepository;
+    @Override
+    public void persist(@Nullable final String userId, @NotNull final User user) {
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            userRepository.persist(user);
+            sqlSession.commit();
+        }
+    }
 
-    public UserService(@NotNull final IUserRepository userRepository) {
-        super(userRepository);
-        this.userRepository = userRepository;
+    @Override
+    public void merge(@Nullable final String userId, @NotNull final User user) {
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            userRepository.merge(user);
+            sqlSession.commit();
+        }
+    }
+
+    @Override
+    public void remove(@Nullable final String userId, @NotNull final User user) {
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            userRepository.remove(user);
+            sqlSession.commit();
+        }
+    }
+
+    @Override
+    public void removeAllByUserId(@NotNull final String userId) {
+        if(userId.isEmpty()) { return; }
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            userRepository.removeAllByUserId(userId);
+            sqlSession.commit();
+        }
+    }
+
+    @Nullable
+    @Override
+    public User findOne(@NotNull final String userId, @Nullable final String id) {
+        if (userId.isEmpty()) { return null; }
+        User user;
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            user = userRepository.findOne(userId);
+        }
+        return user;
+    }
+
+    @Nullable
+    @Override
+    public List<User> findAllByUserId(@NotNull final String userId) {
+        if(userId.isEmpty()) { return null; }
+        List<User> users;
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            users = userRepository.findAllByUserId(userId);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findAll() {
+        List<User> users;
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            users = userRepository.findAll();
+        }
+        return users;
     }
 
     @Nullable
     @Override
     public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
         if(login.isEmpty() || password.isEmpty()) { return null; }
-        return userRepository.findOneByLoginAndPassword(login, password);
+        User user;
+        try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
+            final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            user = userRepository.findOneByLoginAndPassword(login, password);
+        }
+        return user;
     }
 }

@@ -29,7 +29,7 @@ public final class TaskDeleteCommand extends AbstractSecureCommand {
             System.out.println("all available tasks : ");
             final List<Task> tasks = new ArrayList<>(taskEndPoint.findAllTasks(session));
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println(i + ") " + tasks.get(i).getUuid() + " | " + tasks.get(i).getName());
+                System.out.println(i + ") " + tasks.get(i).getId() + " | " + tasks.get(i).getName());
             }
             System.out.print("input task id which you want to delete : ");
             final int id = scanner.nextInt();

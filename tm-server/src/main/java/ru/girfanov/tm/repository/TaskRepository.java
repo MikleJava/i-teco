@@ -1,204 +1,80 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
-import ru.girfanov.tm.enumeration.Status;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+
 import java.util.List;
-import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 
-@NoArgsConstructor
-@RequiredArgsConstructor
-public final class TaskRepository implements ITaskRepository {
+public interface TaskRepository extends ITaskRepository {
 
-    @NonNull Connection connection;
+    @NotNull String TABLE = "app_task";
+    @NotNull String ID = "id";
+    @NotNull String NAME = "name";
+    @NotNull String DESCRIPTION = "description";
+    @NotNull String STATUS = "status_task";
+    @NotNull String DATE_START = "date_start";
+    @NotNull String DATE_END = "date_end";
+    @NotNull String USER_ID = "user_id";
+    @NotNull String PROJECT_ID = "project_id";
 
-    @NotNull private static final String TABLE = "app_task";
+    @Insert("INSERT INTO " + TABLE + " (" + ID + ", " + NAME + ", " + DESCRIPTION + ", " + STATUS + ", " + DATE_START + ", " + DATE_END + ", " + USER_ID + ", " + PROJECT_ID + ") " +
+            "VALUES (#{id}, #{name}, #{description}, #{status}, #{dateStart}, #{dateEnd}, #{userId}, #{projectId})")
+    void persist(@NotNull final Task task);
 
-    @NotNull private static final String ID = "id";
-    @NotNull private static final String NAME = "name";
-    @NotNull private static final String DESCRIPTION = "description";
-    @NotNull private static final String STATUS = "status_task";
-    @NotNull private static final String DATE_START = "date_start";
-    @NotNull private static final String DATE_END = "date_end";
-    @NotNull private static final String USER_ID = "user_id";
-    @NotNull private static final String PROJECT_ID = "project_id";
+    @Update("UPDATE " + TABLE + " SET " + NAME + " = #{name}, " + DESCRIPTION + " = #{description}, " + STATUS + " = #{status}, " + DATE_START + " = #{dateStart}, " + DATE_END + " = #{dateEnd}, " + USER_ID + " = #{userId}, " + PROJECT_ID + " = #{projectId} WHERE " + ID + " = #{id}")
+    void merge(@NotNull final Task task);
 
-    @Override
-    @SneakyThrows
-    public void persist(@NotNull final Task task) {
-        @NotNull final String query = "INSERT INTO " + TABLE + " (" +
-                ID + ", " +
-                NAME + ", " +
-                DESCRIPTION + ", " +
-                STATUS + ", " +
-                DATE_START + ", " +
-                DATE_END + ", " +
-                USER_ID + ", " +
-                PROJECT_ID + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, task.getUuid());
-        preparedStatement.setString(2, task.getName());
-        preparedStatement.setString(3, task.getDescription());
-        preparedStatement.setString(4, task.getStatus().name());
-        preparedStatement.setTimestamp(5, new Timestamp(getDateISO8601(task.getDateStart()).getTime()));
-        preparedStatement.setTimestamp(6, new Timestamp(getDateISO8601(task.getDateEnd()).getTime()));
-        preparedStatement.setString(7, task.getUserId());
-        preparedStatement.setString(8, task.getProjectId());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = (#{id}")
+    void remove(@NotNull final Task task);
 
-    @Override
-    @SneakyThrows
-    public void merge(@NotNull final Task task) {
-        @NotNull final String query = "UPDATE " + TABLE + " SET " +
-                NAME + " = ?, " +
-                DESCRIPTION + " = ?, " +
-                STATUS + " = ?, " +
-                DATE_START + " = ?, " +
-                DATE_END + " = ?, " +
-                USER_ID + " = ?, " +
-                PROJECT_ID + " = ? WHERE " + ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, task.getName());
-        preparedStatement.setString(2, task.getDescription());
-        preparedStatement.setString(3, task.getStatus().name());
-        preparedStatement.setTimestamp(4, new Timestamp(getDateISO8601(task.getDateStart()).getTime()));
-        preparedStatement.setTimestamp(5, new Timestamp(getDateISO8601(task.getDateEnd()).getTime()));
-        preparedStatement.setString(6, task.getUserId());
-        preparedStatement.setString(7, task.getProjectId());
-        preparedStatement.setString(8, task.getUuid());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
+    void removeAllByUserId(@NotNull final String userId);
 
-    @Override
-    @SneakyThrows
-    public void remove(@NotNull final Task task) {
-        @NotNull final String query = "DELETE FROM " + TABLE + " WHERE " + ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, task.getUuid());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
+    @Results({
+            @Result(id=true, property="status", column="status_task"),
+            @Result(property="dateStart", column="date_start"),
+            @Result(property="dateEnd", column="date_end"),
+            @Result(property="userId", column="user_id"),
+            @Result(property="projectId", column="project_id")
+    })
+    Task findOne(@NotNull final String userId, @NotNull final String taskId);
 
-    @Override
-    @SneakyThrows
-    public void removeAllByUserId(@NotNull final String userId) {
-        @NotNull final String query = "DELETE FROM " + TABLE + " WHERE " + USER_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, userId);
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
+    @Results({
+            @Result(id=true, property="status", column="status_task"),
+            @Result(property="dateStart", column="date_start"),
+            @Result(property="dateEnd", column="date_end"),
+            @Result(property="userId", column="user_id"),
+            @Result(property="projectId", column="project_id")
+    })
+    List<Task> findAllByUserId(@NotNull final String userId);
 
-    @Override
-    @Nullable
-    @SneakyThrows
-    public Task findOne(@NotNull final String userId, @NotNull final String taskId) {
-        @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + ID + " = ? AND " + USER_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, taskId);
-        preparedStatement.setString(2, userId);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable Task task = null;
-        while (resultSet.next()) { task = fetch(resultSet); }
-        preparedStatement.close();
-        return task;
-    }
+    @Select("SELECT * FROM " + TABLE)
+    @Results({
+            @Result(id=true, property="status", column="status_task"),
+            @Result(property="dateStart", column="date_start"),
+            @Result(property="dateEnd", column="date_end"),
+            @Result(property="userId", column="user_id"),
+            @Result(property="projectId", column="project_id")
+    })
+    List<Task> findAll();
 
-    @Override
-    @SneakyThrows
-    public List<Task> findAllByUserId(@NotNull final String userId) {
-        @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, userId);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @NotNull final List<Task> tasks = new ArrayList<>();
-        while (resultSet.next()) tasks.add(fetch(resultSet));
-        preparedStatement.close();
-        return tasks;
-    }
+    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} AND " + PROJECT_ID + " = #{projectId}")
+    @Results({
+            @Result(id=true, property="status", column="status_task"),
+            @Result(property="dateStart", column="date_start"),
+            @Result(property="dateEnd", column="date_end"),
+            @Result(property="userId", column="user_id"),
+            @Result(property="projectId", column="project_id")
+    })
+    List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId);
 
-    @Override
-    @SneakyThrows
-    public List<Task> findAll() {
-        @NotNull final String query = "SELECT * FROM " + TABLE;
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @NotNull final List<Task> tasks = new ArrayList<>();
-        while (resultSet.next()) tasks.add(fetch(resultSet));
-        preparedStatement.close();
-        return tasks;
-    }
+    @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} AND " + PROJECT_ID + " = #{projectId}")
+    void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId);
 
-    @Override
-    @SneakyThrows
-    public List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
-        @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = ? AND " + PROJECT_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, userId);
-        preparedStatement.setString(2, projectId);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @NotNull final List<Task> tasks = new ArrayList<>();
-        while (resultSet.next()) tasks.add(fetch(resultSet));
-        preparedStatement.close();
-        return tasks;
-    }
-
-    @Override
-    @SneakyThrows
-    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
-        @NotNull final String query = "DELETE FROM " + TABLE + " WHERE " + USER_ID + " = ? AND " + PROJECT_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, userId);
-        preparedStatement.setString(2, projectId);
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
-
-    @Override
-    @Nullable
-    @SneakyThrows
-    public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
-        boolean isChecked = value.equals(NAME) || value.equals(DESCRIPTION) || value.equals(STATUS) || value.equals(DATE_START) || value.equals(DATE_END);
-        if(isChecked) {
-            @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = ? ORDER BY " + value;
-            @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, userId);
-            @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-            @NotNull final List<Task> tasks = new ArrayList<>();
-            while (resultSet.next()) tasks.add(fetch(resultSet));
-            preparedStatement.close();
-            return tasks;
-        }
-        return null;
-    }
-
-    @Nullable
-    @SneakyThrows
-    private Task fetch(@Nullable final ResultSet row) {
-        if (row == null) return null;
-        @NotNull final Task task = new Task();
-        task.setUuid(row.getString(ID));
-        task.setName(row.getString(NAME));
-        task.setDescription(row.getString(DESCRIPTION));
-        task.setStatus(Status.valueOf(row.getString(STATUS)));
-        task.setDateStart(row.getDate(DATE_START));
-        task.setDateEnd(row.getDate(DATE_END));
-        task.setUserId(row.getString(USER_ID));
-        task.setProjectId(row.getString(PROJECT_ID));
-        return task;
-    }
+    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} ORDER BY #{value}")
+    List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull @Param("value") final String value);
 }

@@ -1,137 +1,43 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.ISessionRepository;
 import ru.girfanov.tm.entity.Session;
-import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@RequiredArgsConstructor
-public final class SessionRepository implements ISessionRepository {
+public interface SessionRepository extends ISessionRepository {
 
-    @NonNull Connection connection;
-
-    @NotNull private static final String TABLE = "app_session";
-
-    @NotNull private static final String ID = "id";
-    @NotNull private static final String TIMESTAMP = "timestamp";
-    @NotNull private static final String SIGNATURE = "signature";
-    @NotNull private static final String USER_ID = "user_id";
+    @NotNull String TABLE = "app_session";
+    @NotNull String ID = "id";
+    @NotNull String TIMESTAMP = "timestamp";
+    @NotNull String SIGNATURE = "signature";
+    @NotNull String USER_ID = "user_id";
 
 
-    @Override
-    @SneakyThrows
-    public void persist(@NotNull final Session session) {
-        @NotNull final String query = "INSERT INTO " + TABLE + " (" +
-                ID + ", " +
-                TIMESTAMP + ", " +
-                SIGNATURE + ", " +
-                USER_ID + ") VALUES (?, ?, ?, ?)";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, session.getUuid());
-        preparedStatement.setTimestamp(2, new Timestamp(getDateISO8601(session.getTimeStamp()).getTime()));
-        preparedStatement.setString(3, session.getSignature());
-        preparedStatement.setString(4, session.getUserId());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Insert("INSERT INTO " + TABLE + " (" + ID + ", " + TIMESTAMP + ", " + SIGNATURE + ", " + USER_ID + ") " +
+            "VALUES (#{id}, #{timestamp}, #{signature}, #{userId})")
+    void persist(@NotNull final Session session);
 
-    @Override
-    @SneakyThrows
-    public void merge(@NotNull final Session session) {
-        @NotNull final String query = "UPDATE " + TABLE + " SET " +
-                TIMESTAMP + " = ?, " +
-                SIGNATURE + " = ?, " +
-                USER_ID + " = ? WHERE " + ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setTimestamp(1, new Timestamp(getDateISO8601(session.getTimeStamp()).getTime()));
-        preparedStatement.setString(2, session.getSignature());
-        preparedStatement.setString(3, session.getUserId());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Update("UPDATE " + TABLE + " SET " + TIMESTAMP + " = #{timestamp}, " + SIGNATURE + " = #{signature}, " + USER_ID + " = #{userId} WHERE " + ID + " = #{id}")
+    void merge(@NotNull final Session session);
 
-    @Override
-    @SneakyThrows
-    public void remove(@NotNull final Session session) {
-        @NotNull final String query = "DELETE FROM " + TABLE + " WHERE " + ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, session.getUuid());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = (#{id}")
+    void remove(@NotNull final Session session);
 
-    @Override
-    @SneakyThrows
-    public void removeAllByUserId(@NotNull final String userId) {
-        @NotNull final String query = "DELETE FROM " + TABLE + " WHERE " + USER_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, userId);
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+    @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
+    void removeAllByUserId(@NotNull final String userId);
 
-    @Override
-    @Nullable
-    @SneakyThrows
-    public Session findOne(@NotNull final String userId, @NotNull final String sessionId) {
-        @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + ID + " = ? AND " + USER_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, sessionId);
-        preparedStatement.setString(2, userId);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @Nullable Session session = null;
-        while (resultSet.next()) { session = fetch(resultSet); }
-        preparedStatement.close();
-        return session;
-    }
+    @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
+    @Results({@Result(id=true, property="userId", column="user_id")})
+    Session findOne(@NotNull final String userId, @NotNull final String id);
 
-    @Override
-    @SneakyThrows
-    public List<Session> findAllByUserId(@NotNull final String userId) {
-        @NotNull final String query = "SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = ?";
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, userId);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @NotNull final List<Session> sessions = new ArrayList<>();
-        while (resultSet.next()) sessions.add(fetch(resultSet));
-        preparedStatement.close();
-        return sessions;
-    }
+    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
+    @Results({@Result(id=true, property="userId", column="user_id")})
+    List<Session> findAllByUserId(@NotNull final String userId);
 
-    @Override
-    @SneakyThrows
-    public List<Session> findAll() {
-        @NotNull final String query = "SELECT * FROM " + TABLE;
-        @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = preparedStatement.executeQuery();
-        @NotNull final List<Session> sessions = new ArrayList<>();
-        while (resultSet.next()) sessions.add(fetch(resultSet));
-        preparedStatement.close();
-        return sessions;
-    }
-
-    @Nullable
-    @SneakyThrows
-    private Session fetch(@Nullable final ResultSet row) {
-        if (row == null) return null;
-        @NotNull final Session session = new Session();
-        session.setUuid(row.getString(ID));
-        session.setTimeStamp(row.getDate(TIMESTAMP));
-        session.setSignature(row.getString(SIGNATURE));
-        session.setUserId(row.getString(USER_ID));
-        return session;
-    }
+    @Select("SELECT * FROM " + TABLE)
+    @Results({@Result(id=true, property="userId", column="user_id")})
+    public List<Session> findAll();
 }

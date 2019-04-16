@@ -21,62 +21,102 @@ public class DataDomainEndPoint {
     @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void saveDataBySerialization(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session) ;
+    public void saveDataBySerialization(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session) ;
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.saveDataBySerialization();
     }
 
     @WebMethod
-    public void getDataBySerialization(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void getDataBySerialization(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.getDataBySerialization();
     }
 
     @WebMethod
-    public void saveDataByJaxbInXml(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void saveDataByJaxbInXml(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.saveDataByJaxbInXml();
     }
 
     @WebMethod
-    public void getDataByJaxbInXml(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void getDataByJaxbInXml(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.getDataByJaxbInXml();
     }
 
     @WebMethod
-    public void saveDataByJaxbInJson(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void saveDataByJaxbInJson(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.saveDataByJaxbInJson();
     }
 
     @WebMethod
-    public void getDataByJaxbInJson(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void getDataByJaxbInJson(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.getDataByJaxbInJson();
     }
 
     @WebMethod
-    public void saveDataByFasterInXml(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void saveDataByFasterInXml(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.saveDataByFasterInXml();
     }
 
     @WebMethod
-    public void getDataByFasterInXml(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void getDataByFasterInXml(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.getDataByFasterInXml();
     }
 
     @WebMethod
-    public void saveDataByFasterInJson(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void saveDataByFasterInJson(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.saveDataByFasterInJson();
     }
 
     @WebMethod
-    public void getDataByFasterInJson(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void getDataByFasterInJson(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         dataDomainService.getDataByFasterInJson();
     }
 }

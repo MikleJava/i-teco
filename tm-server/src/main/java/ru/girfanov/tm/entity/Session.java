@@ -14,7 +14,7 @@ public class Session extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -4054345421899926821L;
 
-    @NonNull private Date timeStamp;
+    @NonNull private Date timestamp;
 
     @Nullable private String signature;
 

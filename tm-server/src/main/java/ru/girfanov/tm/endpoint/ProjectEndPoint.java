@@ -23,44 +23,72 @@ public final class ProjectEndPoint {
     @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void persistProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void persistProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         projectService.persist(session.getUserId(), project);
     }
 
     @WebMethod
-    public void mergeProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void mergeProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         projectService.merge(session.getUserId(), project);
     }
 
     @WebMethod
-    public void removeProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void removeProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         projectService.remove(session.getUserId(), project);
     }
 
     @WebMethod
-    public void removeAllProjects(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void removeAllProjects(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         projectService.removeAllByUserId(session.getUserId());
     }
 
     @WebMethod
-    public Project findOneProject(@WebParam(name = "session") final Session session, @WebParam(name = "projectUuid") final String projectUuid) throws WrongSessionException {
-        sessionService.existSession(session);
+    public Project findOneProject(@WebParam(name = "session") final Session session, @WebParam(name = "projectUuid") final String projectUuid) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         return projectService.findOne(session.getUserId(), projectUuid);
     }
 
     @WebMethod
-    public List<Project> findAllProjects(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public List<Project> findAllProjects(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         return projectService.findAllByUserId(session.getUserId());
     }
 
     @WebMethod
-    public List<Project> findAllProjectsSortedByValue(@WebParam(name = "session") final Session session, @WebParam(name = "value") final String value) throws WrongSessionException {
-        sessionService.existSession(session);
+    public List<Project> findAllProjectsSortedByValue(@WebParam(name = "session") final Session session, @WebParam(name = "value") final String value) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         return projectService.findAllSortedByValue(session.getUserId(), value);
     }
 }

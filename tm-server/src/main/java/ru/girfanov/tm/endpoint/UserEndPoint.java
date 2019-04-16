@@ -23,39 +23,60 @@ public final class UserEndPoint {
     @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void persistUser(@WebParam(name = "user") final User user) throws WrongSessionException {
-        userService.persist(user.getUuid(), user);
+    public void persistUser(@WebParam(name = "user") final User user) {
+        userService.persist(user.getId(), user);
     }
 
     @WebMethod
-    public void mergeUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void mergeUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         userService.merge(session.getUserId(), user);
     }
 
     @WebMethod
-    public void removeUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void removeUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         userService.remove(session.getUserId(), user);
     }
 
     @WebMethod
-    public void removeAllUsers(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public void removeAllUsers(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         userService.removeAllByUserId(session.getUserId());
     }
 
     @WebMethod
-    public User findOneUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String uuid) throws WrongSessionException {
-        sessionService.existSession(session);
+    public User findOneUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String uuid) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         return userService.findOne(session.getUserId(), uuid);
     }
 
     @WebMethod
-    public List<User> findAllUsers(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
+    public List<User> findAllUsers(@WebParam(name = "session") final Session session) {
+        try {
+            sessionService.existSession(session);
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
         return userService.findAllByUserId(session.getUserId());
     }
+
     @WebMethod
     public List<User> findAll() {
         return userService.findAll();

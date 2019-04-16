@@ -40,7 +40,7 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             System.out.println("all available projects : ");
             final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
             for (int i = 0; i < projects.size(); i++) {
-                System.out.println(i + ") " + projects.get(i).getUuid() + " | " + projects.get(i).getName());
+                System.out.println(i + ") " + projects.get(i).getId() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id : ");
             final int projectId = scanner.nextInt();
@@ -51,7 +51,7 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             task.setStatus(Status.valueOf(status));
             task.setDateStart(convert(dateStart));
             task.setDateEnd(convert(dateEnd));
-            task.setProjectId(projects.get(projectId).getUuid());
+            task.setProjectId(projects.get(projectId).getId());
             taskEndPoint.persistTask(session, task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

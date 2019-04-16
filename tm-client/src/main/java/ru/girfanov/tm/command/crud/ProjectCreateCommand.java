@@ -38,7 +38,7 @@ public final class ProjectCreateCommand extends AbstractSecureCommand {
             //System.out.print("input date end : ");
             final Date dateEnd = new Date();
             final Project project = new Project();
-            project.setUuid(UUID.randomUUID().toString());
+            project.setId(UUID.randomUUID().toString());
             project.setName(name);
             project.setDescription(description);
             project.setStatus(Status.valueOf(status));
