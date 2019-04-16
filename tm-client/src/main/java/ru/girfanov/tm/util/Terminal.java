@@ -12,8 +12,5 @@ public class Terminal {
     public static final Scanner scanner = new Scanner(System.in);
 
     @NotNull
-    public static final DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
-
-    @NotNull
     public static final String[] sortValue = {"date start", "date end", "status"};
 }

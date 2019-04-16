@@ -5,15 +5,13 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-
 import javax.xml.datatype.DatatypeConfigurationException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
-import static ru.girfanov.tm.util.DateConverterGregorianCalendar.*;
+import static ru.girfanov.tm.util.DateConverterGregorianCalendar.convert;
 import static ru.girfanov.tm.util.Terminal.*;
 
 @Getter
@@ -35,10 +33,10 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             final String description = scanner.next();
             System.out.print("input status : ");
             final String status = scanner.next();
-            System.out.print("input date start : ");
-            final Date dateStart = dateFormat.parse(scanner.next());
+            //System.out.print("input date start : ");
+            final Date dateStart = new Date();
             System.out.print("input date end : ");
-            final Date dateEnd = dateFormat.parse(scanner.next());
+            final Date dateEnd = new Date();
             System.out.println("all available projects : ");
             final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
             for (int i = 0; i < projects.size(); i++) {
@@ -57,8 +55,6 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             taskEndPoint.persistTask(session, task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
-        } catch (ParseException e) {
-            System.out.println("Incorrect date");
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }

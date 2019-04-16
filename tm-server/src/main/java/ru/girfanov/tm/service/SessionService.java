@@ -13,7 +13,9 @@ import ru.girfanov.tm.exception.WrongSessionException;
 import ru.girfanov.tm.util.SignatureUtil;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.entity.Session;
+import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 
+import java.text.ParseException;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -31,9 +33,13 @@ public final class SessionService extends AbstractService<Session> implements IS
         @Nullable final User user = userRepository.findOneByLoginAndPassword(login, password);
         if(user == null) throw new UserNotFoundException("User not found");
         final Session session = new Session();
-        session.setTimeStamp(new Date());
-        session.setUserId(user.getUuid());
-        session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
+        try {
+            session.setTimeStamp(getDateISO8601(new Date()));
+            session.setUserId(user.getUuid());
+            session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         sessionRepository.persist(session);
         return session;
     }

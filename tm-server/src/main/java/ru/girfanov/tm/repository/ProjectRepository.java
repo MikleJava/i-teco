@@ -13,7 +13,9 @@ import ru.girfanov.tm.enumeration.Status;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.*;
+import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -47,8 +49,8 @@ public final class ProjectRepository implements IProjectRepository {
         preparedStatement.setString(2, project.getName());
         preparedStatement.setString(3, project.getDescription());
         preparedStatement.setString(4, project.getStatus().name());
-        preparedStatement.setDate(5, (java.sql.Date) project.getDateStart());
-        preparedStatement.setDate(6, (java.sql.Date) project.getDateEnd());
+        preparedStatement.setTimestamp(5, new Timestamp(getDateISO8601(project.getDateStart()).getTime()));
+        preparedStatement.setTimestamp(6, new Timestamp(getDateISO8601(project.getDateEnd()).getTime()));
         preparedStatement.setString(7, project.getUserId());
         preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -68,8 +70,8 @@ public final class ProjectRepository implements IProjectRepository {
         preparedStatement.setString(1, project.getName());
         preparedStatement.setString(2, project.getDescription());
         preparedStatement.setString(3, project.getStatus().name());
-        preparedStatement.setDate(4, (java.sql.Date) project.getDateStart());
-        preparedStatement.setDate(5, (java.sql.Date) project.getDateEnd());
+        preparedStatement.setTimestamp(4, new Timestamp(getDateISO8601(project.getDateStart()).getTime()));
+        preparedStatement.setTimestamp(5, new Timestamp(getDateISO8601(project.getDateEnd()).getTime()));
         preparedStatement.setString(6, project.getUserId());
         preparedStatement.setString(7, project.getUuid());
         preparedStatement.executeUpdate();

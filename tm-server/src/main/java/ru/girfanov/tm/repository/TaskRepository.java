@@ -9,12 +9,13 @@ import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.enumeration.Status;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -50,8 +51,8 @@ public final class TaskRepository implements ITaskRepository {
         preparedStatement.setString(2, task.getName());
         preparedStatement.setString(3, task.getDescription());
         preparedStatement.setString(4, task.getStatus().name());
-        preparedStatement.setDate(5, (java.sql.Date) task.getDateStart());
-        preparedStatement.setDate(6, (java.sql.Date) task.getDateEnd());
+        preparedStatement.setTimestamp(5, new Timestamp(getDateISO8601(task.getDateStart()).getTime()));
+        preparedStatement.setTimestamp(6, new Timestamp(getDateISO8601(task.getDateEnd()).getTime()));
         preparedStatement.setString(7, task.getUserId());
         preparedStatement.setString(8, task.getProjectId());
         preparedStatement.executeUpdate();
@@ -73,8 +74,8 @@ public final class TaskRepository implements ITaskRepository {
         preparedStatement.setString(1, task.getName());
         preparedStatement.setString(2, task.getDescription());
         preparedStatement.setString(3, task.getStatus().name());
-        preparedStatement.setDate(4, (java.sql.Date) task.getDateStart());
-        preparedStatement.setDate(5, (java.sql.Date) task.getDateEnd());
+        preparedStatement.setTimestamp(4, new Timestamp(getDateISO8601(task.getDateStart()).getTime()));
+        preparedStatement.setTimestamp(5, new Timestamp(getDateISO8601(task.getDateEnd()).getTime()));
         preparedStatement.setString(6, task.getUserId());
         preparedStatement.setString(7, task.getProjectId());
         preparedStatement.setString(8, task.getUuid());

@@ -7,15 +7,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for mergeUserPasswordResponse complex type.
+ * <p>Java class for timestamp complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="mergeUserPasswordResponse"&gt;
+ * &lt;complexType name="timestamp"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="nanos" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -25,8 +26,27 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "mergeUserPasswordResponse")
-public class MergeUserPasswordResponse {
+@XmlType(name = "timestamp", propOrder = {
+    "nanos"
+})
+public class Timestamp {
 
+    protected int nanos;
+
+    /**
+     * Gets the value of the nanos property.
+     * 
+     */
+    public int getNanos() {
+        return nanos;
+    }
+
+    /**
+     * Sets the value of the nanos property.
+     * 
+     */
+    public void setNanos(int value) {
+        this.nanos = value;
+    }
 
 }

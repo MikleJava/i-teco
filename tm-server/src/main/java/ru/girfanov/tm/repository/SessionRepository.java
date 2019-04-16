@@ -8,10 +8,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.ISessionRepository;
 import ru.girfanov.tm.entity.Session;
+import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public final class SessionRepository implements ISessionRepository {
     @NotNull private static final String TABLE = "app_session";
 
     @NotNull private static final String ID = "id";
-    @NotNull private static final String TIME_STAMP = "time_stamp";
+    @NotNull private static final String TIMESTAMP = "timestamp";
     @NotNull private static final String SIGNATURE = "signature";
     @NotNull private static final String USER_ID = "user_id";
 
@@ -34,12 +36,12 @@ public final class SessionRepository implements ISessionRepository {
     public void persist(@NotNull final Session session) {
         @NotNull final String query = "INSERT INTO " + TABLE + " (" +
                 ID + ", " +
-                TIME_STAMP + ", " +
+                TIMESTAMP + ", " +
                 SIGNATURE + ", " +
                 USER_ID + ") VALUES (?, ?, ?, ?)";
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, session.getUuid());
-        preparedStatement.setDate(2, (java.sql.Date) session.getTimeStamp());
+        preparedStatement.setTimestamp(2, new Timestamp(getDateISO8601(session.getTimeStamp()).getTime()));
         preparedStatement.setString(3, session.getSignature());
         preparedStatement.setString(4, session.getUserId());
         preparedStatement.executeUpdate();
@@ -50,11 +52,11 @@ public final class SessionRepository implements ISessionRepository {
     @SneakyThrows
     public void merge(@NotNull final Session session) {
         @NotNull final String query = "UPDATE " + TABLE + " SET " +
-                TIME_STAMP + " = ?, " +
+                TIMESTAMP + " = ?, " +
                 SIGNATURE + " = ?, " +
                 USER_ID + " = ? WHERE " + ID + " = ?";
         @NotNull final PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setDate(1, (java.sql.Date) session.getTimeStamp());
+        preparedStatement.setTimestamp(1, new Timestamp(getDateISO8601(session.getTimeStamp()).getTime()));
         preparedStatement.setString(2, session.getSignature());
         preparedStatement.setString(3, session.getUserId());
         preparedStatement.executeUpdate();
@@ -127,7 +129,7 @@ public final class SessionRepository implements ISessionRepository {
         if (row == null) return null;
         @NotNull final Session session = new Session();
         session.setUuid(row.getString(ID));
-        session.setTimeStamp(row.getDate(TIME_STAMP));
+        session.setTimeStamp(row.getDate(TIMESTAMP));
         session.setSignature(row.getString(SIGNATURE));
         session.setUserId(row.getString(USER_ID));
         return session;
