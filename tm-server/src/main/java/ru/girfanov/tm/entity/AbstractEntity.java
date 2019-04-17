@@ -3,19 +3,18 @@ package ru.girfanov.tm.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
+@Getter
+@Setter
+@MappedSuperclass
 @NoArgsConstructor
-public class AbstractEntity implements Serializable {
+public class AbstractEntity {
 
-    private static final long serialVersionUID = 6459191137870691996L;
-
-    @Getter
-    @Setter
-    @NotNull
+    @Id
     private String id = UUID.randomUUID().toString();
 
 }

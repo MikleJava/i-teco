@@ -1,63 +1,58 @@
 package ru.girfanov.tm.repository;
 
-import org.apache.ibatis.annotations.*;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public interface ProjectRepository extends IProjectRepository {
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class ProjectRepository implements IProjectRepository {
 
-    @NotNull String TABLE = "app_project";
-    @NotNull String ID = "id";
-    @NotNull String NAME = "name";
-    @NotNull String DESCRIPTION = "description";
-    @NotNull String STATUS = "status_project";
-    @NotNull String DATE_START = "date_start";
-    @NotNull String DATE_END = "date_end";
-    @NotNull String USER_ID = "user_id";
+    @NonNull private EntityManager em;
 
-    @Insert("INSERT INTO " + TABLE + " (" + ID + ", " + NAME + ", " + DESCRIPTION + ", " + STATUS + ", " + DATE_START + ", " + DATE_END + ", " + USER_ID + ") " +
-            "VALUES (#{id}, #{name}, #{description}, #{status}, #{dateStart}, #{dateEnd}, #{userId})")
-    void persist(@NotNull final Project project);
+    @Override
+    public void persist(@NotNull final Project project) {
+        em.persist(project);
+    }
 
-    @Update("UPDATE " + TABLE + " SET " + NAME + " = #{name}, " + DESCRIPTION + " = #{description}, " + STATUS + " = #{status}, " + DATE_START + " = #{dateStart}, " + DATE_END + " = #{dateEnd}, " + USER_ID + " = #{userId} WHERE " + ID + " = #{id}")
-    void merge(@NotNull final Project project);
+    @Override
+    public void merge(@NotNull final Project project) {
+        em.merge(project);
+    }
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
-    void remove(@NotNull final Project project);
+    @Override
+    public void remove(@NotNull final Project project) {
+        em.remove(project);
+    }
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    void removeAllByUserId(@NotNull @Param("userId") final String userId);
+    @Override
+    public void removeAllByUserId(@NotNull final String userId) {
+        em.createQuery("DELETE FROM app_project WHERE user_id = :user_id").setParameter("user_id", userId);
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
-    @Results({
-            @Result(id=true, property="status", column="status_project"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id")
-    })
-    Project findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("projectId") final String projectId);
+    @Override
+    public Project findOne(@NotNull final String userId, @NotNull final String projectId) {
+        return em.createQuery("SELECT t FROM app_project t WHERE t.user_id = :user_id AND t.id = :id", Project.class).setParameter("user_id", userId).setParameter("id", projectId).getSingleResult();
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    @Results({
-            @Result(id=true, property="status", column="status_project"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id")
-    })
-    List<Project> findAllByUserId(@NotNull @Param("userId") final String userId);
+    @Override
+    public List<Project> findAllByUserId(@NotNull final String userId) {
+        return em.createQuery("SELECT t FROM app_project t WHERE t.user_id = :user_id", Project.class).setParameter("user_id", userId).getResultList();
+    }
 
-    @Select("SELECT * FROM " + TABLE)
-    @Results({
-            @Result(id=true, property="status", column="status_project"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id")
-    })
-    List<Project> findAll();
+    @Override
+    public List<Project> findAll() {
+        return em.createQuery("SELECT t FROM app_project t", Project.class).getResultList();
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} ORDER BY #{value}")
-    List<Project> findAllSortedByValue(@NotNull @Param("userId") final String userId, @NotNull @Param("value") final String value);
+    @Override
+    public List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
+        return em.createQuery("SELECT t FROM app_project t ORDER BY t." + value, Project.class).getResultList();
+    }
 }

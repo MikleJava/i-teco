@@ -3,19 +3,31 @@ package ru.girfanov.tm.entity;
 import lombok.*;
 import ru.girfanov.tm.enumeration.Role;
 
-import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
-@AllArgsConstructor
-public class User extends AbstractEntity implements Serializable {
+@Table(name = "app_user", schema = "tm")
+public class User extends AbstractEntity {
 
-    private static final long serialVersionUID = -3316296014185311021L;
+    @Column(unique = true)
+    private String login;
 
-    @NonNull private String login;
+    @Column(name = "password_hash")
+    private String password;
 
-    @NonNull private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @NonNull private Role role;
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
+    private List<Session> sessions;
+
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
+    private List<Project> projects;
 }

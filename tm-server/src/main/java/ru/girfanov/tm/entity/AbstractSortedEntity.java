@@ -3,27 +3,32 @@ package ru.girfanov.tm.entity;
 import lombok.*;
 import ru.girfanov.tm.enumeration.Status;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
+@MappedSuperclass
 @NoArgsConstructor
-@RequiredArgsConstructor
-public class AbstractSortedEntity extends AbstractEntity implements Serializable {
+public class AbstractSortedEntity extends AbstractEntity {
 
-    private static final long serialVersionUID = 3974430357120257949L;
+    private String name;
 
-    @NonNull private String name;
+    private String description;
 
-    @NonNull private String description;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    @NonNull private Status status;
+    @Column(name = "date_start")
+    private Date dateStart;
 
-    @NonNull private Date dateStart;
+    @Column(name = "date_end")
+    private Date dateEnd;
 
-    @NonNull private Date dateEnd;
-
-    @NonNull private String userId;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    @Column(name = "user_id")
+    private User userId;
 
 }

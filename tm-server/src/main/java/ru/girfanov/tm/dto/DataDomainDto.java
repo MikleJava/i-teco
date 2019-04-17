@@ -13,8 +13,8 @@ import java.util.Collection;
 
 @Getter
 @Setter
-@XmlRootElement(name = "DataDomain")
-public final class DataDomain {
+@XmlRootElement(name = "DataDomainDto")
+public final class DataDomainDto {
 
     @NotNull Collection<Project> projects = new ArrayList<>();
 

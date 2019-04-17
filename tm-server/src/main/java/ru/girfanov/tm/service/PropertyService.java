@@ -9,6 +9,19 @@ import java.util.Properties;
 public final class PropertyService {
 
     @Nullable
+    public static String getJdbcDialect() {
+        @Nullable String dialect = null;
+        try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {
+            Properties properties = new Properties();
+            properties.load(input);
+            dialect = properties.getProperty("db.dialect");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return dialect;
+    }
+
+    @Nullable
     public static String getJdbcUsername() {
         @Nullable String name = null;
         try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {

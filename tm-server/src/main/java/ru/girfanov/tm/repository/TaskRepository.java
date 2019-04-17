@@ -1,80 +1,68 @@
 package ru.girfanov.tm.repository;
 
-import org.apache.ibatis.annotations.*;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public interface TaskRepository extends ITaskRepository {
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class TaskRepository implements ITaskRepository {
 
-    @NotNull String TABLE = "app_task";
-    @NotNull String ID = "id";
-    @NotNull String NAME = "name";
-    @NotNull String DESCRIPTION = "description";
-    @NotNull String STATUS = "status_task";
-    @NotNull String DATE_START = "date_start";
-    @NotNull String DATE_END = "date_end";
-    @NotNull String USER_ID = "user_id";
-    @NotNull String PROJECT_ID = "project_id";
+    @NonNull private EntityManager em;
 
-    @Insert("INSERT INTO " + TABLE + " (" + ID + ", " + NAME + ", " + DESCRIPTION + ", " + STATUS + ", " + DATE_START + ", " + DATE_END + ", " + USER_ID + ", " + PROJECT_ID + ") " +
-            "VALUES (#{id}, #{name}, #{description}, #{status}, #{dateStart}, #{dateEnd}, #{userId}, #{projectId})")
-    void persist(@NotNull final Task task);
+    @Override
+    public void persist(@NotNull final Task task) {
+        em.persist(task);
+    }
 
-    @Update("UPDATE " + TABLE + " SET " + NAME + " = #{name}, " + DESCRIPTION + " = #{description}, " + STATUS + " = #{status}, " + DATE_START + " = #{dateStart}, " + DATE_END + " = #{dateEnd}, " + USER_ID + " = #{userId}, " + PROJECT_ID + " = #{projectId} WHERE " + ID + " = #{id}")
-    void merge(@NotNull final Task task);
+    @Override
+    public void merge(@NotNull final Task task) {
+        em.merge(task);
+    }
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
-    void remove(@NotNull final Task task);
+    @Override
+    public void remove(@NotNull final Task task) {
+        em.remove(task);
+    }
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    void removeAllByUserId(@NotNull @Param("userId") final String userId);
+    @Override
+    public void removeAllByUserId(@NotNull final String userId) {
+        em.createQuery("DELETE FROM app_task WHERE user_id = :user_id").setParameter("user_id", userId);
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
-    @Results({
-            @Result(id=true, property="status", column="status_task"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id"),
-            @Result(property="projectId", column="project_id")
-    })
-    Task findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("taskId") final String taskId);
+    @Override
+    public Task findOne(@NotNull final String userId, @NotNull final String taskId) {
+        return em.createQuery("SELECT t FROM app_task t WHERE t.user_id = :user_id AND t.id = :id", Task.class).setParameter("user_id", userId).setParameter("id", taskId).getSingleResult();
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    @Results({
-            @Result(id=true, property="status", column="status_task"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id"),
-            @Result(property="projectId", column="project_id")
-    })
-    List<Task> findAllByUserId(@NotNull @Param("userId") final String userId);
+    @Override
+    public List<Task> findAllByUserId(@NotNull final String userId) {
+        return null;
+    }
 
-    @Select("SELECT * FROM " + TABLE)
-    @Results({
-            @Result(id=true, property="status", column="status_task"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id"),
-            @Result(property="projectId", column="project_id")
-    })
-    List<Task> findAll();
+    @Override
+    public List<Task> findAll() {
+        return null;
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} AND " + PROJECT_ID + " = #{projectId}")
-    @Results({
-            @Result(id=true, property="status", column="status_task"),
-            @Result(property="dateStart", column="date_start"),
-            @Result(property="dateEnd", column="date_end"),
-            @Result(property="userId", column="user_id"),
-            @Result(property="projectId", column="project_id")
-    })
-    List<Task> findAllTasksByProjectId(@NotNull @Param("userId") final String userId, @NotNull @Param("projectId") final String projectId);
+    @Override
+    public List<Task> findAllTasksByProjectId(String userId, String projectId) {
+        return null;
+    }
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} AND " + PROJECT_ID + " = #{projectId}")
-    void removeAllTasksByProjectId(@NotNull @Param("userId") final String userId, @NotNull @Param("projectId") final String projectId);
+    @Override
+    public void removeAllTasksByProjectId(String userId, String projectId) {
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} ORDER BY #{value}")
-    List<Task> findAllSortedByValue(@NotNull @Param("userId") final String userId, @NotNull @Param("value") final String value);
+    }
+
+    @Override
+    public List<Task> findAllSortedByValue(String userId, String value) {
+        return null;
+    }
 }

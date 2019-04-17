@@ -1,39 +1,60 @@
 package ru.girfanov.tm.repository;
 
-import org.apache.ibatis.annotations.*;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.UserNotFoundException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
-public interface UserRepository extends IUserRepository {
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class UserRepository implements IUserRepository {
 
-    @NotNull String TABLE = "app_user";
-    @NotNull String ID = "id";
-    @NotNull String LOGIN = "login";
-    @NotNull String PASSWORD = "password_hash";
-    @NotNull String ROLE = "role";
+    @NonNull private EntityManager em;
 
-    @Insert("INSERT INTO " + TABLE + " (" + ID + ", " + LOGIN + ", " + PASSWORD + ", " + ROLE + ") " +
-            "VALUES (#{id}, #{login}, #{password}, #{role})")
-    void persist(@NotNull final User user);
+    @Override
+    public void persist(@NotNull final User user) {
+        em.persist(user);
+    }
 
-    @Update("UPDATE " + TABLE + " SET " + LOGIN + " = #{login}, " + PASSWORD + " = #{password}, " + ROLE + " = #{role} WHERE " + ID + " = #{id}")
-    void merge(@NotNull final User user);
+    @Override
+    public void merge(@NotNull final User user) {
+        em.merge(user);
+    }
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
-    void remove(@NotNull final User user);
+    @Override
+    public void remove(@NotNull final User user) {
+        em.remove(user);
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id}")
-    @Results({@Result(id=true, property="password", column="password_hash")})
-    User findOne(@NotNull @Param("id") final String id);
+    @Override
+    public User findOne(@NotNull final String userId) throws UserNotFoundException {
+        if(em.find(User.class, userId) == null) throw new UserNotFoundException("user not found");
+        return em.find(User.class, userId);
+    }
 
-    @Select("SELECT * FROM " + TABLE)
-    @Results({@Result(id=true, property="password", column="password_hash")})
-    List<User> findAll();
+    @Override
+    public List<User> findAll() {
+        return em.createQuery("SELECT t FROM app_user t", User.class).getResultList();
+    }
 
-    @Select("SELECT * FROM " + TABLE + " WHERE " + LOGIN + " = #{login} AND " + PASSWORD + " = #{password}")
-    @Results({@Result(id=true, property="password", column="password_hash")})
-    User findOneByLoginAndPassword(@NotNull @Param("login") final String login, @NotNull @Param("password") final String password);
+    @Override
+    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
+        final CriteriaBuilder builder = em.getCriteriaBuilder();
+        final CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        final Root<User> from = criteria.from(User.class);
+        criteria.select(from);
+        criteria.where(builder.equal(from.get("login"), login) , builder.equal(from.get("password_hash"), password));
+        final TypedQuery<User> typed = em.createQuery(criteria);
+        return typed.getSingleResult();
+    }
 }
