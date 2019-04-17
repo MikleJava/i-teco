@@ -10,6 +10,7 @@ import ru.girfanov.tm.exception.WrongSessionException;
 import ru.girfanov.tm.repository.SessionRepository;
 import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.util.MyBatisConnectorUtil;
+import ru.girfanov.tm.util.PasswordHashUtil;
 import ru.girfanov.tm.util.SignatureUtil;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.entity.Session;
@@ -32,7 +33,7 @@ public final class SessionService implements ISessionService {
         Session session = null;
         try {
             final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
-            @Nullable final User user = userRepository.findOneByLoginAndPassword(login, password);
+            @Nullable final User user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
             if(user == null) throw new UserNotFoundException("User not found");
             session = new Session();
             session.setTimestamp(getDateISO8601(new Date()));

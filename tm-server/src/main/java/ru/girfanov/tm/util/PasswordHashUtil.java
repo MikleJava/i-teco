@@ -5,8 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PasswordHashUtil {
     @Nullable
-    public static String md5(@Nullable final String md5) {
-        if (md5 == null) return null;
+    public static String md5(@NotNull final String md5) {
         try {
             @NotNull final java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
             @NotNull final byte[] array = md.digest(md5.getBytes());

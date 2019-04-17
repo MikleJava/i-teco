@@ -26,11 +26,11 @@ public interface TaskRepository extends ITaskRepository {
     @Update("UPDATE " + TABLE + " SET " + NAME + " = #{name}, " + DESCRIPTION + " = #{description}, " + STATUS + " = #{status}, " + DATE_START + " = #{dateStart}, " + DATE_END + " = #{dateEnd}, " + USER_ID + " = #{userId}, " + PROJECT_ID + " = #{projectId} WHERE " + ID + " = #{id}")
     void merge(@NotNull final Task task);
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = (#{id}")
+    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
     void remove(@NotNull final Task task);
 
     @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    void removeAllByUserId(@NotNull final String userId);
+    void removeAllByUserId(@NotNull @Param("userId") final String userId);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
     @Results({
@@ -40,7 +40,7 @@ public interface TaskRepository extends ITaskRepository {
             @Result(property="userId", column="user_id"),
             @Result(property="projectId", column="project_id")
     })
-    Task findOne(@NotNull final String userId, @NotNull final String taskId);
+    Task findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("taskId") final String taskId);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
     @Results({
@@ -50,7 +50,7 @@ public interface TaskRepository extends ITaskRepository {
             @Result(property="userId", column="user_id"),
             @Result(property="projectId", column="project_id")
     })
-    List<Task> findAllByUserId(@NotNull final String userId);
+    List<Task> findAllByUserId(@NotNull @Param("userId") final String userId);
 
     @Select("SELECT * FROM " + TABLE)
     @Results({
@@ -70,11 +70,11 @@ public interface TaskRepository extends ITaskRepository {
             @Result(property="userId", column="user_id"),
             @Result(property="projectId", column="project_id")
     })
-    List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId);
+    List<Task> findAllTasksByProjectId(@NotNull @Param("userId") final String userId, @NotNull @Param("projectId") final String projectId);
 
     @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} AND " + PROJECT_ID + " = #{projectId}")
-    void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId);
+    void removeAllTasksByProjectId(@NotNull @Param("userId") final String userId, @NotNull @Param("projectId") final String projectId);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} ORDER BY #{value}")
-    List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull @Param("value") final String value);
+    List<Task> findAllSortedByValue(@NotNull @Param("userId") final String userId, @NotNull @Param("value") final String value);
 }

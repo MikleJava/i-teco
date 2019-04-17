@@ -22,12 +22,12 @@ public interface UserRepository extends IUserRepository {
     @Update("UPDATE " + TABLE + " SET " + LOGIN + " = #{login}, " + PASSWORD + " = #{password}, " + ROLE + " = #{role} WHERE " + ID + " = #{id}")
     void merge(@NotNull final User user);
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = (#{id}")
+    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
     void remove(@NotNull final User user);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id}")
     @Results({@Result(id=true, property="password", column="password_hash")})
-    User findOne(@NotNull final String id);
+    User findOne(@NotNull @Param("id") final String id);
 
     @Select("SELECT * FROM " + TABLE)
     @Results({@Result(id=true, property="password", column="password_hash")})
@@ -35,5 +35,5 @@ public interface UserRepository extends IUserRepository {
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + LOGIN + " = #{login} AND " + PASSWORD + " = #{password}")
     @Results({@Result(id=true, property="password", column="password_hash")})
-    User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password);
+    User findOneByLoginAndPassword(@NotNull @Param("login") final String login, @NotNull @Param("password") final String password);
 }

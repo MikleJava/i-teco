@@ -25,11 +25,11 @@ public interface ProjectRepository extends IProjectRepository {
     @Update("UPDATE " + TABLE + " SET " + NAME + " = #{name}, " + DESCRIPTION + " = #{description}, " + STATUS + " = #{status}, " + DATE_START + " = #{dateStart}, " + DATE_END + " = #{dateEnd}, " + USER_ID + " = #{userId} WHERE " + ID + " = #{id}")
     void merge(@NotNull final Project project);
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = (#{id}")
+    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
     void remove(@NotNull final Project project);
 
     @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    void removeAllByUserId(@NotNull final String userId);
+    void removeAllByUserId(@NotNull @Param("userId") final String userId);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
     @Results({
@@ -38,7 +38,7 @@ public interface ProjectRepository extends IProjectRepository {
             @Result(property="dateEnd", column="date_end"),
             @Result(property="userId", column="user_id")
     })
-    Project findOne(@NotNull final String userId, @NotNull final String projectId);
+    Project findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("projectId") final String projectId);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
     @Results({
@@ -47,7 +47,7 @@ public interface ProjectRepository extends IProjectRepository {
             @Result(property="dateEnd", column="date_end"),
             @Result(property="userId", column="user_id")
     })
-    List<Project> findAllByUserId(@NotNull final String userId);
+    List<Project> findAllByUserId(@NotNull @Param("userId") final String userId);
 
     @Select("SELECT * FROM " + TABLE)
     @Results({
@@ -59,5 +59,5 @@ public interface ProjectRepository extends IProjectRepository {
     List<Project> findAll();
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId} ORDER BY #{value}")
-    List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull @Param("value") final String value);
+    List<Project> findAllSortedByValue(@NotNull @Param("userId") final String userId, @NotNull @Param("value") final String value);
 }

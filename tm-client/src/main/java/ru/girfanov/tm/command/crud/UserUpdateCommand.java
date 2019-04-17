@@ -7,7 +7,6 @@ import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.Session;
 import ru.girfanov.tm.endpoint.User;
 import ru.girfanov.tm.endpoint.UserEndPoint;
-import ru.girfanov.tm.util.PasswordHashUtil;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -29,7 +28,7 @@ public final class UserUpdateCommand extends AbstractSecureCommand {
         final User user = userEndPoint.findOneUserByLoginAndPassword(login, password);
         if(user != null) {
             System.out.print("input new password : ");
-            final String newPassword = PasswordHashUtil.md5(scanner.next());
+            final String newPassword = scanner.next();
             user.setPassword(newPassword);
             userEndPoint.mergeUser(session, user);
         }

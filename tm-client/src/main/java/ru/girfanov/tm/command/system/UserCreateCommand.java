@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.exception.IncorrectRoleException;
-import ru.girfanov.tm.util.PasswordHashUtil;
 
 import java.util.UUID;
 
@@ -27,7 +26,7 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
         System.out.print("input user login : ");
         final String login = scanner.next();
         System.out.print("input user password : ");
-        final String password = PasswordHashUtil.md5(scanner.next());
+        final String password = scanner.next();
         System.out.print("input user role : ");
         final String role = scanner.next();
         final User user = new User();

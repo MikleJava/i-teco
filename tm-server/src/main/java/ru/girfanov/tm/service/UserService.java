@@ -1,6 +1,7 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,6 +9,7 @@ import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.util.MyBatisConnectorUtil;
+import ru.girfanov.tm.util.PasswordHashUtil;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public final class UserService implements IUserService {
     public void persist(@Nullable final String userId, @NotNull final User user) {
         try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
             final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            user.setPassword(PasswordHashUtil.md5(user.getPassword()));
             userRepository.persist(user);
             sqlSession.commit();
         }
@@ -27,6 +30,7 @@ public final class UserService implements IUserService {
     public void merge(@Nullable final String userId, @NotNull final User user) {
         try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
             final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
+            user.setPassword(PasswordHashUtil.md5(user.getPassword()));
             userRepository.merge(user);
             sqlSession.commit();
         }
@@ -92,7 +96,7 @@ public final class UserService implements IUserService {
         User user;
         try(final SqlSession sqlSession = new MyBatisConnectorUtil().getSqlSessionFactory().openSession()) {
             final UserRepository userRepository = sqlSession.getMapper(UserRepository.class);
-            user = userRepository.findOneByLoginAndPassword(login, password);
+            user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
         }
         return user;
     }

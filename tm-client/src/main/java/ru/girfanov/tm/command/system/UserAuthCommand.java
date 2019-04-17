@@ -9,7 +9,6 @@ import ru.girfanov.tm.endpoint.Session;
 import ru.girfanov.tm.endpoint.SessionEndPoint;
 import ru.girfanov.tm.endpoint.UserEndPoint;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.util.PasswordHashUtil;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -29,8 +28,8 @@ public final class UserAuthCommand extends AbstractSystemCommand<String> {
         final String login = scanner.next();
         System.out.print("input password : ");
         final String password = scanner.next();
-        if(userEndPoint.findOneUserByLoginAndPassword(login, PasswordHashUtil.md5(password)) == null) throw new UserNotFoundException("User not found");
-        final Session userSession = sessionEndPoint.createSession(login, PasswordHashUtil.md5(password));
+        if(userEndPoint.findOneUserByLoginAndPassword(login, password) == null) throw new UserNotFoundException("User not found");
+        final Session userSession = sessionEndPoint.createSession(login, password);
         serviceLocator.setSession(userSession);
     }
 }

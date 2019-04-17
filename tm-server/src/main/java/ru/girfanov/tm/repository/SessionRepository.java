@@ -23,21 +23,21 @@ public interface SessionRepository extends ISessionRepository {
     @Update("UPDATE " + TABLE + " SET " + TIMESTAMP + " = #{timestamp}, " + SIGNATURE + " = #{signature}, " + USER_ID + " = #{userId} WHERE " + ID + " = #{id}")
     void merge(@NotNull final Session session);
 
-    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = (#{id}")
+    @Delete("DELETE FROM " + TABLE + " WHERE " + ID + " = #{id}")
     void remove(@NotNull final Session session);
 
     @Delete("DELETE FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
-    void removeAllByUserId(@NotNull final String userId);
+    void removeAllByUserId(@NotNull @Param("userId") final String userId);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + ID + " = #{id} AND " + USER_ID + " = #{userId}")
     @Results({@Result(id=true, property="userId", column="user_id")})
-    Session findOne(@NotNull final String userId, @NotNull final String id);
+    Session findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("id") final String id);
 
     @Select("SELECT * FROM " + TABLE + " WHERE " + USER_ID + " = #{userId}")
     @Results({@Result(id=true, property="userId", column="user_id")})
-    List<Session> findAllByUserId(@NotNull final String userId);
+    List<Session> findAllByUserId(@NotNull @Param("userId") final String userId);
 
     @Select("SELECT * FROM " + TABLE)
     @Results({@Result(id=true, property="userId", column="user_id")})
-    public List<Session> findAll();
+    List<Session> findAll();
 }
