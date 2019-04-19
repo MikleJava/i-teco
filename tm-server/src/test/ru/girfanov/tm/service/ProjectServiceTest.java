@@ -45,7 +45,7 @@ public class ProjectServiceTest {
         project.setStatus(Status.valueOf(STATUS));
         project.setDateStart(DATE_START);
         project.setDateEnd(DATE_END);
-        project.setUserId(user.getId());
+        project.setUser(user);
     }
 
     @Test

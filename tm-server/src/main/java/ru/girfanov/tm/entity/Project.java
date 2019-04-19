@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "app_project", schema = "tm")
 public class Project extends AbstractSortedEntity {
 
-    @OneToMany(mappedBy = "project_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
 }

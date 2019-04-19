@@ -29,7 +29,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        taskService.persist(session.getUserId(), task);
+        taskService.persist(session.getUser().getId(), task);
     }
 
     @WebMethod
@@ -39,7 +39,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        taskService.merge(session.getUserId(), task);
+        taskService.merge(session.getUser().getId(), task);
     }
 
     @WebMethod
@@ -49,7 +49,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        taskService.remove(session.getUserId(), task);
+        taskService.remove(session.getUser().getId(), task);
     }
 
     @WebMethod
@@ -59,7 +59,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        taskService.removeAllByUserId(session.getUserId());
+        taskService.removeAllByUserId(session.getUser().getId());
     }
 
     @WebMethod
@@ -69,7 +69,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findOne(session.getUserId(), taskUuid);
+        return taskService.findOne(session.getUser().getId(), taskUuid);
     }
 
     @WebMethod
@@ -79,7 +79,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findAllByUserId(session.getUserId());
+        return taskService.findAllByUserId(session.getUser().getId());
     }
 
     @WebMethod
@@ -89,7 +89,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findAllTasksByProjectId(session.getUserId(), projectId);
+        return taskService.findAllTasksByProjectId(session.getUser().getId(), projectId);
     }
 
     @WebMethod
@@ -99,7 +99,7 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        taskService.removeAllTasksByProjectId(session.getUserId(), projectId);
+        taskService.removeAllTasksByProjectId(session.getUser().getId(), projectId);
     }
 
     @WebMethod
@@ -109,6 +109,6 @@ public final class TaskEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findAllSortedByValue(session.getUserId(), value);
+        return taskService.findAllSortedByValue(session.getUser().getId(), value);
     }
 }

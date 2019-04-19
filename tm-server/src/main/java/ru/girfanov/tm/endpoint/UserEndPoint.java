@@ -24,7 +24,7 @@ public final class UserEndPoint {
 
     @WebMethod
     public void persistUser(@WebParam(name = "user") final User user) {
-        userService.persist(user.getId(), user);
+        userService.persist(user);
     }
 
     @WebMethod
@@ -34,7 +34,7 @@ public final class UserEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        userService.merge(session.getUserId(), user);
+        userService.merge(user);
     }
 
     @WebMethod
@@ -44,27 +44,17 @@ public final class UserEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        userService.remove(session.getUserId(), user);
+        userService.remove(user);
     }
 
     @WebMethod
-    public void removeAllUsers(@WebParam(name = "session") final Session session) {
+    public User findOneUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String userId) {
         try {
             sessionService.existSession(session);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        userService.removeAllByUserId(session.getUserId());
-    }
-
-    @WebMethod
-    public User findOneUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String uuid) {
-        try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
-            System.out.println(e.getMessage());
-        }
-        return userService.findOne(session.getUserId(), uuid);
+        return userService.findOne(userId);
     }
 
     @WebMethod
@@ -74,10 +64,10 @@ public final class UserEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return userService.findAllByUserId(session.getUserId());
+        return userService.findAll();
     }
 
-    @WebMethod
+    @WebMethod //for serialization
     public List<User> findAll() {
         return userService.findAll();
     }

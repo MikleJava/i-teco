@@ -29,7 +29,7 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        projectService.persist(session.getUserId(), project);
+        projectService.persist(session.getUser().getId(), project);
     }
 
     @WebMethod
@@ -39,7 +39,7 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        projectService.merge(session.getUserId(), project);
+        projectService.merge(session.getUser().getId(), project);
     }
 
     @WebMethod
@@ -49,7 +49,7 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        projectService.remove(session.getUserId(), project);
+        projectService.remove(session.getUser().getId(), project);
     }
 
     @WebMethod
@@ -59,7 +59,7 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        projectService.removeAllByUserId(session.getUserId());
+        projectService.removeAllByUserId(session.getUser().getId());
     }
 
     @WebMethod
@@ -69,7 +69,7 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return projectService.findOne(session.getUserId(), projectUuid);
+        return projectService.findOne(session.getUser().getId(), projectUuid);
     }
 
     @WebMethod
@@ -79,7 +79,7 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return projectService.findAllByUserId(session.getUserId());
+        return projectService.findAllByUserId(session.getUser().getId());
     }
 
     @WebMethod
@@ -89,6 +89,6 @@ public final class ProjectEndPoint {
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
-        return projectService.findAllSortedByValue(session.getUserId(), value);
+        return projectService.findAllSortedByValue(session.getUser().getId(), value);
     }
 }

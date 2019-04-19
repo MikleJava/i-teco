@@ -13,6 +13,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 @NoArgsConstructor
@@ -49,12 +50,15 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
-        final CriteriaBuilder builder = em.getCriteriaBuilder();
-        final CriteriaQuery<User> criteria = builder.createQuery(User.class);
-        final Root<User> from = criteria.from(User.class);
-        criteria.select(from);
-        criteria.where(builder.equal(from.get("login"), login) , builder.equal(from.get("password_hash"), password));
-        final TypedQuery<User> typed = em.createQuery(criteria);
-        return typed.getSingleResult();
+
+        return em.createQuery("SELECT t FROM app_user t WHERE t.login = :login AND t.password_hash = :password_hash", User.class).setParameter("login", login).setParameter("password_hash", password).getSingleResult();
+
+//        final CriteriaBuilder builder = em.getCriteriaBuilder();
+//        final CriteriaQuery<User> criteria = builder.createQuery(User.class);
+//        final Root<User> from = criteria.from(User.class);
+//        criteria.select(from);
+//        criteria.where(builder.equal(from.get("login"), login) , builder.equal(from.get("password"), password));
+//        final TypedQuery<User> typed = em.createQuery(criteria);
+//        return typed.getSingleResult();
     }
 }

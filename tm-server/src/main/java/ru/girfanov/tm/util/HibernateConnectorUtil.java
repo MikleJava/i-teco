@@ -17,14 +17,14 @@ import java.util.Map;
 
 public final class HibernateConnectorUtil {
 
-    public EntityManagerFactory factory() {
+    public static EntityManagerFactory factory() {
         final Map<String, String> settings = new HashMap<>();
         settings.put(Environment.DRIVER, PropertyService.getJdbcDriver());
         settings.put(Environment.URL, PropertyService.getJdbcUrl());
         settings.put(Environment.USER, PropertyService.getJdbcUsername());
         settings.put(Environment.PASS, PropertyService.getJdbcPassword());
         settings.put(Environment.DIALECT, PropertyService.getJdbcDialect());
-        settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+        settings.put(Environment.HBM2DDL_AUTO, "update");
         settings.put(Environment.SHOW_SQL, "true");
         final StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
         registryBuilder.applySettings(settings);

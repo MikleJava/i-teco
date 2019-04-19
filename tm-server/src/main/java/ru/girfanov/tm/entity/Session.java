@@ -17,8 +17,7 @@ public class Session extends AbstractEntity {
     private String signature;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    @Column(name = "user_id")
-    private User userId;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
 }

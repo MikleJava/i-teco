@@ -7,7 +7,9 @@ import ru.girfanov.tm.api.service.*;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.service.*;
 import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.util.HibernateConnectorUtil;
 
+import javax.persistence.EntityManagerFactory;
 import javax.xml.ws.Endpoint;
 
 @NoArgsConstructor
@@ -19,11 +21,13 @@ public final class Bootstrap implements ServiceLocator {
     @NotNull private static final String DATA_DOMAIN_ENDPOINT = "http://localhost:8080/DataDomainEndpoint?wsdl";
     @NotNull private static final String SESSION_ENDPOINT = "http://localhost:8080/SessionEndPoint?wsdl";
 
-    @NotNull @Getter private final IProjectService projectService = new ProjectService();
-    @NotNull @Getter private final ITaskService taskService = new TaskService();
-    @NotNull @Getter private final IUserService userService = new UserService();
+    @NotNull final private EntityManagerFactory entityManagerFactory = HibernateConnectorUtil.factory();
+
+    @NotNull @Getter private final IProjectService projectService = new ProjectService(entityManagerFactory);
+    @NotNull @Getter private final ITaskService taskService = new TaskService(entityManagerFactory);
+    @NotNull @Getter private final IUserService userService = new UserService(entityManagerFactory);
+    @NotNull @Getter private final ISessionService sessionService = new SessionService(entityManagerFactory);
     @NotNull @Getter private final IDataDomainService dataDomainService = new DataDomainService();
-    @NotNull @Getter private final ISessionService sessionService = new SessionService();
 
     @Override
     public void init() {

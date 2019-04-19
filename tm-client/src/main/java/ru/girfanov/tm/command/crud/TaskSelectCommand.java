@@ -36,7 +36,7 @@ public final class TaskSelectCommand extends AbstractSecureCommand {
             System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
             System.out.println("_______________________________________________________________________________________________");
             final Task task = taskEndPoint.findOneTask(session, tasks.get(id).getId());
-            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProject().getId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

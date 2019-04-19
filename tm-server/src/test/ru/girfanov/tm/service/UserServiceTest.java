@@ -32,8 +32,8 @@ public class UserServiceTest {
         user.setLogin(LOGIN);
         user.setPassword(PASSWORD);
         user.setRole(Role.valueOf(ROLE));
-        userService.persist(null, user);
-        final User createdUser = userService.findOne(user.getId(), null);
+        userService.persist(user);
+        final User createdUser = userService.findOne(user.getId());
         assertNotNull(createdUser);
         assertTrue(user.getId().equals(createdUser.getId()) && user.getLogin().equals(createdUser.getLogin()) && user.getPassword().equals(createdUser.getPassword()) && user.getRole().equals(createdUser.getRole()));
     }
@@ -42,7 +42,7 @@ public class UserServiceTest {
     public void testMerge() {
         final User user = userService.findOneByLoginAndPassword(LOGIN, PASSWORD);
         user.setPassword(NEW_PASSWORD);
-        userService.merge(user.getId(), user);
+        userService.merge(user);
         final User createdUser = userService.findOneByLoginAndPassword(LOGIN, NEW_PASSWORD);
         assertNotNull(createdUser);
         assertTrue(user.getId().equals(createdUser.getId()) && user.getLogin().equals(createdUser.getLogin()) && user.getPassword().equals(createdUser.getPassword()) && user.getRole().equals(createdUser.getRole()));
@@ -51,7 +51,7 @@ public class UserServiceTest {
     @Test
     public void testRemove() {
         final User user = userService.findOneByLoginAndPassword(LOGIN, PASSWORD);
-        userService.remove(user.getId(), user);
+        userService.remove(user);
         assertNull(userService.findOneByLoginAndPassword(LOGIN, PASSWORD));
     }
 

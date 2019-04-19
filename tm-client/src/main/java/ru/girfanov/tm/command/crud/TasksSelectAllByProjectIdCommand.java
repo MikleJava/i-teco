@@ -37,7 +37,7 @@ public final class TasksSelectAllByProjectIdCommand extends AbstractSecureComman
             System.out.println("___________________________________________________________________________________________________");
             final Collection<Task> tasks = taskEndPoint.findAllTasksByProjectId(session, projects.get(id).getId());
             for(Task task : tasks) {
-                System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+                System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProject().getId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
             }
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

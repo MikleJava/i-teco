@@ -42,7 +42,7 @@ public final class ProjectCreateCommand extends AbstractSecureCommand {
             project.setName(name);
             project.setDescription(description);
             project.setStatus(Status.valueOf(status));
-            project.setUserId(session.getUserId());
+            project.setUser(session.getUser());
             project.setDateStart(convert(dateStart));
             project.setDateEnd(convert(dateEnd));
             projectEndPoint.persistProject(session, project);

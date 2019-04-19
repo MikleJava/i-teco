@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractSortedEntity"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="projectId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="project" type="{http://endpoint.tm.girfanov.ru/}project" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -27,36 +27,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "task", propOrder = {
-    "projectId"
+    "project"
 })
 public class Task
     extends AbstractSortedEntity
 {
 
-    protected String projectId;
+    protected Project project;
 
     /**
-     * Gets the value of the projectId property.
+     * Gets the value of the project property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Project }
      *     
      */
-    public String getProjectId() {
-        return projectId;
+    public Project getProject() {
+        return project;
     }
 
     /**
-     * Sets the value of the projectId property.
+     * Sets the value of the project property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Project }
      *     
      */
-    public void setProjectId(String value) {
-        this.projectId = value;
+    public void setProject(Project value) {
+        this.project = value;
     }
 
 }

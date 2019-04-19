@@ -47,11 +47,11 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             final Task task = new Task();
             task.setName(name);
             task.setDescription(description);
-            task.setUserId(session.getUserId());
+            task.setUser(session.getUser());
             task.setStatus(Status.valueOf(status));
             task.setDateStart(convert(dateStart));
             task.setDateEnd(convert(dateEnd));
-            task.setProjectId(projects.get(projectId).getId());
+            task.setProject(projects.get(projectId));
             taskEndPoint.persistTask(session, task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

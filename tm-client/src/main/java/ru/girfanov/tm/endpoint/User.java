@@ -1,8 +1,11 @@
 
 package ru.girfanov.tm.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
@@ -19,7 +22,10 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence&gt;
  *         &lt;element name="login" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="projects" type="{http://endpoint.tm.girfanov.ru/}project" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="role" type="{http://endpoint.tm.girfanov.ru/}role" minOccurs="0"/&gt;
+ *         &lt;element name="sessions" type="{http://endpoint.tm.girfanov.ru/}session" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="tasks" type="{http://endpoint.tm.girfanov.ru/}task" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -32,7 +38,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "user", propOrder = {
     "login",
     "password",
-    "role"
+    "projects",
+    "role",
+    "sessions",
+    "tasks"
 })
 public class User
     extends AbstractEntity
@@ -40,8 +49,14 @@ public class User
 
     protected String login;
     protected String password;
+    @XmlElement(nillable = true)
+    protected List<Project> projects;
     @XmlSchemaType(name = "string")
     protected Role role;
+    @XmlElement(nillable = true)
+    protected List<Session> sessions;
+    @XmlElement(nillable = true)
+    protected List<Task> tasks;
 
     /**
      * Gets the value of the login property.
@@ -92,6 +107,35 @@ public class User
     }
 
     /**
+     * Gets the value of the projects property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the projects property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getProjects().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Project }
+     * 
+     * 
+     */
+    public List<Project> getProjects() {
+        if (projects == null) {
+            projects = new ArrayList<Project>();
+        }
+        return this.projects;
+    }
+
+    /**
      * Gets the value of the role property.
      * 
      * @return
@@ -113,6 +157,64 @@ public class User
      */
     public void setRole(Role value) {
         this.role = value;
+    }
+
+    /**
+     * Gets the value of the sessions property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the sessions property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getSessions().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Session }
+     * 
+     * 
+     */
+    public List<Session> getSessions() {
+        if (sessions == null) {
+            sessions = new ArrayList<Session>();
+        }
+        return this.sessions;
+    }
+
+    /**
+     * Gets the value of the tasks property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the tasks property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getTasks().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Task }
+     * 
+     * 
+     */
+    public List<Task> getTasks() {
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
+        return this.tasks;
     }
 
 }

@@ -2,6 +2,7 @@ package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ITaskService;
@@ -9,13 +10,13 @@ import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
-import ru.girfanov.tm.util.HibernateConnectorUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @NoArgsConstructor
+@RequiredArgsConstructor
 public final class TaskService implements ITaskService {
 
     @NonNull private EntityManagerFactory entityManagerFactory;

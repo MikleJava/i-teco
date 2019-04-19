@@ -8,6 +8,7 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.util.PasswordHashUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,13 +20,13 @@ public final class UserService implements IUserService {
 
     @NonNull private EntityManagerFactory entityManagerFactory;
 
-    //сделать хэш пароля!!!
     @Override
     public void persist(@NotNull final User user) {
         final EntityManager em = entityManagerFactory.createEntityManager();
         final UserRepository userRepository = new UserRepository(em);
         try {
             em.getTransaction().begin();
+            user.setPassword(PasswordHashUtil.md5(user.getPassword()));
             userRepository.persist(user);
             em.getTransaction().commit();
         } finally {
@@ -39,6 +40,7 @@ public final class UserService implements IUserService {
         final UserRepository userRepository = new UserRepository(em);
         try {
             em.getTransaction().begin();
+            user.setPassword(PasswordHashUtil.md5(user.getPassword()));
             userRepository.merge(user);
             em.getTransaction().commit();
         } finally {
@@ -93,7 +95,7 @@ public final class UserService implements IUserService {
         final EntityManager em = entityManagerFactory.createEntityManager();
         final UserRepository userRepository = new UserRepository(em);
         try {
-            user = userRepository.findOneByLoginAndPassword(login, password);
+            user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
         } finally {
             em.close();
         }

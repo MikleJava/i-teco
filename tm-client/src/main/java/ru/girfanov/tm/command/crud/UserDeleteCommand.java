@@ -19,7 +19,7 @@ public final class UserDeleteCommand extends AbstractSecureCommand {
     @Override
     public void execute(@NotNull final Session session) {
         final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
-        final User user = userEndPoint.findOneUser(session, session.getUserId());
+        final User user = userEndPoint.findOneUser(session, session.getUser().getId());
         userEndPoint.removeUser(session, user);
     }
 }
