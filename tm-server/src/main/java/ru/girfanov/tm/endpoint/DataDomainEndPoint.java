@@ -15,7 +15,7 @@ import javax.jws.WebService;
 @WebService
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class DataDomainEndPoint {
+public final class DataDomainEndPoint {
 
     @NonNull private IDataDomainService dataDomainService;
     @NonNull private ISessionService sessionService;
