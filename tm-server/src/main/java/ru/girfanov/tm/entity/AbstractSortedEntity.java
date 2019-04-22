@@ -27,7 +27,7 @@ public class AbstractSortedEntity extends AbstractEntity {
     private Date dateEnd;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
 }

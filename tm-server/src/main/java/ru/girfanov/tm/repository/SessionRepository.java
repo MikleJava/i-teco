@@ -33,21 +33,21 @@ public class SessionRepository implements ISessionRepository {
 
     @Override
     public void removeAllByUserId(@NotNull final String userId) {
-        em.createQuery("DELETE FROM app_session WHERE user_id = :user_id").setParameter("user_id", userId);
+        em.createQuery("DELETE FROM Session WHERE user = :user_id").setParameter("user_id", userId);
     }
 
     @Override
     public Session findOne(@NotNull final String userId, @NotNull final String sessionId) {
-        return em.createQuery("SELECT t FROM app_session t WHERE t.user_id = :user_id AND t.id = :id", Session.class).setParameter("user_id", userId).setParameter("id", sessionId).getSingleResult();
+        return em.createQuery("SELECT t FROM Session t WHERE t.user = :user_id AND t.id = :id", Session.class).setParameter("user_id", userId).setParameter("id", sessionId).getSingleResult();
     }
 
     @Override
     public List<Session> findAllByUserId(@NotNull final String userId) {
-        return em.createQuery("SELECT t FROM app_session t WHERE t.user_id = :user_id", Session.class).setParameter("user_id", userId).getResultList();
+        return em.createQuery("SELECT t FROM Session t WHERE t.user = :user_id", Session.class).setParameter("user_id", userId).getResultList();
     }
 
     @Override
     public List<Session> findAll() {
-        return em.createQuery("SELECT t FROM app_session t", Session.class).getResultList();
+        return em.createQuery("SELECT t FROM Session t", Session.class).getResultList();
     }
 }

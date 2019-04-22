@@ -16,7 +16,7 @@ import javax.jws.WebService;
 @WebService
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class SessionEndPoint {
+public final class SessionEndPoint {
 
     @NonNull private ISessionService sessionService;
 

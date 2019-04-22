@@ -33,36 +33,36 @@ public class TaskRepository implements ITaskRepository {
 
     @Override
     public void removeAllByUserId(@NotNull final String userId) {
-        em.createQuery("DELETE FROM app_task WHERE user_id = :user_id").setParameter("user_id", userId);
+        em.createQuery("DELETE FROM Task WHERE user = :user_id").setParameter("user_id", userId);
     }
 
     @Override
     public Task findOne(@NotNull final String userId, @NotNull final String taskId) {
-        return em.createQuery("SELECT t FROM app_task t WHERE t.user_id = :user_id AND t.id = :id", Task.class).setParameter("user_id", userId).setParameter("id", taskId).getSingleResult();
+        return em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id AND t.id = :id", Task.class).setParameter("user_id", userId).setParameter("id", taskId).getSingleResult();
     }
 
     @Override
     public List<Task> findAllByUserId(@NotNull final String userId) {
-        return null;
+        return em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id", Task.class).setParameter("user_id", userId).getResultList();
     }
 
     @Override
     public List<Task> findAll() {
-        return null;
+        return em.createQuery("SELECT t FROM Task t", Task.class).getResultList();
     }
 
     @Override
-    public List<Task> findAllTasksByProjectId(String userId, String projectId) {
-        return null;
+    public List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        return em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id AND t.project = :project_id", Task.class).setParameter("user_id", userId).setParameter("project_id", projectId).getResultList();
     }
 
     @Override
-    public void removeAllTasksByProjectId(String userId, String projectId) {
-
+    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
+        em.createQuery("DELETE FROM Task WHERE user = :user_id AND project = :project_id").setParameter("user_id", userId).setParameter("project_id", projectId);
     }
 
     @Override
     public List<Task> findAllSortedByValue(String userId, String value) {
-        return null;
+        return em.createQuery("SELECT t FROM Task t ORDER BY t." + value, Task.class).getResultList();
     }
 }

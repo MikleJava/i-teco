@@ -12,6 +12,6 @@ import javax.persistence.*;
 public class Task extends AbstractSortedEntity {
 
     @ManyToOne
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 }
