@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
@@ -36,9 +37,14 @@ public class TaskRepository implements ITaskRepository {
         em.createQuery("DELETE FROM Task WHERE user = :user_id").setParameter("user_id", userId);
     }
 
+    @Nullable
     @Override
     public Task findOne(@NotNull final String userId, @NotNull final String taskId) {
-        return em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id AND t.id = :id", Task.class).setParameter("user_id", userId).setParameter("id", taskId).getSingleResult();
+        final List<Task> tasks = em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id AND t.id = :id", Task.class).setParameter("user_id", userId).setParameter("id", taskId).getResultList();
+        for(Task task : tasks) {
+            if(task != null) return task;
+        }
+        return null;
     }
 
     @Override

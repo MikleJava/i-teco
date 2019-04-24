@@ -62,14 +62,13 @@ public final class UserService implements IUserService {
     }
 
     @Override
-    public User findOne(@NotNull final String userId) {
-        User user = null;
+    public User findOne(@NotNull final String userId) throws UserNotFoundException {
+        User user;
         final EntityManager em = entityManagerFactory.createEntityManager();
         final UserRepository userRepository = new UserRepository(em);
         try {
             user = userRepository.findOne(userId);
-        } catch (UserNotFoundException e) {
-            System.out.println(e.getMessage());
+            if(user == null) throw new UserNotFoundException("user not found");
         } finally {
             em.close();
         }
@@ -90,12 +89,13 @@ public final class UserService implements IUserService {
     }
 
     @Override
-    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
+    public User findOneByLogin(@NotNull final String login) throws UserNotFoundException {
         User user;
         final EntityManager em = entityManagerFactory.createEntityManager();
         final UserRepository userRepository = new UserRepository(em);
         try {
-            user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
+            user = userRepository.findOneByLogin(login);
+            if(user == null) throw new UserNotFoundException("user not found");
         } finally {
             em.close();
         }

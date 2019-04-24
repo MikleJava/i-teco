@@ -25,7 +25,7 @@ public final class UserUpdateCommand extends AbstractSecureCommand {
         final String login = scanner.next();
         System.out.print("input user password : ");
         final String password = scanner.next();
-        final User user = userEndPoint.findOneUserByLoginAndPassword(login, password);
+        final User user = userEndPoint.findOneUserByLogin(login);
         if(user != null) {
             System.out.print("input new password : ");
             final String newPassword = scanner.next();

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionEndPoint;
 import ru.girfanov.tm.endpoint.User;
 import ru.girfanov.tm.endpoint.UserEndPoint;
 
@@ -19,7 +20,9 @@ public final class UserDeleteCommand extends AbstractSecureCommand {
     @Override
     public void execute(@NotNull final Session session) {
         final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
+        //final SessionEndPoint sessionEndPoint = serviceLocator.getSessionEndPoint();
         final User user = userEndPoint.findOneUser(session, session.getUser().getId());
+        //sessionEndPoint.removeSession(session);
         userEndPoint.removeUser(session, user);
     }
 }

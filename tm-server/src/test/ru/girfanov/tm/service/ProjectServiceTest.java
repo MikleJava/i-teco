@@ -1,17 +1,18 @@
 package ru.girfanov.tm.service;
 
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Status;
+import ru.girfanov.tm.exception.UserNotFoundException;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 public class ProjectServiceTest {
 
@@ -30,10 +31,10 @@ public class ProjectServiceTest {
     @NotNull private static final String PASSWORD = "test";
 
     @BeforeClass
-    public void setUp() {
+    public void setUp() throws UserNotFoundException {
         projectService = new ProjectService();
         userService = new UserService();
-        user = userService.findOneByLoginAndPassword(LOGIN, PASSWORD);
+        user = userService.findOneByLogin(LOGIN);
     }
 
     @Test
@@ -49,7 +50,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testMerge() {
+    public void testMerge() throws UserNotFoundException {
         final Project project = projectService.findAllByUserId(user.getId()).get(0);
         project.setName("newProject");
         project.setDescription("newDesc");
@@ -64,7 +65,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testRemove() {
+    public void testRemove() throws UserNotFoundException {
         final Project project = projectService.findAllByUserId(user.getId()).get(0);
         final String projectId = project.getId();
         projectService.remove(user.getId(), project);
@@ -72,20 +73,20 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testRemoveAllByUserId() {
+    public void testRemoveAllByUserId() throws UserNotFoundException {
         projectService.removeAllByUserId(user.getId());
         assertNull(projectService.findAllByUserId(user.getId()));
     }
 
     @Test
-    public void testFindOne() {
+    public void testFindOne() throws UserNotFoundException {
         final Project project = projectService.findAllByUserId(user.getId()).get(0);
         final String projectId = project.getId();
         assertNotNull(projectService.findOne(user.getId(), projectId));
     }
 
     @Test
-    public void testFindAllByUserId() {
+    public void testFindAllByUserId() throws UserNotFoundException {
         assertNotNull(projectService.findAllByUserId(user.getId()));
     }
 
@@ -95,7 +96,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testFindAllSortedByValue() {
+    public void testFindAllSortedByValue() throws UserNotFoundException {
         assertNotNull((projectService.findAllSortedByValue(user.getId(), VALUE)));
     }
 }

@@ -19,7 +19,7 @@ public class SignatureUtil {
     }
 
     @Nullable
-    private static String sign(@Nullable final String value, @Nullable final String salt, @Nullable final Integer cycle) {
+    public static String sign(@Nullable final String value, @Nullable final String salt, @Nullable final Integer cycle) {
         if (value == null || salt == null || cycle == null) return null;
         @Nullable String result = value;
         for (int i = 0; i < cycle; i++) {

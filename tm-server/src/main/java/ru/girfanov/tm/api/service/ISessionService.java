@@ -5,7 +5,7 @@ import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
 public interface ISessionService {
-    Session createSession(String login, String password) throws UserNotFoundException;
+    Session createSession(String login) throws UserNotFoundException;
     void removeSession(Session session) throws WrongSessionException;
     boolean existSession(Session session) throws WrongSessionException;
 }

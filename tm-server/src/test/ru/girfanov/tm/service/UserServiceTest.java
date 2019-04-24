@@ -1,15 +1,18 @@
 package ru.girfanov.tm.service;
 
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Role;
+import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.util.HibernateConnectorUtil;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.UUID;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 public class UserServiceTest {
 
@@ -21,12 +24,12 @@ public class UserServiceTest {
     @NotNull private static final String ROLE = "USER";
 
     @BeforeClass
-    public void setUp() {
-        userService = new UserService();
+    public static void setUp() {
+        userService = new UserService(HibernateConnectorUtil.factory());
     }
 
     @Test
-    public void testPersist() {
+    public void testPersist() throws UserNotFoundException {
         final User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setLogin(LOGIN);
@@ -39,20 +42,19 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testMerge() {
-        final User user = userService.findOneByLoginAndPassword(LOGIN, PASSWORD);
+    public void testMerge() throws UserNotFoundException {
+        final User user = userService.findOneByLogin(LOGIN);
         user.setPassword(NEW_PASSWORD);
         userService.merge(user);
-        final User createdUser = userService.findOneByLoginAndPassword(LOGIN, NEW_PASSWORD);
-        assertNotNull(createdUser);
+        final User createdUser = userService.findOneByLogin(LOGIN);
         assertTrue(user.getId().equals(createdUser.getId()) && user.getLogin().equals(createdUser.getLogin()) && user.getPassword().equals(createdUser.getPassword()) && user.getRole().equals(createdUser.getRole()));
     }
 
-    @Test
-    public void testRemove() {
-        final User user = userService.findOneByLoginAndPassword(LOGIN, PASSWORD);
+    @Test(expected = NoResultException.class)
+    public void testRemove() throws UserNotFoundException {
+        final User user = userService.findOneByLogin(LOGIN);
         userService.remove(user);
-        assertNull(userService.findOneByLoginAndPassword(LOGIN, PASSWORD));
+        assertNull(userService.findOneByLogin(LOGIN));
     }
 
     @Test
@@ -61,8 +63,17 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testFindOne() {
-        //TODO
+    public void testFindOneByLoginAndPassword() throws UserNotFoundException {
+        final User user = userService.findOneByLogin(LOGIN);
+        System.out.println(user.getLogin());
+        assertNotNull(user);
+    }
+
+    @Test
+    public void testFindOne() throws UserNotFoundException {
+        final User user = userService.findOne(userService.findOneByLogin(LOGIN).getId());
+        System.out.println(user.getLogin());
+        assertNotNull(user);
     }
 
     @Test
@@ -74,11 +85,5 @@ public class UserServiceTest {
     public void testFindAll() {
         final List<User> users = userService.findAll();
         assertNotNull(users);
-    }
-
-    @Test
-    public void testFindOneByLoginAndPassword() {
-        final User user = userService.findOneByLoginAndPassword(LOGIN, PASSWORD);
-        assertNotNull(user);
     }
 }

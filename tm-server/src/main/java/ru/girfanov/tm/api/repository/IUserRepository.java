@@ -11,5 +11,5 @@ public interface IUserRepository {
     void remove(User user);
     User findOne(String userId) throws UserNotFoundException;
     List<User> findAll();
-    User findOneByLoginAndPassword(String login, String password);
+    User findOneByLogin(String login);
 }

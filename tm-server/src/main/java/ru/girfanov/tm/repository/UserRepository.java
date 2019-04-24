@@ -4,9 +4,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
-import ru.girfanov.tm.exception.UserNotFoundException;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -33,8 +33,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User findOne(@NotNull final String userId) throws UserNotFoundException {
-        if(em.find(User.class, userId) == null) throw new UserNotFoundException("user not found");
+    public User findOne(@NotNull final String userId) {
         return em.find(User.class, userId);
     }
 
@@ -43,8 +42,13 @@ public class UserRepository implements IUserRepository {
         return em.createQuery("SELECT t FROM User t", User.class).getResultList();
     }
 
+    @Nullable
     @Override
-    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
-        return em.createQuery("SELECT t FROM User t WHERE t.login = :login AND t.password = :password_hash", User.class).setParameter("login", login).setParameter("password_hash", password).getSingleResult();
+    public User findOneByLogin(@NotNull final String login) {
+        final List<User> users = em.createQuery("SELECT t FROM User t WHERE t.login = :login", User.class).setParameter("login", login).getResultList();
+        for (User user : users) {
+            if(user != null) return user;
+        }
+        return null;
     }
 }

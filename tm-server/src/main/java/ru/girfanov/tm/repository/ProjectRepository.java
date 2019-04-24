@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
@@ -36,9 +37,14 @@ public class ProjectRepository implements IProjectRepository {
         em.createQuery("DELETE FROM Project WHERE user = :user_id").setParameter("user_id", userId);
     }
 
+    @Nullable
     @Override
     public Project findOne(@NotNull final String userId, @NotNull final String projectId) {
-        return em.createQuery("SELECT t FROM Project t WHERE t.user = :user_id AND t.id = :id", Project.class).setParameter("user_id", userId).setParameter("id", projectId).getSingleResult();
+        final List<Project> projects = em.createQuery("SELECT t FROM Project t WHERE t.user = :user_id AND t.id = :id", Project.class).setParameter("user_id", userId).setParameter("id", projectId).getResultList();
+        for(Project project : projects) {
+            if(project != null) return project;
+        }
+        return null;
     }
 
     @Override

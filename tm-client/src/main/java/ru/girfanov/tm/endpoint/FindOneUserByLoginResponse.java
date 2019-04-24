@@ -3,20 +3,21 @@ package ru.girfanov.tm.endpoint;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for WrongSessionException complex type.
+ * <p>Java class for findOneUserByLoginResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="WrongSessionException"&gt;
+ * &lt;complexType name="findOneUserByLoginResponse"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="return" type="{http://endpoint.tm.girfanov.ru/}user" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -26,35 +27,36 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "WrongSessionException", propOrder = {
-    "message"
+@XmlType(name = "findOneUserByLoginResponse", propOrder = {
+    "_return"
 })
-public class WrongSessionException {
+public class FindOneUserByLoginResponse {
 
-    protected String message;
+    @XmlElement(name = "return")
+    protected User _return;
 
     /**
-     * Gets the value of the message property.
+     * Gets the value of the return property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link User }
      *     
      */
-    public String getMessage() {
-        return message;
+    public User getReturn() {
+        return _return;
     }
 
     /**
-     * Sets the value of the message property.
+     * Sets the value of the return property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link User }
      *     
      */
-    public void setMessage(String value) {
-        this.message = value;
+    public void setReturn(User value) {
+        this._return = value;
     }
 
 }

@@ -1,26 +1,25 @@
 package ru.girfanov.tm.service;
 
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 public class SessionServiceTest {
 
     private static SessionService sessionService;
 
     @NotNull private static final String LOGIN = "test";
-    @NotNull private static final String PASSWORD = "test";
     private Session session;
 
     @BeforeClass
     public void setUp() throws UserNotFoundException {
         sessionService = new SessionService();
-        session = sessionService.createSession(LOGIN, PASSWORD);
+        session = sessionService.createSession(LOGIN);
     }
 
     @Test

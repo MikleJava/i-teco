@@ -3,10 +3,12 @@ package ru.girfanov.tm.endpoint;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.entity.Task;
+import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
 import javax.jws.WebMethod;
@@ -25,90 +27,89 @@ public final class TaskEndPoint {
     @WebMethod
     public void persistTask(@WebParam(name = "session") final Session session, @WebParam(name = "task") final Task task) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) taskService.persist(session.getUser().getId(), task);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        taskService.persist(session.getUser().getId(), task);
     }
 
     @WebMethod
     public void mergeTask(@WebParam(name = "session") final Session session, @WebParam(name = "task") final Task task) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) taskService.merge(session.getUser().getId(), task);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        taskService.merge(session.getUser().getId(), task);
     }
 
     @WebMethod
     public void removeTask(@WebParam(name = "session") final Session session, @WebParam(name = "task") final Task task) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) taskService.remove(session.getUser().getId(), task);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        taskService.remove(session.getUser().getId(), task);
     }
 
     @WebMethod
     public void removeAllTasks(@WebParam(name = "session") final Session session) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) taskService.removeAllByUserId(session.getUser().getId());
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        taskService.removeAllByUserId(session.getUser().getId());
     }
 
+    @Nullable
     @WebMethod
     public Task findOneTask(@WebParam(name = "session") final Session session, @WebParam(name = "taskUuid") final String taskUuid) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) return taskService.findOne(session.getUser().getId(), taskUuid);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findOne(session.getUser().getId(), taskUuid);
+        return null;
     }
 
+    @Nullable
     @WebMethod
     public List<Task> findAllTasks(@WebParam(name = "session") final Session session) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) return taskService.findAllByUserId(session.getUser().getId());
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findAllByUserId(session.getUser().getId());
+        return null;
     }
 
+    @Nullable
     @WebMethod
     public List<Task> findAllTasksByProjectId(@WebParam(name = "session") final Session session, @WebParam(name = "projectId") final String projectId) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) return taskService.findAllTasksByProjectId(session.getUser().getId(), projectId);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findAllTasksByProjectId(session.getUser().getId(), projectId);
+        return null;
     }
 
     @WebMethod
     public void removeAllTasksByProjectId(@WebParam(name = "session") final Session session, @WebParam(name = "projectId") final String projectId) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) taskService.removeAllTasksByProjectId(session.getUser().getId(), projectId);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        taskService.removeAllTasksByProjectId(session.getUser().getId(), projectId);
     }
 
+    @Nullable
     @WebMethod
     public List<Task> findAllTasksSortedByValue(@WebParam(name = "session") final Session session, @WebParam(name = "value") final String value) {
         try {
-            sessionService.existSession(session);
-        } catch (WrongSessionException e) {
+            if(sessionService.existSession(session)) return taskService.findAllSortedByValue(session.getUser().getId(), value);
+        } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        return taskService.findAllSortedByValue(session.getUser().getId(), value);
+        return null;
     }
 }

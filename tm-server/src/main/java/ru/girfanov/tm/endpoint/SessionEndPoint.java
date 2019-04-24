@@ -22,10 +22,10 @@ public final class SessionEndPoint {
 
     @Nullable
     @WebMethod
-    public Session createSession(@WebParam(name = "login") final String login, @WebParam(name = "password") final String password) {
+    public Session createSession(@WebParam(name = "login") final String login) {
         Session session = null;
         try {
-            session = sessionService.createSession(login, password);
+            session = sessionService.createSession(login);
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
         }

@@ -10,7 +10,6 @@ import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 import ru.girfanov.tm.repository.SessionRepository;
 import ru.girfanov.tm.repository.UserRepository;
-import ru.girfanov.tm.util.PasswordHashUtil;
 import ru.girfanov.tm.util.SignatureUtil;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.entity.Session;
@@ -34,20 +33,20 @@ public final class SessionService implements ISessionService {
 
     @Override
     @Nullable
-    public Session createSession(@NotNull final String login, @NotNull final String password) throws UserNotFoundException {
-        if(login.isEmpty() || password.isEmpty()) { return null; }
+    public Session createSession(@NotNull final String login) throws UserNotFoundException {
+        if(login.isEmpty()) { return null; }
         final EntityManager em = entityManagerFactory.createEntityManager();
         final UserRepository userRepository = new UserRepository(em);
         final SessionRepository sessionRepository = new SessionRepository(em);
         Session session = null;
         try {
             em.getTransaction().begin();
-            @Nullable final User user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
+            @Nullable final User user = userRepository.findOneByLogin(login);
             if(user == null) throw new UserNotFoundException("User not found");
             session = new Session();
             session.setTimestamp(getDateISO8601(new Date()));
             session.setUser(user);
-            session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
+            session.setSignature(SignatureUtil.sign(session.getId() + session.getTimestamp(), SALT, CYCLE));
             sessionRepository.persist(session);
             em.getTransaction().commit();
         } catch (ParseException e) {
@@ -76,14 +75,11 @@ public final class SessionService implements ISessionService {
 
     @Override
     public boolean existSession(@NotNull final Session session) throws WrongSessionException {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
         final String signature = session.getSignature();
         if (signature == null || signature.isEmpty()) throw new WrongSessionException("Wrong session");
         session.setSignature(null);
-        if (!signature.equals(SignatureUtil.sign(session, SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+        if (!signature.equals(SignatureUtil.sign(session.getId() + session.getTimestamp(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
         session.setSignature(signature);
-        em.getTransaction().commit();
         return true;
     }
 }
