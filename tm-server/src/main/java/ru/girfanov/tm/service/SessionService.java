@@ -61,25 +61,29 @@ public final class SessionService implements ISessionService {
 
     @Override
     public void removeSession(@NotNull final Session session) throws WrongSessionException {
-        existSession(session);
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final SessionRepository sessionRepository = new SessionRepository(em);
-        try {
-            em.getTransaction().begin();
-            sessionRepository.remove(session);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
+        if(existSession(session)) {
+            final EntityManager em = entityManagerFactory.createEntityManager();
+            final SessionRepository sessionRepository = new SessionRepository(em);
+            try {
+                em.getTransaction().begin();
+                sessionRepository.remove(session);
+                em.getTransaction().commit();
+            } finally {
+                em.close();
+            }
         }
     }
 
     @Override
     public boolean existSession(@NotNull final Session session) throws WrongSessionException {
+        final EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
         final String signature = session.getSignature();
         if (signature == null || signature.isEmpty()) throw new WrongSessionException("Wrong session");
         session.setSignature(null);
         if (!signature.equals(SignatureUtil.sign(session, SALT, CYCLE))) throw new WrongSessionException("Wrong session");
         session.setSignature(signature);
+        em.getTransaction().commit();
         return true;
     }
 }
