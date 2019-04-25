@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.IProjectService;
+import ru.girfanov.tm.dto.ProjectDto;
 import ru.girfanov.tm.entity.Project;
+import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -22,14 +24,13 @@ public final class ProjectService implements IProjectService {
     @NonNull private EntityManagerFactory entityManagerFactory;
 
     @Override
-    public void persist(@NotNull final String userId, @NotNull final Project project) throws UserNotFoundException {
-        if(userId.isEmpty()) { return; }
+    public void persist(@NotNull final User userId, @NotNull final Project project) throws UserNotFoundException {
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
             em.getTransaction().begin();
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
             projectRepository.persist(project);
             em.getTransaction().commit();
         } finally {
@@ -38,14 +39,13 @@ public final class ProjectService implements IProjectService {
     }
 
     @Override
-    public void merge(@NotNull final String userId, @NotNull final Project project) throws UserNotFoundException {
-        if(userId.isEmpty()) { return; }
+    public void merge(@NotNull final User userId, @NotNull final Project project) throws UserNotFoundException {
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
             em.getTransaction().begin();
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
             projectRepository.merge(project);
             em.getTransaction().commit();
         } finally {
@@ -54,14 +54,13 @@ public final class ProjectService implements IProjectService {
     }
 
     @Override
-    public void remove(@NotNull final String userId, @NotNull final Project project) throws UserNotFoundException {
-        if(userId.isEmpty()) { return; }
+    public void remove(@NotNull final User userId, @NotNull final Project project) throws UserNotFoundException {
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
             em.getTransaction().begin();
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
             projectRepository.remove(project);
             em.getTransaction().commit();
         } finally {
@@ -70,15 +69,14 @@ public final class ProjectService implements IProjectService {
     }
 
     @Override
-    public void removeAllByUserId(@NotNull final String userId) throws UserNotFoundException {
-        if(userId.isEmpty()) { return; }
+    public void removeAllByUserId(@NotNull final User userId) throws UserNotFoundException {
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
             em.getTransaction().begin();
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
-            projectRepository.removeAllByUserId(userId);
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+            projectRepository.removeAllByUser(userId);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -87,14 +85,13 @@ public final class ProjectService implements IProjectService {
 
     @Nullable
     @Override
-    public Project findOne(@NotNull final String userId, @NotNull final String projectId) throws UserNotFoundException {
-        if (userId.isEmpty() || projectId.isEmpty()) { return null; }
+    public Project findOne(@NotNull final User userId, @NotNull final String projectId) throws UserNotFoundException {
         Project project = null;
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
             project = projectRepository.findOne(userId, projectId);
         } finally {
             em.close();
@@ -104,15 +101,14 @@ public final class ProjectService implements IProjectService {
 
     @Nullable
     @Override
-    public List<Project> findAllByUserId(@NotNull final String userId) throws UserNotFoundException {
-        if(userId.isEmpty()) { return null; }
+    public List<Project> findAllByUserId(@NotNull final User userId) throws UserNotFoundException {
         List<Project> projects = null;
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
-            projects = projectRepository.findAllByUserId(userId);
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+            projects = projectRepository.findAllByUser(userId);
         } finally {
             em.close();
         }
@@ -131,14 +127,14 @@ public final class ProjectService implements IProjectService {
 
     @Nullable
     @Override
-    public List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) throws UserNotFoundException {
-        if (userId.isEmpty() || value.isEmpty()) { return null; }
+    public List<Project> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
+        if (value.isEmpty()) { return null; }
         List<Project> projects = null;
         final EntityManager em = entityManagerFactory.createEntityManager();
         final ProjectRepository projectRepository = new ProjectRepository(em);
         final UserRepository userRepository = new UserRepository(em);
         try {
-            if(userRepository.findOne(userId) == null) throw new UserNotFoundException("user not found");
+            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
             projects = projectRepository.findAllSortedByValue(userId, value);
         } finally {
             em.close();

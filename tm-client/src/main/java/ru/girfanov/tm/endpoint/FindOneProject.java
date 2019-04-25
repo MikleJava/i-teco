@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
+ *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
  *         &lt;element name="projectUuid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class FindOneProject {
 
-    protected Session session;
+    protected SessionDto session;
     protected String projectUuid;
 
     /**
@@ -41,10 +41,10 @@ public class FindOneProject {
      * 
      * @return
      *     possible object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public Session getSession() {
+    public SessionDto getSession() {
         return session;
     }
 
@@ -53,10 +53,10 @@ public class FindOneProject {
      * 
      * @param value
      *     allowed object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public void setSession(Session value) {
+    public void setSession(SessionDto value) {
         this.session = value;
     }
 

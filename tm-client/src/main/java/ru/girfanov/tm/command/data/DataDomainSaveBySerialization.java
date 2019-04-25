@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.DataDomainEndPoint;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
 @Getter
 @NoArgsConstructor
@@ -18,7 +18,7 @@ public class DataDomainSaveBySerialization extends AbstractSecureCommand {
     private final String description = "save data by serialization";
 
     @Override
-    public void execute(@NotNull final Session session) {
+    public void execute(@NotNull final SessionDto session) {
         final DataDomainEndPoint dataDomainEndPoint = serviceLocator.getDataDomainEndPoint();
         dataDomainEndPoint.saveDataBySerialization(session);
     }

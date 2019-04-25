@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
@@ -59,27 +60,28 @@ public final class SessionService implements ISessionService {
     }
 
     @Override
-    public void removeSession(@NotNull final Session session) throws WrongSessionException {
-        if(existSession(session)) {
-            final EntityManager em = entityManagerFactory.createEntityManager();
-            final SessionRepository sessionRepository = new SessionRepository(em);
-            try {
-                em.getTransaction().begin();
-                sessionRepository.remove(session);
-                em.getTransaction().commit();
-            } finally {
-                em.close();
-            }
+    public void removeSession(@NotNull final Session session) throws UserNotFoundException {
+        final EntityManager em = entityManagerFactory.createEntityManager();
+        final UserRepository userRepository = new UserRepository(em);
+        final SessionRepository sessionRepository = new SessionRepository(em);
+        try {
+            em.getTransaction().begin();
+            @Nullable final User user = userRepository.findOne(session.getUser().getId());
+            if(user == null) throw new UserNotFoundException("User not found");
+            sessionRepository.remove(session);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
     @Override
-    public boolean existSession(@NotNull final Session session) throws WrongSessionException {
-        final String signature = session.getSignature();
+    public boolean existSession(@NotNull final SessionDto sessionDto) throws WrongSessionException {
+        final String signature = sessionDto.getSignature();
         if (signature == null || signature.isEmpty()) throw new WrongSessionException("Wrong session");
-        session.setSignature(null);
-        if (!signature.equals(SignatureUtil.sign(session.getId() + session.getTimestamp(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
-        session.setSignature(signature);
+        sessionDto.setSignature(null);
+        if (!signature.equals(SignatureUtil.sign(sessionDto.getId() + sessionDto.getTimestamp(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+        sessionDto.setSignature(signature);
         return true;
     }
 }

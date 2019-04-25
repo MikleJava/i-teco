@@ -41,7 +41,7 @@ public final class Bootstrap implements ServiceLocator {
         }
     }
 
-    @Setter @Nullable private Session session;
+    @Setter @Nullable private SessionDto sessionDto;
 
     @Override
     public void init(@NotNull final Class [] commandClasses) {
@@ -53,13 +53,13 @@ public final class Bootstrap implements ServiceLocator {
             command = scanner.nextLine();
             if(mapCommands.containsKey(command)) {
                 if(mapCommands.get(command).isSecure()) {
-                    mapCommands.get(new UserAuthCommand().getName()).execute(session);
-                    if(session != null) {
-                        mapCommands.get(command).execute(session);
+                    mapCommands.get(new UserAuthCommand().getName()).execute(sessionDto);
+                    if(sessionDto != null) {
+                        mapCommands.get(command).execute(sessionDto);
                     }
                 } else {
                     try {
-                        mapCommands.get(command).execute(session);
+                        mapCommands.get(command).execute(sessionDto);
                     } catch (RuntimeException e) {
                         System.out.println(e.getMessage());
                     }

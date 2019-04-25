@@ -22,12 +22,12 @@ public final class TasksSelectAllByProjectIdCommand extends AbstractSecureComman
     @NotNull private final String description = "select all tasks by project id";
 
     @Override
-    public void execute(@NotNull final Session session) {
+    public void execute(@NotNull final SessionDto sessionDto) {
         final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.println("all available projects : ");
-            final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
+            final List<ProjectDto> projects = new ArrayList<>(projectEndPoint.findAllProjects(sessionDto));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getId() + " | " + projects.get(i).getName());
             }
@@ -35,9 +35,9 @@ public final class TasksSelectAllByProjectIdCommand extends AbstractSecureComman
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
             System.out.println("___________________________________________________________________________________________________");
-            final Collection<Task> tasks = taskEndPoint.findAllTasksByProjectId(session, projects.get(id).getId());
-            for(Task task : tasks) {
-                System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProject().getId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+            final Collection<TaskDto> tasks = taskEndPoint.findAllTasksByProjectId(sessionDto, projects.get(id).getId());
+            for(TaskDto task : tasks) {
+                System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
             }
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");

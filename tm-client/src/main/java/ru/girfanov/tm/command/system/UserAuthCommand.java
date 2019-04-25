@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 import ru.girfanov.tm.endpoint.UserEndPoint;
 import ru.girfanov.tm.exception.UserNotFoundException;
 
@@ -20,7 +21,7 @@ public final class UserAuthCommand extends AbstractSystemCommand<String> {
     @NotNull private final String description = "auth user";
 
     @Override
-    public void execute(@Nullable final Session session) throws UserNotFoundException {
+    public void execute(@Nullable final SessionDto session) throws UserNotFoundException {
         final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.print("input login : ");
         final String login = scanner.next();

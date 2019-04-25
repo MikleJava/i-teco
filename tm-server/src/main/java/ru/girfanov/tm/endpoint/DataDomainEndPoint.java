@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ru.girfanov.tm.api.service.IDataDomainService;
 import ru.girfanov.tm.api.service.ISessionService;
+import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.exception.WrongSessionException;
 
@@ -21,9 +22,9 @@ public final class DataDomainEndPoint {
     @NonNull private ISessionService sessionService;
 
     @WebMethod
-    public void saveDataBySerialization(@WebParam(name = "session") final Session session) {
+    public void saveDataBySerialization(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session) ;
+            sessionService.existSession(sessionDto) ;
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -31,9 +32,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void getDataBySerialization(@WebParam(name = "session") final Session session) {
+    public void getDataBySerialization(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -41,9 +42,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void saveDataByJaxbInXml(@WebParam(name = "session") final Session session) {
+    public void saveDataByJaxbInXml(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -51,9 +52,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void getDataByJaxbInXml(@WebParam(name = "session") final Session session) {
+    public void getDataByJaxbInXml(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -61,9 +62,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void saveDataByJaxbInJson(@WebParam(name = "session") final Session session) {
+    public void saveDataByJaxbInJson(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -71,9 +72,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void getDataByJaxbInJson(@WebParam(name = "session") final Session session) {
+    public void getDataByJaxbInJson(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -81,9 +82,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void saveDataByFasterInXml(@WebParam(name = "session") final Session session) {
+    public void saveDataByFasterInXml(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -91,9 +92,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void getDataByFasterInXml(@WebParam(name = "session") final Session session) {
+    public void getDataByFasterInXml(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -101,9 +102,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void saveDataByFasterInJson(@WebParam(name = "session") final Session session) {
+    public void saveDataByFasterInJson(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }
@@ -111,9 +112,9 @@ public final class DataDomainEndPoint {
     }
 
     @WebMethod
-    public void getDataByFasterInJson(@WebParam(name = "session") final Session session) {
+    public void getDataByFasterInJson(@WebParam(name = "session") final SessionDto sessionDto) {
         try {
-            sessionService.existSession(session);
+            sessionService.existSession(sessionDto);
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }

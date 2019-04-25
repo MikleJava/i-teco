@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
-import ru.girfanov.tm.endpoint.Session;
-import ru.girfanov.tm.endpoint.Task;
-import ru.girfanov.tm.endpoint.TaskEndPoint;
+import ru.girfanov.tm.endpoint.*;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -23,11 +21,11 @@ public final class TaskSelectCommand extends AbstractSecureCommand {
     @NotNull private final String description = "select task by id";
 
     @Override
-    public void execute(@NotNull final Session session) {
+    public void execute(@NotNull final SessionDto sessionDto) {
         final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         try {
             System.out.println("all available tasks : ");
-            final List<Task> tasks = new ArrayList<>(taskEndPoint.findAllTasks(session));
+            final List<TaskDto> tasks = new ArrayList<>(taskEndPoint.findAllTasks(sessionDto));
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getId() + " | " + tasks.get(i).getName());
             }
@@ -35,8 +33,8 @@ public final class TaskSelectCommand extends AbstractSecureCommand {
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tdate_start\t|\tdate_end");
             System.out.println("_______________________________________________________________________________________________");
-            final Task task = taskEndPoint.findOneTask(session, tasks.get(id).getId());
-            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProject().getId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+            final TaskDto task = taskEndPoint.findOneTask(sessionDto, tasks.get(id).getId());
+            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

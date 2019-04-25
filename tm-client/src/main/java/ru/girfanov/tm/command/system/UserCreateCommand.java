@@ -21,7 +21,7 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
     @NotNull private final String description = "create user";
 
     @Override
-    public void execute(@Nullable final Session session) throws IncorrectRoleException {
+    public void execute(@Nullable final SessionDto session) throws IncorrectRoleException {
         final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         final SessionEndPoint sessionEndPoint = serviceLocator.getSessionEndPoint();
         System.out.print("input user login : ");
@@ -30,14 +30,14 @@ public final class UserCreateCommand extends AbstractSystemCommand<String> {
         final String password = scanner.next();
         System.out.print("input user role : ");
         final String role = scanner.next();
-        final User user = new User();
+        final UserDto user = new UserDto();
         user.setId(UUID.randomUUID().toString());
         user.setLogin(login);
         user.setPassword(password);
         user.setRole(Role.valueOf(role));
         if(user.getRole() == null) throw new IncorrectRoleException("Incorrect role");
         userEndPoint.persistUser(user);
-        final Session userSession = sessionEndPoint.createSession(login);
-        serviceLocator.setSession(userSession);
+        final SessionDto userSession = sessionEndPoint.createSession(login);
+        serviceLocator.setSessionDto(userSession);
     }
 }

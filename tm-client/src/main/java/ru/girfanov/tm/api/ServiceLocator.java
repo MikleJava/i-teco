@@ -10,5 +10,5 @@ public interface ServiceLocator {
     SessionEndPoint getSessionEndPoint();
     void init(Class[] commandClasses);
     void registerCommand(Class clazz);
-    void setSession(Session session);
+    void setSessionDto(SessionDto sessionDto);
 }

@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
- *         &lt;element name="project" type="{http://endpoint.tm.girfanov.ru/}project" minOccurs="0"/&gt;
+ *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
+ *         &lt;element name="project" type="{http://endpoint.tm.girfanov.ru/}projectDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -33,18 +33,18 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class RemoveProject {
 
-    protected Session session;
-    protected Project project;
+    protected SessionDto session;
+    protected ProjectDto project;
 
     /**
      * Gets the value of the session property.
      * 
      * @return
      *     possible object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public Session getSession() {
+    public SessionDto getSession() {
         return session;
     }
 
@@ -53,10 +53,10 @@ public class RemoveProject {
      * 
      * @param value
      *     allowed object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public void setSession(Session value) {
+    public void setSession(SessionDto value) {
         this.session = value;
     }
 
@@ -65,10 +65,10 @@ public class RemoveProject {
      * 
      * @return
      *     possible object is
-     *     {@link Project }
+     *     {@link ProjectDto }
      *     
      */
-    public Project getProject() {
+    public ProjectDto getProject() {
         return project;
     }
 
@@ -77,10 +77,10 @@ public class RemoveProject {
      * 
      * @param value
      *     allowed object is
-     *     {@link Project }
+     *     {@link ProjectDto }
      *     
      */
-    public void setProject(Project value) {
+    public void setProject(ProjectDto value) {
         this.project = value;
     }
 

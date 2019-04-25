@@ -3,20 +3,21 @@ package ru.girfanov.tm.endpoint;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getDataBySerialization complex type.
+ * <p>Java class for abstractEntityDto complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getDataBySerialization"&gt;
+ * &lt;complexType name="abstractEntityDto"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -26,35 +27,38 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getDataBySerialization", propOrder = {
-    "session"
+@XmlType(name = "abstractEntityDto", propOrder = {
+    "id"
 })
-public class GetDataBySerialization {
+@XmlSeeAlso({
+    SessionDto.class
+})
+public class AbstractEntityDto {
 
-    protected SessionDto session;
+    protected String id;
 
     /**
-     * Gets the value of the session property.
+     * Gets the value of the id property.
      * 
      * @return
      *     possible object is
-     *     {@link SessionDto }
+     *     {@link String }
      *     
      */
-    public SessionDto getSession() {
-        return session;
+    public String getId() {
+        return id;
     }
 
     /**
-     * Sets the value of the session property.
+     * Sets the value of the id property.
      * 
      * @param value
      *     allowed object is
-     *     {@link SessionDto }
+     *     {@link String }
      *     
      */
-    public void setSession(SessionDto value) {
-        this.session = value;
+    public void setId(String value) {
+        this.id = value;
     }
 
 }

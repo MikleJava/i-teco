@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
- *         &lt;element name="task" type="{http://endpoint.tm.girfanov.ru/}task" minOccurs="0"/&gt;
+ *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
+ *         &lt;element name="task" type="{http://endpoint.tm.girfanov.ru/}taskDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -33,18 +33,18 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class RemoveTask {
 
-    protected Session session;
-    protected Task task;
+    protected SessionDto session;
+    protected TaskDto task;
 
     /**
      * Gets the value of the session property.
      * 
      * @return
      *     possible object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public Session getSession() {
+    public SessionDto getSession() {
         return session;
     }
 
@@ -53,10 +53,10 @@ public class RemoveTask {
      * 
      * @param value
      *     allowed object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public void setSession(Session value) {
+    public void setSession(SessionDto value) {
         this.session = value;
     }
 
@@ -65,10 +65,10 @@ public class RemoveTask {
      * 
      * @return
      *     possible object is
-     *     {@link Task }
+     *     {@link TaskDto }
      *     
      */
-    public Task getTask() {
+    public TaskDto getTask() {
         return task;
     }
 
@@ -77,10 +77,10 @@ public class RemoveTask {
      * 
      * @param value
      *     allowed object is
-     *     {@link Task }
+     *     {@link TaskDto }
      *     
      */
-    public void setTask(Task value) {
+    public void setTask(TaskDto value) {
         this.task = value;
     }
 

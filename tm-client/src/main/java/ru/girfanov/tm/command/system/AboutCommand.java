@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
 @Getter
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class AboutCommand extends AbstractSystemCommand<String> {
     @NotNull private  final String description = "about app build";
 
     @Override
-    public void execute(@Nullable final Session session) {
+    public void execute(@Nullable final SessionDto session) {
         System.out.println("Build num : " + Manifests.read("Implementation-Build"));
     }
 }

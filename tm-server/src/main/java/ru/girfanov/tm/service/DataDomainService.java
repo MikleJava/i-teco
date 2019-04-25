@@ -14,6 +14,7 @@ import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IDataDomainService;
+import ru.girfanov.tm.dto.AbstractEntityDto;
 import ru.girfanov.tm.dto.DataDomainDto;
 import ru.girfanov.tm.entity.AbstractEntity;
 import ru.girfanov.tm.entity.Project;

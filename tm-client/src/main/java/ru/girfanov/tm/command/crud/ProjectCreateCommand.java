@@ -24,7 +24,7 @@ public final class ProjectCreateCommand extends AbstractSecureCommand {
     @NotNull private final String description = "create project";
 
     @Override
-    public void execute(@NotNull final Session session) {
+    public void execute(@NotNull final SessionDto sessionDto) {
         final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.print("input project name : ");
@@ -37,15 +37,15 @@ public final class ProjectCreateCommand extends AbstractSecureCommand {
             final Date dateStart = new Date();
             //System.out.print("input date end : ");
             final Date dateEnd = new Date();
-            final Project project = new Project();
-            project.setId(UUID.randomUUID().toString());
-            project.setName(name);
-            project.setDescription(description);
-            project.setStatus(Status.valueOf(status));
-            project.setUser(session.getUser());
-            project.setDateStart(convert(dateStart));
-            project.setDateEnd(convert(dateEnd));
-            projectEndPoint.persistProject(session, project);
+            final ProjectDto projectDto = new ProjectDto();
+            projectDto.setId(UUID.randomUUID().toString());
+            projectDto.setName(name);
+            projectDto.setDescription(description);
+            projectDto.setStatus(Status.valueOf(status));
+            projectDto.setUserId(sessionDto.getUserId());
+            projectDto.setDateStart(convert(dateStart));
+            projectDto.setDateEnd(convert(dateEnd));
+            projectEndPoint.persistProject(sessionDto, projectDto);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (DatatypeConfigurationException e) {

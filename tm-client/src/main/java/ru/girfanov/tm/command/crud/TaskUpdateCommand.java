@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
-import ru.girfanov.tm.endpoint.Session;
-import ru.girfanov.tm.endpoint.Task;
-import ru.girfanov.tm.endpoint.TaskEndPoint;
+import ru.girfanov.tm.endpoint.*;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -23,11 +21,11 @@ public final class TaskUpdateCommand extends AbstractSecureCommand {
     @NotNull private final String description = "update task";
 
     @Override
-    public void execute(@NotNull final Session session) {
+    public void execute(@NotNull final SessionDto sessionDto) {
         final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         try {
             System.out.println("all available tasks : ");
-            final List<Task> tasks = new ArrayList<>(taskEndPoint.findAllTasks(session));
+            final List<TaskDto> tasks = new ArrayList<>(taskEndPoint.findAllTasks(sessionDto));
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(i + ") " + tasks.get(i).getId() + " | " + tasks.get(i).getName());
             }
@@ -37,10 +35,10 @@ public final class TaskUpdateCommand extends AbstractSecureCommand {
             final String name = scanner.next();
             System.out.println("input new task description : ");
             final String description = scanner.next();
-            Task task = tasks.get(id);
+            TaskDto task = tasks.get(id);
             task.setName(name);
             task.setDescription(description);
-            taskEndPoint.mergeTask(session, task);
+            taskEndPoint.mergeTask(sessionDto, task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

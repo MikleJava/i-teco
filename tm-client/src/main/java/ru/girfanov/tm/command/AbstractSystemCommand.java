@@ -3,7 +3,7 @@ package ru.girfanov.tm.command;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.ServiceLocator;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
 @Getter
 @NoArgsConstructor
@@ -21,5 +21,5 @@ public abstract class AbstractSystemCommand<T> {
         return isSecure;
     }
 
-    public abstract void execute(@NotNull final Session session);
+    public abstract void execute(@NotNull final SessionDto sessionDto);
 }

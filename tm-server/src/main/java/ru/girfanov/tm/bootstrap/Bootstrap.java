@@ -31,15 +31,15 @@ public final class Bootstrap implements ServiceLocator {
 
     @Override
     public void init() {
-        Endpoint.publish(PROJECT_ENDPOINT, new ProjectEndPoint(projectService, sessionService));
+        Endpoint.publish(PROJECT_ENDPOINT, new ProjectEndPoint(projectService, sessionService, userService));
         System.out.println(PROJECT_ENDPOINT + " has been started");
-        Endpoint.publish(TASK_ENDPOINT, new TaskEndPoint(taskService, sessionService));
+        Endpoint.publish(TASK_ENDPOINT, new TaskEndPoint(taskService, projectService, sessionService, userService));
         System.out.println(TASK_ENDPOINT + " has been started");
         Endpoint.publish(USER_ENDPOINT, new UserEndPoint(userService, sessionService));
         System.out.println(USER_ENDPOINT + " has been started");
         Endpoint.publish(DATA_DOMAIN_ENDPOINT, new DataDomainEndPoint(dataDomainService, sessionService));
         System.out.println(DATA_DOMAIN_ENDPOINT + " has been started");
-        Endpoint.publish(SESSION_ENDPOINT, new SessionEndPoint(sessionService));
+        Endpoint.publish(SESSION_ENDPOINT, new SessionEndPoint(sessionService, userService));
         System.out.println(SESSION_ENDPOINT + " has been started");
     }
 }

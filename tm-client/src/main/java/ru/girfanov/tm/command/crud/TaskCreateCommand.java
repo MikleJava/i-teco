@@ -23,7 +23,7 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
     @NotNull private final String description = "create task";
 
     @Override
-    public void execute(@NotNull final Session session) {
+    public void execute(@NotNull final SessionDto sessionDto) {
         final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
@@ -38,21 +38,21 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             System.out.print("input date end : ");
             final Date dateEnd = new Date();
             System.out.println("all available projects : ");
-            final List<Project> projects = new ArrayList<>(projectEndPoint.findAllProjects(session));
+            final List<ProjectDto> projects = new ArrayList<>(projectEndPoint.findAllProjects(sessionDto));
             for (int i = 0; i < projects.size(); i++) {
                 System.out.println(i + ") " + projects.get(i).getId() + " | " + projects.get(i).getName());
             }
             System.out.print("input project id : ");
             final int projectId = scanner.nextInt();
-            final Task task = new Task();
+            final TaskDto task = new TaskDto();
             task.setName(name);
             task.setDescription(description);
-            task.setUser(session.getUser());
+            task.setUserId(sessionDto.getUserId());
             task.setStatus(Status.valueOf(status));
             task.setDateStart(convert(dateStart));
             task.setDateEnd(convert(dateEnd));
-            task.setProject(projects.get(projectId));
-            taskEndPoint.persistTask(session, task);
+            task.setProjectId(projects.get(projectId).getId());
+            taskEndPoint.persistTask(sessionDto, task);
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         } catch (DatatypeConfigurationException e) {

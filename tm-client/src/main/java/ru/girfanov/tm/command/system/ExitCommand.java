@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public final class ExitCommand extends AbstractSystemCommand<String> {
     @NotNull private final String description = "close application";
 
     @Override
-    public void execute(@Nullable final Session session) {
+    public void execute(@Nullable final SessionDto session) {
         System.exit(0);
     }
 }
