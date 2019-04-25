@@ -2,10 +2,10 @@ package ru.girfanov.tm.command;
 
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
 @NoArgsConstructor
-public abstract class AbstractSecureCommand extends AbstractSystemCommand<Session> {
+public abstract class AbstractSecureCommand extends AbstractSystemCommand<SessionDto> {
 
     @NotNull private final String name = "asec";
 

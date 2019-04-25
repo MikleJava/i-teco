@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
-import ru.girfanov.tm.endpoint.Session;
 import ru.girfanov.tm.endpoint.SessionDto;
 
 @Getter
