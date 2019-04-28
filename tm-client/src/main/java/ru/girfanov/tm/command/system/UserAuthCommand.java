@@ -4,24 +4,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.SessionDto;
+import ru.girfanov.tm.endpoint.SessionEndPoint;
 import ru.girfanov.tm.endpoint.UserEndPoint;
 import ru.girfanov.tm.exception.UserNotFoundException;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class UserAuthCommand extends AbstractSystemCommand<String> {
 
-    @NotNull private final String name = "-au";
+    @Getter @NotNull private final String name = "-au";
 
-    @NotNull private final String description = "auth user";
+    @Getter @NotNull private final String description = "auth user";
+
+    @Inject
+    protected ServiceLocator serviceLocator;
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
     public void execute(@Nullable final SessionDto session) throws UserNotFoundException {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.print("input login : ");
         final String login = scanner.next();
         if(userEndPoint.findOneUserByLogin(login) == null) throw new UserNotFoundException("User not found");

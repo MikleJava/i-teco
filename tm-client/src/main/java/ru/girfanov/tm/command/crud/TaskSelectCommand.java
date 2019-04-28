@@ -6,23 +6,28 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class TaskSelectCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-stbi";
+    @Getter @NotNull private final String name = "-stbi";
 
-    @NotNull private final String description = "select task by id";
+    @Getter @NotNull private final String description = "select task by id";
+
+    @Inject
+    private TaskEndPoint taskEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         try {
             System.out.println("all available tasks : ");
             final List<TaskDto> tasks = new ArrayList<>(taskEndPoint.findAllTasks(sessionDto));

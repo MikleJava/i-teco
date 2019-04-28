@@ -1,5 +1,6 @@
 package ru.girfanov.tm.util;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -11,12 +12,16 @@ import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.service.PropertyService;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class HibernateConnectorUtil {
-
+@ApplicationScoped
+@NoArgsConstructor
+public class HibernateConnectorUtil {
+    @Produces
     public static EntityManagerFactory factory() {
         final Map<String, String> settings = new HashMap<>();
         settings.put(Environment.DRIVER, PropertyService.getJdbcDriver());

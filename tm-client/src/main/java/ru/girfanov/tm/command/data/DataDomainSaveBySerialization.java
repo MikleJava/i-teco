@@ -7,19 +7,24 @@ import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.DataDomainEndPoint;
 import ru.girfanov.tm.endpoint.SessionDto;
 
-@Getter
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@ApplicationScoped
 @NoArgsConstructor
 public class DataDomainSaveBySerialization extends AbstractSecureCommand {
 
-    @NotNull
+    @Getter @NotNull
     private final String name = "--dd ss";
 
-    @NotNull
+    @Getter @NotNull
     private final String description = "save data by serialization";
+
+    @Inject
+    private DataDomainEndPoint dataDomainEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto session) {
-        final DataDomainEndPoint dataDomainEndPoint = serviceLocator.getDataDomainEndPoint();
         dataDomainEndPoint.saveDataBySerialization(session);
     }
 }

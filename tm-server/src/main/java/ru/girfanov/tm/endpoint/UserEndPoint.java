@@ -1,8 +1,6 @@
 package ru.girfanov.tm.endpoint;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ISessionService;
@@ -13,19 +11,21 @@ import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 @WebService
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class UserEndPoint {
+public class UserEndPoint {
 
-    @NonNull private IUserService userService;
-    @NonNull private ISessionService sessionService;
+    @Inject private IUserService userService;
+    @Inject private ISessionService sessionService;
 
     @WebMethod
     public void persistUser(@WebParam(name = "user") final UserDto userDto) {

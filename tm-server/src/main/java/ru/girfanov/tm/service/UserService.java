@@ -1,8 +1,6 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
@@ -10,15 +8,17 @@ import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.util.PasswordHashUtil;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class UserService implements IUserService {
+public class UserService implements IUserService {
 
-    @NonNull private EntityManagerFactory entityManagerFactory;
+    @Inject private EntityManagerFactory entityManagerFactory;
 
     @Override
     public void persist(@NotNull final User user) {

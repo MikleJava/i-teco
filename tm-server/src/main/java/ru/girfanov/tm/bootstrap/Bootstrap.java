@@ -1,19 +1,17 @@
 package ru.girfanov.tm.bootstrap;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.service.*;
 import ru.girfanov.tm.endpoint.*;
-import ru.girfanov.tm.service.*;
 import ru.girfanov.tm.api.ServiceLocator;
-import ru.girfanov.tm.util.HibernateConnectorUtil;
 
-import javax.persistence.EntityManagerFactory;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
 
+@ApplicationScoped
 @NoArgsConstructor
-public final class Bootstrap implements ServiceLocator {
+public class Bootstrap implements ServiceLocator {
 
     @NotNull private static final String PROJECT_ENDPOINT = "http://localhost:8080/ProjectEndpoint?wsdl";
     @NotNull private static final String TASK_ENDPOINT = "http://localhost:8080/TaskEndpoint?wsdl";
@@ -21,25 +19,23 @@ public final class Bootstrap implements ServiceLocator {
     @NotNull private static final String DATA_DOMAIN_ENDPOINT = "http://localhost:8080/DataDomainEndpoint?wsdl";
     @NotNull private static final String SESSION_ENDPOINT = "http://localhost:8080/SessionEndPoint?wsdl";
 
-    @NotNull final private EntityManagerFactory entityManagerFactory = HibernateConnectorUtil.factory();
-
-    @NotNull @Getter private final IProjectService projectService = new ProjectService(entityManagerFactory);
-    @NotNull @Getter private final ITaskService taskService = new TaskService(entityManagerFactory);
-    @NotNull @Getter private final IUserService userService = new UserService(entityManagerFactory);
-    @NotNull @Getter private final ISessionService sessionService = new SessionService(entityManagerFactory);
-    @NotNull @Getter private final IDataDomainService dataDomainService = new DataDomainService();
+    @Inject private ProjectEndPoint projectEndPoint;
+    @Inject private TaskEndPoint taskEndPoint;
+    @Inject private UserEndPoint userEndPoint;
+    @Inject private DataDomainEndPoint dataDomainEndPoint;
+    @Inject private SessionEndPoint sessionEndPoint;
 
     @Override
     public void init() {
-        Endpoint.publish(PROJECT_ENDPOINT, new ProjectEndPoint(projectService, sessionService, userService));
+        Endpoint.publish(PROJECT_ENDPOINT, projectEndPoint);
         System.out.println(PROJECT_ENDPOINT + " has been started");
-        Endpoint.publish(TASK_ENDPOINT, new TaskEndPoint(taskService, projectService, sessionService, userService));
+        Endpoint.publish(TASK_ENDPOINT, taskEndPoint);
         System.out.println(TASK_ENDPOINT + " has been started");
-        Endpoint.publish(USER_ENDPOINT, new UserEndPoint(userService, sessionService));
+        Endpoint.publish(USER_ENDPOINT, userEndPoint);
         System.out.println(USER_ENDPOINT + " has been started");
-        Endpoint.publish(DATA_DOMAIN_ENDPOINT, new DataDomainEndPoint(dataDomainService, sessionService));
+        Endpoint.publish(DATA_DOMAIN_ENDPOINT, dataDomainEndPoint);
         System.out.println(DATA_DOMAIN_ENDPOINT + " has been started");
-        Endpoint.publish(SESSION_ENDPOINT, new SessionEndPoint(sessionService, userService));
+        Endpoint.publish(SESSION_ENDPOINT, sessionEndPoint);
         System.out.println(SESSION_ENDPOINT + " has been started");
     }
 }

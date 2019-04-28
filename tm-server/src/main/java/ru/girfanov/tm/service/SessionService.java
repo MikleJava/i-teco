@@ -1,8 +1,6 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.dto.SessionDto;
@@ -15,6 +13,8 @@ import ru.girfanov.tm.util.SignatureUtil;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.entity.Session;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -23,11 +23,11 @@ import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
 import java.text.ParseException;
 import java.util.Date;
 
+@ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class SessionService implements ISessionService {
+public class SessionService implements ISessionService {
 
-    @NonNull private EntityManagerFactory entityManagerFactory;
+    @Inject private EntityManagerFactory entityManagerFactory;
 
     @Nullable private static final String SALT = PropertyService.getSalt();
     @Nullable private static final Integer CYCLE = Integer.valueOf(PropertyService.getCycle());

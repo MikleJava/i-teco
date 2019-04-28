@@ -6,22 +6,27 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.Collection;
 import java.util.Objects;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class ProjectsSelectAllCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-sap";
+    @Getter @NotNull private final String name = "-sap";
 
-    @NotNull private final String description = "select all projects";
+    @Getter @NotNull private final String description = "select all projects";
+
+    @Inject
+    private ProjectEndPoint projectEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         Collection<ProjectDto> projects = null;
         System.out.print("Sort data? : ");
         String sort = scanner.next();

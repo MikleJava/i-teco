@@ -4,26 +4,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.exception.IncorrectRoleException;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.UUID;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class UserCreateCommand extends AbstractSystemCommand<String> {
 
-    @NotNull private final String name = "-cu";
+    @Getter @NotNull private final String name = "-cu";
 
-    @NotNull private final String description = "create user";
+    @Getter @NotNull private final String description = "create user";
+
+    @Inject
+    protected ServiceLocator serviceLocator;
+    @Inject
+    private UserEndPoint userEndPoint;
+    @Inject
+    private SessionEndPoint sessionEndPoint;
 
     @Override
     public void execute(@Nullable final SessionDto session) throws IncorrectRoleException {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
-        final SessionEndPoint sessionEndPoint = serviceLocator.getSessionEndPoint();
         System.out.print("input user login : ");
         final String login = scanner.next();
         System.out.print("input user password : ");

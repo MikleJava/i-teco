@@ -1,25 +1,24 @@
 package ru.girfanov.tm.endpoint;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import ru.girfanov.tm.api.service.IDataDomainService;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.dto.SessionDto;
-import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.exception.WrongSessionException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+@Singleton
 @WebService
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class DataDomainEndPoint {
+public class DataDomainEndPoint {
 
-    @NonNull private IDataDomainService dataDomainService;
-    @NonNull private ISessionService sessionService;
+    @Inject private IDataDomainService dataDomainService;
+    @Inject private ISessionService sessionService;
 
     @WebMethod
     public void saveDataBySerialization(@WebParam(name = "session") final SessionDto sessionDto) {

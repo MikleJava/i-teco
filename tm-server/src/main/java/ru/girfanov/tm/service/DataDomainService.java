@@ -21,6 +21,7 @@ import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -30,9 +31,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@ApplicationScoped
 @NoArgsConstructor
 @RequiredArgsConstructor
-public final class DataDomainService implements IDataDomainService {
+public class DataDomainService implements IDataDomainService {
 
     @NotNull private static final String SERIALIZE_FILE = "./DataDomainDto.ser";
     @NotNull private static final String JAXB_XML_FILE = "./DataDomainJaxb.xml";

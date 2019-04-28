@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import static ru.girfanov.tm.util.DateConverterGregorianCalendar.convert;
@@ -15,17 +17,19 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.UUID;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class ProjectCreateCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-cp";
+    @Getter @NotNull private final String name = "-cp";
 
-    @NotNull private final String description = "create project";
+    @Getter @NotNull private final String description = "create project";
+
+    @Inject
+    private ProjectEndPoint projectEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.print("input project name : ");
             final String name = scanner.next();

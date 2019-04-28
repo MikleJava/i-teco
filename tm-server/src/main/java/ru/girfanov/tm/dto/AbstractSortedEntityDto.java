@@ -25,5 +25,4 @@ public class AbstractSortedEntityDto extends AbstractEntityDto implements Serial
     @NonNull private Date dateEnd;
 
     @NonNull private String userId;
-
 }

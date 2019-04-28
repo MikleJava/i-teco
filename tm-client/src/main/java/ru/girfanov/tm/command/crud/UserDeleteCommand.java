@@ -8,17 +8,22 @@ import ru.girfanov.tm.endpoint.SessionDto;
 import ru.girfanov.tm.endpoint.UserDto;
 import ru.girfanov.tm.endpoint.UserEndPoint;
 
-@Getter
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@ApplicationScoped
 @NoArgsConstructor
 public final class UserDeleteCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-du";
+    @Getter @NotNull private final String name = "-du";
 
-    @NotNull private final String description = "delete user";
+    @Getter @NotNull private final String description = "delete user";
+
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         final UserDto user = userEndPoint.findOneUser(sessionDto, sessionDto.getUserId());
         userEndPoint.removeUser(sessionDto, user);
     }

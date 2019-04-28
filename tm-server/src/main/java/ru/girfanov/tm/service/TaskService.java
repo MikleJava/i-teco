@@ -1,8 +1,6 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ITaskService;
@@ -12,15 +10,17 @@ import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class TaskService implements ITaskService {
+public class TaskService implements ITaskService {
 
-    @NonNull private EntityManagerFactory entityManagerFactory;
+    @Inject private EntityManagerFactory entityManagerFactory;
 
     @Override
     public void persist(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {

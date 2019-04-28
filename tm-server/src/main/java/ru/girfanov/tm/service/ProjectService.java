@@ -1,27 +1,26 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.IProjectService;
-import ru.girfanov.tm.dto.ProjectDto;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.UserRepository;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class ProjectService implements IProjectService {
+public class ProjectService implements IProjectService {
 
-    @NonNull private EntityManagerFactory entityManagerFactory;
+    @Inject private EntityManagerFactory entityManagerFactory;
 
     @Override
     public void persist(@NotNull final User userId, @NotNull final Project project) throws UserNotFoundException {

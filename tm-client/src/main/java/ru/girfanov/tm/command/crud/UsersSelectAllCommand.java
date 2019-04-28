@@ -6,19 +6,23 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class UsersSelectAllCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-sau";
+    @Getter @NotNull private final String name = "-sau";
 
-    @NotNull private final String description = "select all users";
+    @Getter @NotNull private final String description = "select all users";
+
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.println("\tid\t|\tlogin\t|\trole");
         System.out.println("___________________________________________________________________________________________________");
         final List<UserDto> users = userEndPoint.findAllUsers(sessionDto);

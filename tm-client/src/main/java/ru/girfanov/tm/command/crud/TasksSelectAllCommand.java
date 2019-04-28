@@ -6,19 +6,23 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class TasksSelectAllCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-sat";
+    @Getter @NotNull private final String name = "-sat";
 
-    @NotNull private final String description = "select all tasks";
+    @Getter @NotNull private final String description = "select all tasks";
+
+    @Inject
+    private TaskEndPoint taskEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
         System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tuser_id\t|\tdate_start\t|\tdate_end");
         System.out.println("__________________________________________________________________________________________________________________________________________________________");
         final List<TaskDto> tasks = taskEndPoint.findAllTasks(sessionDto);

@@ -6,23 +6,28 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class UserSelectCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-subi";
+    @Getter @NotNull private final String name = "-subi";
 
-    @NotNull private final String description = "select user by id";
+    @Getter @NotNull private final String description = "select user by id";
+
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         try {
             System.out.println("all available users : ");
             final List<UserDto> users = new ArrayList<>(userEndPoint.findAllUsers(sessionDto));

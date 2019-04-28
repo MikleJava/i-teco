@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.ArrayList;
@@ -13,18 +16,21 @@ import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.List;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class TasksSelectAllByProjectIdCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-satbpi";
+    @Getter @NotNull private final String name = "-satbpi";
 
-    @NotNull private final String description = "select all tasks by project id";
+    @Getter @NotNull private final String description = "select all tasks by project id";
+
+    @Inject
+    private TaskEndPoint taskEndPoint;
+    @Inject
+    private ProjectEndPoint projectEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
-        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.println("all available projects : ");
             final List<ProjectDto> projects = new ArrayList<>(projectEndPoint.findAllProjects(sessionDto));

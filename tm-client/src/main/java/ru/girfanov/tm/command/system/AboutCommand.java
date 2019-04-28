@@ -8,7 +8,10 @@ import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.SessionDto;
 
+import javax.enterprise.context.ApplicationScoped;
+
 @Getter
+@ApplicationScoped
 @NoArgsConstructor
 public class AboutCommand extends AbstractSystemCommand<String> {
 

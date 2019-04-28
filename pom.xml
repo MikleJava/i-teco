@@ -52,7 +52,13 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.jboss.weld.se/weld-se-core -->
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
+            <version>3.1.0.Final</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -86,6 +92,24 @@
         <tag>HEAD</tag>
         <url>http://127.0.0.1/dummy</url>
     </scm>
+    <profiles>
+    <profile>
+        <id>testGeneration</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <groups>ru.girfanov.tm.command.crud.CrudCommandTest</groups>
+                        <includes>
+                            <include>**/*.class</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    </profiles>
 
     <build>
         <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>

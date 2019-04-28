@@ -25,7 +25,7 @@ public class UserServiceTest {
 
     @BeforeClass
     public static void setUp() {
-        userService = new UserService(HibernateConnectorUtil.factory());
+        userService = new UserService();
     }
 
     @Test

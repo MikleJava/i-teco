@@ -7,17 +7,22 @@ import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.DataDomainEndPoint;
 import ru.girfanov.tm.endpoint.SessionDto;
 
-@Getter
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@ApplicationScoped
 @NoArgsConstructor
 public class DataDomainSaveByJaxbInXml extends AbstractSecureCommand {
 
-    @NotNull private final String name = "--dd sjaxbx";
+    @Getter @NotNull private final String name = "--dd sjaxbx";
 
-    @NotNull private final String description = "save data by jax-b in xml";
+    @Getter @NotNull private final String description = "save data by jax-b in xml";
+
+    @Inject
+    private DataDomainEndPoint dataDomainEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto session) {
-        final DataDomainEndPoint dataDomainEndPoint = serviceLocator.getDataDomainEndPoint();
         dataDomainEndPoint.saveDataByJaxbInXml(session);
     }
 }

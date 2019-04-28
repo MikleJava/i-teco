@@ -6,19 +6,24 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class UserUpdateCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-uu";
+    @Getter @NotNull private final String name = "-uu";
 
-    @NotNull private final String description = "update user";
+    @Getter @NotNull private final String description = "update user";
+
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
         System.out.print("input user login : ");
         final String login = scanner.next();
         System.out.print("input user password : ");

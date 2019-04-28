@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,18 +17,21 @@ import java.util.List;
 import static ru.girfanov.tm.util.DateConverterGregorianCalendar.convert;
 import static ru.girfanov.tm.util.Terminal.*;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class TaskCreateCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-ct";
+    @Getter @NotNull private final String name = "-ct";
 
-    @NotNull private final String description = "create task";
+    @Getter @NotNull private final String description = "create task";
+
+    @Inject
+    private TaskEndPoint taskEndPoint;
+    @Inject
+    private ProjectEndPoint projectEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
-        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.print("input task name : ");
             final String name = scanner.next();

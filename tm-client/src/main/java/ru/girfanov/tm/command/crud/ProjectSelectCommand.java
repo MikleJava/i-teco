@@ -6,23 +6,28 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-@Getter
+@ApplicationScoped
 @NoArgsConstructor
 public final class ProjectSelectCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-spbi";
+    @Getter @NotNull private final String name = "-spbi";
 
-    @NotNull private final String description = "select project by id";
+    @Getter @NotNull private final String description = "select project by id";
+
+    @Inject
+    private ProjectEndPoint projectEndPoint;
 
     @Override
     public void execute(@NotNull final SessionDto sessionDto) {
-        final ProjectEndPoint projectEndPoint = serviceLocator.getProjectEndPoint();
         try {
             System.out.println("all available projects : ");
             final List<ProjectDto> projects = new ArrayList<>(projectEndPoint.findAllProjects(sessionDto));

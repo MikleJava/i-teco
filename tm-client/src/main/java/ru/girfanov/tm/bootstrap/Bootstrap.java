@@ -1,6 +1,5 @@
 package ru.girfanov.tm.bootstrap;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -10,20 +9,23 @@ import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.command.system.UserAuthCommand;
 import ru.girfanov.tm.exception.AlreadyExistException;
 import ru.girfanov.tm.endpoint.*;
+import ru.girfanov.tm.exception.IncorrectRoleException;
+import ru.girfanov.tm.exception.UserNotFoundException;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.HashMap;
 import java.util.Map;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
+@ApplicationScoped
 @NoArgsConstructor
-public final class Bootstrap implements ServiceLocator {
+public class Bootstrap implements ServiceLocator {
 
-    @Getter @NotNull private ProjectEndPoint projectEndPoint = new ProjectEndPointService().getProjectEndPointPort();
-    @Getter @NotNull private TaskEndPoint taskEndPoint = new TaskEndPointService().getTaskEndPointPort();
-    @Getter @NotNull private UserEndPoint userEndPoint = new UserEndPointService().getUserEndPointPort();
-    @Getter @NotNull private DataDomainEndPoint dataDomainEndPoint = new DataDomainEndPointService().getDataDomainEndPointPort();
-    @Getter @NotNull private SessionEndPoint sessionEndPoint = new SessionEndPointService().getSessionEndPointPort();
+    static {
+        System.out.println("input --help to get info");
+        System.out.println("input --exit to close application");
+    }
 
     @NotNull private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();
 
@@ -33,10 +35,9 @@ public final class Bootstrap implements ServiceLocator {
     public void registerCommand(@NotNull final Class clazz) {
         try {
             AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) clazz.newInstance();
-            command.setServiceLocator(this);
             if(mapCommands.containsKey(command.getName())) throw new AlreadyExistException("Command " + command.getName() + " already exist");
             mapCommands.put(command.getName(), command);
-        } catch (InstantiationException | IllegalAccessException  | ClassCastException e) {
+        } catch (InstantiationException | AlreadyExistException | IllegalAccessException  | ClassCastException e) {
             System.out.println("Does not correct command");
         }
     }
@@ -53,14 +54,22 @@ public final class Bootstrap implements ServiceLocator {
             command = scanner.nextLine();
             if(mapCommands.containsKey(command)) {
                 if(mapCommands.get(command).isSecure()) {
-                    mapCommands.get(new UserAuthCommand().getName()).execute(sessionDto);
+                    try {
+                        mapCommands.get(new UserAuthCommand().getName()).execute(sessionDto);
+                    } catch (UserNotFoundException | IncorrectRoleException e) {
+                        System.out.println(e.getMessage());
+                    }
                     if(sessionDto != null) {
-                        mapCommands.get(command).execute(sessionDto);
+                        try {
+                            mapCommands.get(command).execute(sessionDto);
+                        } catch (UserNotFoundException | IncorrectRoleException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
                 } else {
                     try {
                         mapCommands.get(command).execute(sessionDto);
-                    } catch (RuntimeException e) {
+                    } catch (UserNotFoundException | IncorrectRoleException e) {
                         System.out.println(e.getMessage());
                     }
                 }

@@ -1,12 +1,16 @@
 package ru.girfanov.tm.service;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public final class PropertyService {
+@ApplicationScoped
+@NoArgsConstructor
+public class PropertyService {
 
     @Nullable
     public static String getJdbcDialect() {
