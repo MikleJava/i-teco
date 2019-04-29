@@ -1,65 +1,35 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class ProjectRepository implements IProjectRepository {
-
-    @NonNull private EntityManager em;
+@Repository
+public interface ProjectRepository extends EntityRepository<Project, String>, IProjectRepository {
 
     @Override
-    public void persist(@NotNull final Project project) {
-        em.persist(project);
-    }
+    void persist(@NotNull final Project project);
 
     @Override
-    public void merge(@NotNull final Project project) {
-        em.merge(project);
-    }
+    void merge(@NotNull final Project project);
 
     @Override
-    public void remove(@NotNull final Project project) {
-        em.remove(project);
-    }
+    void remove(@NotNull final Project project);
 
     @Override
-    public void removeAllByUser(@NotNull final User userId) {
-        em.createQuery("DELETE FROM Project WHERE user = :user_id").setParameter("user_id", userId);
-    }
-
-    @Nullable
-    @Override
-    public Project findOne(@NotNull final User userId, @NotNull final String projectId) {
-        final List<Project> projects = em.createQuery("SELECT t FROM Project t WHERE t.user = :user_id AND t.id = :id", Project.class).setParameter("user_id", userId).setParameter("id", projectId).getResultList();
-        for(Project project : projects) {
-            if(project != null) return project;
-        }
-        return null;
-    }
+    @Modifying
+    @Query("DELETE FROM Project p WHERE p.user_id = :userId")
+    void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    public List<Project> findAllByUser(@NotNull final User userId) {
-        return em.createQuery("SELECT t FROM Project t WHERE t.user = :user_id", Project.class).setParameter("user_id", userId).getResultList();
-    }
+    @Query("SELECT p FROM Project p WHERE p.user_id = :userId AND p.id = :projectId")
+    Project findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
-    public List<Project> findAll() {
-        return em.createQuery("SELECT t FROM Project t", Project.class).getResultList();
-    }
-
-    @Override
-    public List<Project> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) {
-        return em.createQuery("SELECT t FROM Project t WHERE t.user = :user_id ORDER BY t." + value, Project.class).setParameter("user_id", userId).getResultList();
-    }
+    @Query("SELECT p FROM Project p WHERE p.user_id = :userId")
+    List<Project> findAllByUser(@QueryParam("userId") @NotNull final User userId);
 }

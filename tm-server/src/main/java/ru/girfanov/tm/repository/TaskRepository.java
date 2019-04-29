@@ -1,75 +1,46 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.data.api.Modifying;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.QueryParam;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class TaskRepository implements ITaskRepository {
-
-    @NonNull private EntityManager em;
+public interface TaskRepository extends EntityRepository<Task, String>, ITaskRepository {
 
     @Override
-    public void persist(@NotNull final Task task) {
-        em.persist(task);
-    }
+    void persist(@NotNull final Task task);
 
     @Override
-    public void merge(@NotNull final Task task) {
-        em.merge(task);
-    }
+    void merge(@NotNull final Task task);
 
     @Override
-    public void remove(@NotNull final Task task) {
-        em.remove(task);
-    }
+    void remove(@NotNull final Task task);
 
     @Override
-    public void removeAllByUser(@NotNull final User userId) {
-        em.createQuery("DELETE FROM Task WHERE user = :user_id").setParameter("user_id", userId);
-    }
-
-    @Nullable
-    @Override
-    public Task findOne(@NotNull final User userId, @NotNull final String taskId) {
-        final List<Task> tasks = em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id AND t.id = :id", Task.class).setParameter("user_id", userId).setParameter("id", taskId).getResultList();
-        for(Task task : tasks) {
-            if(task != null) return task;
-        }
-        return null;
-    }
+    @Modifying
+    @Query("DELETE FROM Task t WHERE t.user_id = :userId")
+    void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    public List<Task> findAllByUser(@NotNull final User userId) {
-        return em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id", Task.class).setParameter("user_id", userId).getResultList();
-    }
+    @Modifying
+    @Query("DELETE FROM Task t WHERE t.user_id = :userId AND t.project_id = :projectId")
+    void removeAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
-    public List<Task> findAll() {
-        return em.createQuery("SELECT t FROM Task t", Task.class).getResultList();
-    }
+    @Query("SELECT t FROM Task t WHERE t.user_id = :userId AND t.id = :taskId")
+    Task findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("taskId") @NotNull final String taskId);
 
     @Override
-    public List<Task> findAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId) {
-        return em.createQuery("SELECT t FROM Task t WHERE t.user = :user_id AND t.project = :project_id", Task.class).setParameter("user_id", userId).setParameter("project_id", projectId).getResultList();
-    }
+    @Query("SELECT t FROM Task t WHERE t.user_id = :userId")
+    List<Task> findAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    public void removeAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId) {
-        em.createQuery("DELETE FROM Task WHERE user = :user_id AND project = :project_id").setParameter("user_id", userId).setParameter("project_id", projectId);
-    }
-
-    @Override
-    public List<Task> findAllSortedByValue(User userId, String value) {
-        return em.createQuery("SELECT t FROM Task t WHERE user = :user_id ORDER BY t." + value, Task.class).setParameter("user_id", userId).getResultList();
-    }
+    @Query("SELECT t FROM Task t WHERE t.user_id = :userId AND t.project_id = :projectId")
+    List<Task> findAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 }

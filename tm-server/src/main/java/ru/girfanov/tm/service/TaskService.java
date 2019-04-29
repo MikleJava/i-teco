@@ -7,8 +7,8 @@ import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.repository.TaskRepository;
-import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.repository.temp.TaskRepository;
+import ru.girfanov.tm.repository.temp.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

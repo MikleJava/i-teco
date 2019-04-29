@@ -20,7 +20,7 @@ import java.util.Map;
 
 @ApplicationScoped
 @NoArgsConstructor
-public class HibernateConnectorUtil {
+public class EntityManagerFactoryUtil {
     @Produces
     public static EntityManagerFactory factory() {
         final Map<String, String> settings = new HashMap<>();

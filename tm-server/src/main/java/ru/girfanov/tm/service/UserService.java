@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.repository.temp.UserRepository;
 import ru.girfanov.tm.util.PasswordHashUtil;
 
 import javax.enterprise.context.ApplicationScoped;

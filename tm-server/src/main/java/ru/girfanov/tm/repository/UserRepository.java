@@ -1,54 +1,29 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.QueryParam;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.UserNotFoundException;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class UserRepository implements IUserRepository {
-
-    @NonNull private EntityManager em;
+public interface UserRepository extends EntityRepository<User, String>, IUserRepository {
 
     @Override
-    public void persist(@NotNull final User user) {
-        em.persist(user);
-    }
+    void persist(@NotNull final User userId);
 
     @Override
-    public void merge(@NotNull final User user) {
-        em.merge(user);
-    }
+    void merge(@NotNull final User userId);
 
     @Override
-    public void remove(@NotNull final User user) {
-        em.remove(user);
-    }
+    void remove(@NotNull final User userId);
 
     @Override
-    public User findOne(@NotNull final String userId) {
-        return em.find(User.class, userId);
-    }
+    @Query("SELECT u FROM User u WHERE u.id = :userId")
+    User findOne(@QueryParam("userId") @NotNull final String userId) throws UserNotFoundException;
 
     @Override
-    public List<User> findAll() {
-        return em.createQuery("SELECT t FROM User t", User.class).getResultList();
-    }
-
-    @Nullable
-    @Override
-    public User findOneByLogin(@NotNull final String login) {
-        final List<User> users = em.createQuery("SELECT t FROM User t WHERE t.login = :login", User.class).setParameter("login", login).getResultList();
-        for (User user : users) {
-            if(user != null) return user;
-        }
-        return null;
-    }
+    @Query("SELECT u FROM User u WHERE u.login = :login")
+    User findOneByLogin(@QueryParam("login") @NotNull final String login);
 }

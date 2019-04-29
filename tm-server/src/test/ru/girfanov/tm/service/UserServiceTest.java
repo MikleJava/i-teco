@@ -6,7 +6,6 @@ import org.junit.Test;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Role;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.util.HibernateConnectorUtil;
 
 import javax.persistence.NoResultException;
 import java.util.List;
