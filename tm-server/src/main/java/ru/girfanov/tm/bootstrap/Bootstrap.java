@@ -1,6 +1,5 @@
 package ru.girfanov.tm.bootstrap;
 
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.api.ServiceLocator;
@@ -10,7 +9,6 @@ import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
 
 @ApplicationScoped
-@NoArgsConstructor
 public class Bootstrap implements ServiceLocator {
 
     @NotNull private static final String PROJECT_ENDPOINT = "http://localhost:8080/ProjectEndpoint?wsdl";

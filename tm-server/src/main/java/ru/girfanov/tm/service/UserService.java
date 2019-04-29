@@ -1,104 +1,64 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.enumeration.Role;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.repository.temp.UserRepository;
+import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.util.PasswordHashUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@Transactional
 @ApplicationScoped
 @NoArgsConstructor
 public class UserService implements IUserService {
 
-    @Inject private EntityManagerFactory entityManagerFactory;
+    @Inject private UserRepository userRepository;
 
     @Override
-    public void persist(@NotNull final User user) {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            user.setPassword(PasswordHashUtil.md5(user.getPassword()));
-            userRepository.persist(user);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+    public void persist(@NotNull final String id, @NotNull final String login, @NotNull final String password, @NotNull final Role role) {
+        if(id.isEmpty() || login.isEmpty() || password.isEmpty()) { return; }
+        User user = new User();
+        user.setId(id);
+        user.setLogin(login);
+        user.setPassword(PasswordHashUtil.md5(user.getPassword()));
+        user.setRole(role);
+        userRepository.persist(user);
     }
 
     @Override
     public void merge(@NotNull final User user) {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            user.setPassword(PasswordHashUtil.md5(user.getPassword()));
-            userRepository.merge(user);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        user.setPassword(PasswordHashUtil.md5(user.getPassword()));
+        userRepository.merge(user);
     }
 
     @Override
     public void remove(@NotNull final User user) {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            userRepository.remove(user);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        userRepository.remove(user);
     }
 
     @Override
     public User findOne(@NotNull final String userId) throws UserNotFoundException {
-        User user;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            user = userRepository.findOne(userId);
-            if(user == null) throw new UserNotFoundException("user not found");
-        } finally {
-            em.close();
-        }
+        final User user = userRepository.findOne(userId);
+        if(user == null) throw new UserNotFoundException("user not found");
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        List<User> users;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            users = userRepository.findAll();
-        } finally {
-            em.close();
-        }
-        return users;
+        return userRepository.findAll();
     }
 
     @Override
     public User findOneByLogin(@NotNull final String login) throws UserNotFoundException {
-        User user;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            user = userRepository.findOneByLogin(login);
-            if(user == null) throw new UserNotFoundException("user not found");
-        } finally {
-            em.close();
-        }
+        final User user = userRepository.findOneByLogin(login);
+        if(user == null) throw new UserNotFoundException("user not found");
         return user;
     }
 }

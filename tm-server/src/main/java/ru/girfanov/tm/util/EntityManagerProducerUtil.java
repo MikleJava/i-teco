@@ -1,7 +1,6 @@
 package ru.girfanov.tm.util;
 
 import lombok.NoArgsConstructor;
-import org.apache.deltaspike.jpa.api.entitymanager.PersistenceUnitName;
 import org.apache.deltaspike.jpa.api.transaction.TransactionScoped;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,6 @@ public class EntityManagerProducerUtil {
     private static final String UNIT_NAME = "ENTERPRISE";
 
     @Inject
-    @PersistenceUnitName(UNIT_NAME)
     private EntityManagerFactory entityManagerFactory;
 
     @NotNull

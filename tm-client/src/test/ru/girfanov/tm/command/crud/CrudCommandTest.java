@@ -36,19 +36,19 @@ public class CrudCommandTest {
 
     @BeforeClass
     public static void setUp() {
-        seContainer = SeContainerInitializer.newInstance().addPackages(CrudCommandTest.class).initialize();
-        projectEndPoint = seContainer.select(ProjectEndPoint.class).get();
-        taskEndPoint = seContainer.select(TaskEndPoint.class).get();
-        userEndPoint = seContainer.select(UserEndPoint.class).get();
-        sessionEndPoint = seContainer.select(SessionEndPoint.class).get();
-
-        user = new UserDto();
-        user.setId(userId);
-        user.setLogin(LOGIN);
-        user.setPassword(PASSWORD);
-        user.setRole(Role.USER);
-        userEndPoint.persistUser(user);
-        session = sessionEndPoint.createSession(LOGIN);
+//        seContainer = SeContainerInitializer.newInstance().addPackages(CrudCommandTest.class).initialize();
+//        projectEndPoint = seContainer.select(ProjectEndPoint.class).get();
+//        taskEndPoint = seContainer.select(TaskEndPoint.class).get();
+//        userEndPoint = seContainer.select(UserEndPoint.class).get();
+//        sessionEndPoint = seContainer.select(SessionEndPoint.class).get();
+//
+//        user = new UserDto();
+//        user.setId(userId);
+//        user.setLogin(LOGIN);
+//        user.setPassword(PASSWORD);
+//        user.setRole(Role.USER);
+//        userEndPoint.persistUser(user);
+//        session = sessionEndPoint.createSession(LOGIN);
     }
 
     @AfterClass

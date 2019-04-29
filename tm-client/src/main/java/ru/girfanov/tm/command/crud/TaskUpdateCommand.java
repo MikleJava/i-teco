@@ -1,12 +1,9 @@
 package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import static ru.girfanov.tm.util.Terminal.*;
@@ -14,9 +11,6 @@ import static ru.girfanov.tm.util.Terminal.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-
-@ApplicationScoped
-@NoArgsConstructor
 public final class TaskUpdateCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-ut";

@@ -5,23 +5,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.repository.IProjectRepository;
-import ru.girfanov.tm.api.repository.ITaskRepository;
-import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IDataDomainService;
-import ru.girfanov.tm.dto.AbstractEntityDto;
 import ru.girfanov.tm.dto.DataDomainDto;
 import ru.girfanov.tm.entity.AbstractEntity;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.repository.ProjectRepository;
+import ru.girfanov.tm.repository.TaskRepository;
+import ru.girfanov.tm.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -31,9 +30,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Transactional
 @ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class DataDomainService implements IDataDomainService {
 
     @NotNull private static final String SERIALIZE_FILE = "./DataDomainDto.ser";
@@ -42,9 +41,9 @@ public class DataDomainService implements IDataDomainService {
     @NotNull private static final String FASTER_XML_FILE = "./DataDomainFaster.xml";
     @NotNull private static final String FASTER_JSON_FILE = "./DataDomainFaster.json";
 
-    @NonNull private IProjectRepository projectRepository;
-    @NonNull private ITaskRepository taskRepository;
-    @NonNull private IUserRepository userRepository;
+    @Inject private ProjectRepository projectRepository;
+    @Inject private TaskRepository taskRepository;
+    @Inject private UserRepository userRepository;
 
     @Override
     public void saveDataBySerialization() {

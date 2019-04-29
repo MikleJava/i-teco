@@ -1,18 +1,13 @@
 package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.SessionDto;
 import ru.girfanov.tm.endpoint.UserDto;
 import ru.girfanov.tm.endpoint.UserEndPoint;
-
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-@ApplicationScoped
-@NoArgsConstructor
 public final class UserDeleteCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-du";

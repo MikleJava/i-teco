@@ -1,9 +1,6 @@
 package ru.girfanov.tm.repository;
 
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Modifying;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.QueryParam;
+import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
@@ -11,6 +8,7 @@ import ru.girfanov.tm.entity.User;
 
 import java.util.List;
 
+@Repository
 public interface TaskRepository extends EntityRepository<Task, String>, ITaskRepository {
 
     @Override
@@ -33,7 +31,7 @@ public interface TaskRepository extends EntityRepository<Task, String>, ITaskRep
     void removeAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
-    @Query("SELECT t FROM Task t WHERE t.user_id = :userId AND t.id = :taskId")
+    @Query(value = "SELECT t FROM Task t WHERE t.user_id = :userId AND t.id = :taskId", singleResult = SingleResultType.OPTIONAL)
     Task findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("taskId") @NotNull final String taskId);
 
     @Override

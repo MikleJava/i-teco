@@ -1,6 +1,5 @@
 package ru.girfanov.tm.bootstrap;
 
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +18,6 @@ import java.util.Map;
 import static ru.girfanov.tm.util.Terminal.*;
 
 @ApplicationScoped
-@NoArgsConstructor
 public class Bootstrap implements ServiceLocator {
 
     static {

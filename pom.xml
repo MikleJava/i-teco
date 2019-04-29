@@ -59,27 +59,6 @@
             <version>3.1.0.Final</version>
             <scope>compile</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.deltaspike.modules/deltaspike-data-module-api -->
-        <dependency>
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-data-module-api</artifactId>
-            <version>1.9.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.deltaspike.modules/deltaspike-data-module-impl -->
-        <dependency>
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-data-module-impl</artifactId>
-            <version>1.9.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.deltaspike.modules/deltaspike-test-control-module-impl -->
-        <dependency>
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-test-control-module-impl</artifactId>
-            <version>1.9.0</version>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -113,23 +92,24 @@
         <tag>HEAD</tag>
         <url>http://127.0.0.1/dummy</url>
     </scm>
+
     <profiles>
-    <profile>
-        <id>testGeneration</id>
-        <build>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <groups>ru.girfanov.tm.command.crud.CrudCommandTest</groups>
-                        <includes>
-                            <include>**/*.class</include>
-                        </includes>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
+        <profile>
+            <id>testGeneration</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <groups>ru.girfanov.tm.command.crud.CrudCommandTest</groups>
+                            <includes>
+                                <include>**/*.class</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>

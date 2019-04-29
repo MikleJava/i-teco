@@ -1,23 +1,17 @@
 package ru.girfanov.tm.command.system;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.SessionDto;
-import ru.girfanov.tm.endpoint.SessionEndPoint;
 import ru.girfanov.tm.endpoint.UserEndPoint;
 import ru.girfanov.tm.exception.UserNotFoundException;
-
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
-@ApplicationScoped
-@NoArgsConstructor
 public final class UserAuthCommand extends AbstractSystemCommand<String> {
 
     @Getter @NotNull private final String name = "-au";

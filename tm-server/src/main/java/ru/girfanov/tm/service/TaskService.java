@@ -1,177 +1,90 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.repository.temp.TaskRepository;
-import ru.girfanov.tm.repository.temp.UserRepository;
+import ru.girfanov.tm.repository.TaskRepository;
+import ru.girfanov.tm.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@Transactional
 @ApplicationScoped
 @NoArgsConstructor
 public class TaskService implements ITaskService {
 
-    @Inject private EntityManagerFactory entityManagerFactory;
+    @Inject private TaskRepository taskRepository;
+    @Inject private UserRepository userRepository;
 
     @Override
     public void persist(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            taskRepository.persist(task);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.persist(task);
     }
 
     @Override
     public void merge(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            taskRepository.merge(task);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.merge(task);
     }
 
     @Override
     public void remove(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            taskRepository.remove(task);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.remove(task);
     }
 
     @Override
     public void removeAllByUserId(@NotNull final User userId) throws UserNotFoundException {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            taskRepository.removeAllByUser(userId);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.removeAllByUser(userId);
     }
 
     @Nullable
     @Override
     public Task findOne(@NotNull final User userId, @NotNull final String taskId) throws UserNotFoundException {
-        if (taskId.isEmpty()) { return null; }
-        Task task = null;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            task = taskRepository.findOne(userId, taskId);
-        } finally {
-            em.close();
-        }
-        return task;
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findOne(userId, taskId);
     }
 
     @Nullable
     @Override
     public List<Task> findAllByUserId(@NotNull final User userId) throws UserNotFoundException {
-        List<Task> tasks = null;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            tasks = taskRepository.findAllByUser(userId);
-        } finally {
-            em.close();
-        }
-        return tasks;
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findAllByUser(userId);
     }
 
     @Nullable
     @Override
     public List<Task> findAll() {
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        List<Task> tasks = taskRepository.findAll();
-        em.close();
-        return tasks;
+        return taskRepository.findAll();
     }
 
-    @Nullable
+    @Nullable //does not work
     @Override
     public List<Task> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
-        if (value.isEmpty()) { return null; }
-        List<Task> tasks = null;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            tasks = taskRepository.findAllSortedByValue(userId, value);
-        } finally {
-            em.close();
-        }
-        return tasks;
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findAllSortedByValue(userId, value);
     }
 
     @Nullable
     @Override
     public List<Task> findAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId) throws UserNotFoundException {
         if(projectId.isEmpty()) { return null; }
-        List<Task> tasks = null;
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            tasks = taskRepository.findAllTasksByProjectId(userId, projectId);
-        } finally {
-            em.close();
-        }
-        return tasks;
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findAllTasksByProjectId(userId, projectId);
     }
 
     @Override
     public void removeAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId) throws UserNotFoundException {
-        if (projectId.isEmpty()) { return; }
-        final EntityManager em = entityManagerFactory.createEntityManager();
-        final TaskRepository taskRepository = new TaskRepository(em);
-        final UserRepository userRepository = new UserRepository(em);
-        try {
-            em.getTransaction().begin();
-            if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
-            taskRepository.removeAllTasksByProjectId(userId, projectId);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.removeAllTasksByProjectId(userId, projectId);
     }
 }

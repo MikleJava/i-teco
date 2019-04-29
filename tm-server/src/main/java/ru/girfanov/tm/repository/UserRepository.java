@@ -1,13 +1,12 @@
 package ru.girfanov.tm.repository;
 
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.QueryParam;
+import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 
+@Repository
 public interface UserRepository extends EntityRepository<User, String>, IUserRepository {
 
     @Override
@@ -20,10 +19,10 @@ public interface UserRepository extends EntityRepository<User, String>, IUserRep
     void remove(@NotNull final User userId);
 
     @Override
-    @Query("SELECT u FROM User u WHERE u.id = :userId")
+    @Query(value = "SELECT u FROM User u WHERE u.id = :userId", singleResult = SingleResultType.OPTIONAL)
     User findOne(@QueryParam("userId") @NotNull final String userId) throws UserNotFoundException;
 
     @Override
-    @Query("SELECT u FROM User u WHERE u.login = :login")
+    @Query(value = "SELECT u FROM User u WHERE u.login = :login", singleResult = SingleResultType.OPTIONAL)
     User findOneByLogin(@QueryParam("login") @NotNull final String login);
 }

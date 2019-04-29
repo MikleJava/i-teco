@@ -1,6 +1,5 @@
 package ru.girfanov.tm;
 
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.command.crud.*;
@@ -9,7 +8,6 @@ import ru.girfanov.tm.command.data.*;
 
 import javax.enterprise.inject.se.SeContainerInitializer;
 
-@NoArgsConstructor
 public class ApplicationClient {
     @NotNull
     public static final Class[] commandClasses = {
@@ -52,6 +50,7 @@ public class ApplicationClient {
     public static void main(String[] args) {
         SeContainerInitializer.newInstance()
                 .addPackages(ApplicationClient.class)
-                .initialize().select(Bootstrap.class).get().init(commandClasses);
+                .initialize()
+                .select(Bootstrap.class).get().init(commandClasses);
     }
 }

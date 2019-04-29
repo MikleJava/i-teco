@@ -1,12 +1,9 @@
 package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import static ru.girfanov.tm.util.Terminal.*;
@@ -14,8 +11,6 @@ import static ru.girfanov.tm.util.Terminal.*;
 import java.util.Collection;
 import java.util.Objects;
 
-@ApplicationScoped
-@NoArgsConstructor
 public final class ProjectsSelectAllCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-sap";

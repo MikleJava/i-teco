@@ -8,6 +8,7 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.enumeration.Role;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
@@ -28,8 +29,8 @@ public class UserEndPoint {
     @Inject private ISessionService sessionService;
 
     @WebMethod
-    public void persistUser(@WebParam(name = "user") final UserDto userDto) {
-        userService.persist(castToUser(userDto));
+    public void persistUser(@WebParam(name = "id") @NotNull final String id, @WebParam(name = "login") @NotNull final String login, @WebParam(name = "password") @NotNull final String password, @WebParam(name = "role") @NotNull final Role role) {
+        userService.persist(id, login, password, role);
     }
 
     @WebMethod

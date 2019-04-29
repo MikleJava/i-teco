@@ -6,10 +6,6 @@ import ru.girfanov.tm.endpoint.SessionDto;
 import ru.girfanov.tm.exception.IncorrectRoleException;
 import ru.girfanov.tm.exception.UserNotFoundException;
 
-import javax.enterprise.context.ApplicationScoped;
-
-@ApplicationScoped
-@NoArgsConstructor
 public abstract class AbstractSystemCommand<T> {
 
     @Getter @NotNull private final String name = "asc";

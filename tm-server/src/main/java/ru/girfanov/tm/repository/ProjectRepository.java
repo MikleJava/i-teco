@@ -26,7 +26,7 @@ public interface ProjectRepository extends EntityRepository<Project, String>, IP
     void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    @Query("SELECT p FROM Project p WHERE p.user_id = :userId AND p.id = :projectId")
+    @Query(value = "SELECT p FROM Project p WHERE p.user_id = :userId AND p.id = :projectId", singleResult = SingleResultType.OPTIONAL)
     Project findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
