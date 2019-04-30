@@ -12,6 +12,7 @@ import ru.girfanov.tm.exception.IncorrectRoleException;
 import ru.girfanov.tm.exception.UserNotFoundException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +33,10 @@ public class Bootstrap implements ServiceLocator {
     @Override
     public void registerCommand(@NotNull final Class clazz) {
         try {
-            AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) clazz.newInstance();
+            AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) CDI.current().select(clazz).get();
             if(mapCommands.containsKey(command.getName())) throw new AlreadyExistException("Command " + command.getName() + " already exist");
             mapCommands.put(command.getName(), command);
-        } catch (InstantiationException | AlreadyExistException | IllegalAccessException  | ClassCastException e) {
+        } catch (AlreadyExistException | ClassCastException e) {
             System.out.println("Does not correct command");
         }
     }

@@ -1,5 +1,6 @@
 package ru.girfanov.tm.util;
 
+import lombok.NoArgsConstructor;
 import ru.girfanov.tm.endpoint.*;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -7,6 +8,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 @ApplicationScoped
+@NoArgsConstructor
 public class EndPointProducerUtil {
 
     @Inject private ProjectEndPointService projectEndPointService;

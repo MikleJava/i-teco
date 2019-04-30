@@ -22,14 +22,14 @@ public interface ProjectRepository extends EntityRepository<Project, String>, IP
 
     @Override
     @Modifying
-    @Query("DELETE FROM Project p WHERE p.user_id = :userId")
+    @Query("DELETE FROM Project p WHERE p.user = :userId")
     void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    @Query(value = "SELECT p FROM Project p WHERE p.user_id = :userId AND p.id = :projectId", singleResult = SingleResultType.OPTIONAL)
+    @Query(value = "SELECT p FROM Project p WHERE p.user = :userId AND p.id = :projectId", singleResult = SingleResultType.OPTIONAL)
     Project findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
-    @Query("SELECT p FROM Project p WHERE p.user_id = :userId")
+    @Query("SELECT p FROM Project p WHERE p.user = :userId")
     List<Project> findAllByUser(@QueryParam("userId") @NotNull final User userId);
 }

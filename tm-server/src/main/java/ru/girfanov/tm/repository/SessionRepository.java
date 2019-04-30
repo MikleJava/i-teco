@@ -15,6 +15,6 @@ public interface SessionRepository extends EntityRepository<Session, String>, IS
     void remove(@NotNull final Session session);
 
     @Override
-    @Query(value = "SELECT s FROM Session s WHERE s.user_id = :userId AND s.id = :sessionId", singleResult = SingleResultType.OPTIONAL)
+    @Query(value = "SELECT s FROM Session s WHERE s.user = :userId AND s.id = :sessionId", singleResult = SingleResultType.OPTIONAL)
     Session findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("sessionId") @NotNull final String sessionId);
 }

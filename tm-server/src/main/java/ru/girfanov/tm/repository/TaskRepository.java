@@ -22,23 +22,23 @@ public interface TaskRepository extends EntityRepository<Task, String>, ITaskRep
 
     @Override
     @Modifying
-    @Query("DELETE FROM Task t WHERE t.user_id = :userId")
+    @Query("DELETE FROM Task t WHERE t.user = :userId")
     void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
     @Modifying
-    @Query("DELETE FROM Task t WHERE t.user_id = :userId AND t.project_id = :projectId")
+    @Query("DELETE FROM Task t WHERE t.user = :userId AND t.project = :projectId")
     void removeAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
-    @Query(value = "SELECT t FROM Task t WHERE t.user_id = :userId AND t.id = :taskId", singleResult = SingleResultType.OPTIONAL)
+    @Query(value = "SELECT t FROM Task t WHERE t.user = :userId AND t.id = :taskId", singleResult = SingleResultType.OPTIONAL)
     Task findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("taskId") @NotNull final String taskId);
 
     @Override
-    @Query("SELECT t FROM Task t WHERE t.user_id = :userId")
+    @Query("SELECT t FROM Task t WHERE t.user = :userId")
     List<Task> findAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    @Query("SELECT t FROM Task t WHERE t.user_id = :userId AND t.project_id = :projectId")
+    @Query("SELECT t FROM Task t WHERE t.user = :userId AND t.project = :projectId")
     List<Task> findAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 }

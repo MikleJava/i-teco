@@ -27,7 +27,7 @@ public class UserService implements IUserService {
         User user = new User();
         user.setId(id);
         user.setLogin(login);
-        user.setPassword(PasswordHashUtil.md5(user.getPassword()));
+        user.setPassword(PasswordHashUtil.md5(password));
         user.setRole(role);
         userRepository.persist(user);
     }
