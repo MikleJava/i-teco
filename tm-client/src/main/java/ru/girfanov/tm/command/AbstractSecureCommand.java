@@ -1,19 +1,15 @@
 package ru.girfanov.tm.command;
 
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
-@NoArgsConstructor
-public abstract class AbstractSecureCommand extends AbstractSystemCommand<Session> {
+public abstract class AbstractSecureCommand extends AbstractSystemCommand<SessionDto> {
 
-    @NotNull private final String name = "asec";
+    @Getter @NotNull private final String name = "asec";
 
-    @NotNull private final String description = "abstract secure command";
+    @Getter @NotNull private final String description = "abstract secure command";
 
-    private final boolean isSecure = true;
+    @Getter private final boolean isSecure = true;
 
-    public boolean isSecure() {
-        return isSecure;
-    }
 }

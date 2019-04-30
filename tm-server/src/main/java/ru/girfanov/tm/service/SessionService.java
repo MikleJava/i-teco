@@ -1,51 +1,70 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.girfanov.tm.api.repository.ISessionRepository;
-import ru.girfanov.tm.api.repository.IUserRepository;
+import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
+import ru.girfanov.tm.repository.SessionRepository;
+import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.util.SignatureUtil;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.entity.Session;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+import static ru.girfanov.tm.util.DateFormatUtil.getDateISO8601;
+
+import java.text.ParseException;
 import java.util.Date;
 
+@Transactional
+@ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
-public class SessionService extends AbstractService<Session> implements ISessionService {
+public class SessionService implements ISessionService {
 
-    @NonNull private ISessionRepository sessionRepository;
-    @NonNull private IUserRepository userRepository;
+    @Inject private UserRepository userRepository;
+    @Inject private SessionRepository sessionRepository;
 
-    @NotNull private static final String SALT = "SALT";
-    @NotNull private static final Integer CYCLE = 100;
+    @Nullable private static final String SALT = PropertyService.getSalt();
+    @Nullable private static final Integer CYCLE = Integer.valueOf(PropertyService.getCycle());
 
     @Override
-    public Session createSession(@NotNull final String login, @NotNull final String password) throws UserNotFoundException {
-        @Nullable final User user = userRepository.findOneByLoginAndPassword(login, password);
-        if(user == null) throw new UserNotFoundException("User not found");
-        final Session session = new Session();
-        session.setTimeStamp(new Date());
-        session.setUserId(user.getUuid());
-        session.setSignature(SignatureUtil.sign(session, SALT, CYCLE));
+    @Nullable
+    public Session createSession(@NotNull final String login) throws UserNotFoundException {
+        Session session = null;
+        try {
+            @Nullable final User user = userRepository.findOneByLogin(login);
+            if(user == null) throw new UserNotFoundException("User not found");
+            session = new Session();
+            session.setTimestamp(getDateISO8601(new Date()));
+            session.setUser(user);
+            session.setSignature(SignatureUtil.sign(session.getId() + session.getTimestamp(), SALT, CYCLE));
+            sessionRepository.persist(session);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
         return session;
     }
 
     @Override
-    public void removeSession(@NotNull final Session session) throws WrongSessionException {
-        existSession(session);
-        sessionRepository.remove(session.getUserId(), session.getUuid());
+    public void removeSession(@NotNull final Session session) throws UserNotFoundException {
+        @Nullable final User user = userRepository.findOne(session.getUser().getId());
+        if(user == null) throw new UserNotFoundException("User not found");
+        sessionRepository.remove(session);
     }
 
     @Override
-    public boolean existSession(@NotNull final Session session) throws WrongSessionException {
-        if(!session.getSignature().equals(SignatureUtil.sign(session, SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+    public boolean existSession(@NotNull final SessionDto sessionDto) throws WrongSessionException {
+        final String signature = sessionDto.getSignature();
+        if (signature == null || signature.isEmpty()) throw new WrongSessionException("Wrong session");
+        sessionDto.setSignature(null);
+        if (!signature.equals(SignatureUtil.sign(sessionDto.getId() + sessionDto.getTimestamp(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+        sessionDto.setSignature(signature);
         return true;
     }
 }

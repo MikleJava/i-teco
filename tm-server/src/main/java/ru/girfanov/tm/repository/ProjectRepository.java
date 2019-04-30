@@ -1,77 +1,35 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
+import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.IProjectRepository;
-import ru.girfanov.tm.comparator.SortByEndDate;
-import ru.girfanov.tm.comparator.SortByStartDate;
-import ru.girfanov.tm.comparator.SortByStatus;
 import ru.girfanov.tm.entity.Project;
+import ru.girfanov.tm.entity.User;
 
-import java.util.*;
+import java.util.List;
 
-@NoArgsConstructor
-public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
-
-    @Override
-    public Project findOne(@NotNull final String userId, @NotNull final String uuid) {
-        if(!map.get(uuid).getUserId().equals(userId)) return null;
-        return map.get(uuid);
-    }
+@Repository
+public interface ProjectRepository extends EntityRepository<Project, String>, IProjectRepository {
 
     @Override
-    public void merge(@NotNull final String userId, @NotNull final Project entity) {
-        if(findOne(userId, entity.getUuid()) == null) return;
-        persist(userId, entity);
-    }
+    void persist(@NotNull final Project project);
 
     @Override
-    public void remove(@NotNull final String userId, @NotNull final String uuid) {
-        if(findOne(userId, uuid) == null) return;
-        map.remove(uuid);
-    }
+    void merge(@NotNull final Project project);
 
     @Override
-    public void removeAll(@NotNull final String userId) {
-        map.forEach((key, value) -> {
-            if(value.getUserId().equals(userId)) {
-                map.remove(key);
-            }
-        });
-    }
+    void remove(@NotNull final Project project);
 
     @Override
-    public List<Project> findAllByUserId(@NotNull final String userId) {
-        final List<Project> projects = new ArrayList<>();
-        map.forEach((key, value) -> {
-            if(value.getUserId().equals(userId)) {
-                projects.add(value);
-            }
-        });
-        return projects;
-    }
+    @Modifying
+    @Query("DELETE FROM Project p WHERE p.user = :userId")
+    void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
 
     @Override
-    public Collection<Project> findAll() {
-        //Сделать проверку на что, что только админ сможет использовать данный метод
-        return map.values();
-    }
+    @Query(value = "SELECT p FROM Project p WHERE p.user = :userId AND p.id = :projectId", singleResult = SingleResultType.OPTIONAL)
+    Project findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
 
     @Override
-    public List<Project> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
-        final List<Project> sortedProjects = findAllByUserId(userId);
-        if("date start".equals(value)) {
-            Comparator<Project> comparator = new SortByStartDate<>();
-            sortedProjects.sort(comparator);
-        }
-        if("date end".equals(value)) {
-            Comparator<Project> comparator = new SortByEndDate<>();
-            sortedProjects.sort(comparator);
-        }
-        if("status".equals(value)) {
-            Comparator<Project> comparator = new SortByStatus<>();
-            sortedProjects.sort(comparator);
-        }
-        return sortedProjects;
-    }
+    @Query("SELECT p FROM Project p WHERE p.user = :userId")
+    List<Project> findAllByUser(@QueryParam("userId") @NotNull final User userId);
 }

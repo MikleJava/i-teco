@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
- *         &lt;element name="taskUuid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
+ *         &lt;element name="task" type="{http://endpoint.tm.girfanov.ru/}taskDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -29,22 +29,22 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "removeTask", propOrder = {
     "session",
-    "taskUuid"
+    "task"
 })
 public class RemoveTask {
 
-    protected Session session;
-    protected String taskUuid;
+    protected SessionDto session;
+    protected TaskDto task;
 
     /**
      * Gets the value of the session property.
      * 
      * @return
      *     possible object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public Session getSession() {
+    public SessionDto getSession() {
         return session;
     }
 
@@ -53,35 +53,35 @@ public class RemoveTask {
      * 
      * @param value
      *     allowed object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public void setSession(Session value) {
+    public void setSession(SessionDto value) {
         this.session = value;
     }
 
     /**
-     * Gets the value of the taskUuid property.
+     * Gets the value of the task property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link TaskDto }
      *     
      */
-    public String getTaskUuid() {
-        return taskUuid;
+    public TaskDto getTask() {
+        return task;
     }
 
     /**
-     * Sets the value of the taskUuid property.
+     * Sets the value of the task property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link TaskDto }
      *     
      */
-    public void setTaskUuid(String value) {
-        this.taskUuid = value;
+    public void setTask(TaskDto value) {
+        this.task = value;
     }
 
 }

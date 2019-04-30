@@ -3,23 +3,25 @@ package ru.girfanov.tm.endpoint;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for findOneUserByLoginAndPassword complex type.
+ * <p>Java class for userDto complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="findOneUserByLoginAndPassword"&gt;
+ * &lt;complexType name="userDto"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractEntityDto"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="login" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="role" type="{http://endpoint.tm.girfanov.ru/}role" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
+ *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
@@ -27,14 +29,19 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "findOneUserByLoginAndPassword", propOrder = {
+@XmlType(name = "userDto", propOrder = {
     "login",
-    "password"
+    "password",
+    "role"
 })
-public class FindOneUserByLoginAndPassword {
+public class UserDto
+    extends AbstractEntityDto
+{
 
     protected String login;
     protected String password;
+    @XmlSchemaType(name = "string")
+    protected Role role;
 
     /**
      * Gets the value of the login property.
@@ -82,6 +89,30 @@ public class FindOneUserByLoginAndPassword {
      */
     public void setPassword(String value) {
         this.password = value;
+    }
+
+    /**
+     * Gets the value of the role property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Role }
+     *     
+     */
+    public Role getRole() {
+        return role;
+    }
+
+    /**
+     * Sets the value of the role property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Role }
+     *     
+     */
+    public void setRole(Role value) {
+        this.role = value;
     }
 
 }

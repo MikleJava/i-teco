@@ -1,23 +1,24 @@
 package ru.girfanov.tm.command.data;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
-import ru.girfanov.tm.endpoint.Session;
 import ru.girfanov.tm.endpoint.DataDomainEndPoint;
+import ru.girfanov.tm.endpoint.SessionDto;
 
-@Getter
-@NoArgsConstructor
-public class DataDomainGetByJaxbInXml extends AbstractSecureCommand {
+import javax.inject.Inject;
 
-    @NotNull private final String name = "--dd gjaxbx";
+public final class DataDomainGetByJaxbInXml extends AbstractSecureCommand {
 
-    @NotNull private final String description = "get data by jax-b in xml";
+    @Getter @NotNull private final String name = "--dd gjaxbx";
+
+    @Getter @NotNull private final String description = "get data by jax-b in xml";
+
+    @Inject
+    private DataDomainEndPoint dataDomainEndPoint;
 
     @Override
-    public void execute(@NotNull final Session session) {
-        final DataDomainEndPoint dataDomainEndPoint = serviceLocator.getDataDomainEndPoint();
+    public void execute(@NotNull final SessionDto session) {
         dataDomainEndPoint.getDataByJaxbInXml(session);
     }
 }

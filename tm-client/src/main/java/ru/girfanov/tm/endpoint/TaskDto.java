@@ -3,23 +3,22 @@ package ru.girfanov.tm.endpoint;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for abstractEntity complex type.
+ * <p>Java class for taskDto complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="abstractEntity"&gt;
+ * &lt;complexType name="taskDto"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractSortedEntityDto"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="uuid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="projectId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
+ *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
@@ -27,38 +26,37 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "abstractEntity", propOrder = {
-    "uuid"
+@XmlType(name = "taskDto", propOrder = {
+    "projectId"
 })
-@XmlSeeAlso({
-    Session.class
-})
-public class AbstractEntity {
+public class TaskDto
+    extends AbstractSortedEntityDto
+{
 
-    protected String uuid;
+    protected String projectId;
 
     /**
-     * Gets the value of the uuid property.
+     * Gets the value of the projectId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getUuid() {
-        return uuid;
+    public String getProjectId() {
+        return projectId;
     }
 
     /**
-     * Sets the value of the uuid property.
+     * Sets the value of the projectId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setUuid(String value) {
-        this.uuid = value;
+    public void setProjectId(String value) {
+        this.projectId = value;
     }
 
 }

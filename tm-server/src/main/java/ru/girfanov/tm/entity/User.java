@@ -1,35 +1,33 @@
 package ru.girfanov.tm.entity;
 
 import lombok.*;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.jetbrains.annotations.NotNull;
+import ru.girfanov.tm.enumeration.Role;
 
-import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
+@Setter
+@Entity
 @NoArgsConstructor
-@AllArgsConstructor
-public class User extends AbstractEntity implements Serializable {
+@Table(name = "app_user", schema = "tm")
+public class User extends AbstractEntity {
 
-    private static final long serialVersionUID = -3316296014185311021L;
-
-    @NonNull
-    @Setter
+    @Column(unique = true)
     private String login;
 
-    @NonNull
+    @Column(name = "password_hash")
     private String password;
 
-    @NonNull
-    @Setter //temporary
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public void setPassword(@NotNull final String password) {
-        this.password = DigestUtils.md5Hex(password);
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Session> sessions;
 
-//    public void setRole(@NotNull final String role) {
-//        if("Администратор".equals(role)) { this.role = Role.ADMINISTRATOR; }
-//        if("Пользователь".equals(role)) { this.role = Role.USER; }
-//    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Project> projects;
 }

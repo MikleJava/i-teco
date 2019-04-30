@@ -5,21 +5,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.repository.IProjectRepository;
-import ru.girfanov.tm.api.repository.ITaskRepository;
-import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.api.service.IDataDomainService;
-import ru.girfanov.tm.dto.DataDomain;
+import ru.girfanov.tm.dto.DataDomainDto;
 import ru.girfanov.tm.entity.AbstractEntity;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.repository.ProjectRepository;
+import ru.girfanov.tm.repository.TaskRepository;
+import ru.girfanov.tm.repository.UserRepository;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -29,19 +30,20 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Transactional
+@ApplicationScoped
 @NoArgsConstructor
-@RequiredArgsConstructor
-public final class DataDomainService implements IDataDomainService {
+public class DataDomainService implements IDataDomainService {
 
-    @NotNull private static final String SERIALIZE_FILE = "./DataDomain.ser";
+    @NotNull private static final String SERIALIZE_FILE = "./DataDomainDto.ser";
     @NotNull private static final String JAXB_XML_FILE = "./DataDomainJaxb.xml";
     @NotNull private static final String JAXB_JSON_FILE = "./DataDomainJaxb.json";
     @NotNull private static final String FASTER_XML_FILE = "./DataDomainFaster.xml";
     @NotNull private static final String FASTER_JSON_FILE = "./DataDomainFaster.json";
 
-    @NonNull private IProjectRepository projectRepository;
-    @NonNull private ITaskRepository taskRepository;
-    @NonNull private IUserRepository userRepository;
+    @Inject private ProjectRepository projectRepository;
+    @Inject private TaskRepository taskRepository;
+    @Inject private UserRepository userRepository;
 
     @Override
     public void saveDataBySerialization() {
@@ -66,13 +68,13 @@ public final class DataDomainService implements IDataDomainService {
             Object object;
             while ((object = objectInputStream.readObject()) != null) {
                 if (object instanceof Project) {
-                    projectRepository.merge(((Project) object).getUserId(), (Project) object);
+                    projectRepository.merge((Project) object);
                 }
                 if (object instanceof Task) {
-                    taskRepository.merge(((Task) object).getUserId(), (Task) object);
+                    taskRepository.merge((Task) object);
                 }
                 if (object instanceof User) {
-                    userRepository.merge(((User) object).getUuid(), (User) object);
+                    userRepository.merge((User) object);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -83,7 +85,7 @@ public final class DataDomainService implements IDataDomainService {
     @Override
     public void saveDataByJaxbInXml() {
         try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
+            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomainDto.class);
             final Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(getDataDomain(), new File(JAXB_XML_FILE));
@@ -95,10 +97,10 @@ public final class DataDomainService implements IDataDomainService {
     @Override
     public void getDataByJaxbInXml() {
         try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
+            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomainDto.class);
             final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            final DataDomain dataDomain = (DataDomain) unmarshaller.unmarshal(new File(JAXB_XML_FILE));
-            updateDataDomain(dataDomain);
+            final DataDomainDto dataDomainDto = (DataDomainDto) unmarshaller.unmarshal(new File(JAXB_XML_FILE));
+            updateDataDomain(dataDomainDto);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -107,7 +109,7 @@ public final class DataDomainService implements IDataDomainService {
     @Override
     public void saveDataByJaxbInJson() {
         try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
+            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomainDto.class);
             final Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
             marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
@@ -121,12 +123,12 @@ public final class DataDomainService implements IDataDomainService {
     @Override
     public void getDataByJaxbInJson() {
         try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomain.class);
+            final JAXBContext jaxbContext = JAXBContext.newInstance(DataDomainDto.class);
             final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
             unmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
-            final DataDomain dataDomain = unmarshaller.unmarshal(new StreamSource(JAXB_JSON_FILE), DataDomain.class).getValue();
-            updateDataDomain(dataDomain);
+            final DataDomainDto dataDomainDto = unmarshaller.unmarshal(new StreamSource(JAXB_JSON_FILE), DataDomainDto.class).getValue();
+            updateDataDomain(dataDomainDto);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -148,8 +150,8 @@ public final class DataDomainService implements IDataDomainService {
         final XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
-            final DataDomain dataDomain = xmlMapper.readValue(new File(FASTER_XML_FILE), DataDomain.class);
-            updateDataDomain(dataDomain);
+            final DataDomainDto dataDomainDto = xmlMapper.readValue(new File(FASTER_XML_FILE), DataDomainDto.class);
+            updateDataDomain(dataDomainDto);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,30 +173,30 @@ public final class DataDomainService implements IDataDomainService {
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
-            final DataDomain dataDomain = objectMapper.readValue(new File(FASTER_JSON_FILE), DataDomain.class);
-            updateDataDomain(dataDomain);
+            final DataDomainDto dataDomainDto = objectMapper.readValue(new File(FASTER_JSON_FILE), DataDomainDto.class);
+            updateDataDomain(dataDomainDto);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private DataDomain getDataDomain() {
-        final DataDomain dataDomain = new DataDomain();
-        dataDomain.setProjects(projectRepository.findAll());
-        dataDomain.setTasks(taskRepository.findAll());
-        dataDomain.setUsers(userRepository.findAll());
-        return dataDomain;
+    private DataDomainDto getDataDomain() {
+        final DataDomainDto dataDomainDto = new DataDomainDto();
+        dataDomainDto.setProjects(projectRepository.findAll());
+        dataDomainDto.setTasks(taskRepository.findAll());
+        dataDomainDto.setUsers(userRepository.findAll());
+        return dataDomainDto;
     }
 
-    private void updateDataDomain(DataDomain dataDomain) {
-        for(Project project : dataDomain.getProjects()) {
-            projectRepository.merge(project.getUserId(), project);
+    private void updateDataDomain(DataDomainDto dataDomainDto) {
+        for(Project project : dataDomainDto.getProjects()) {
+            projectRepository.merge(project);
         }
-        for(Task task : dataDomain.getTasks()) {
-            taskRepository.merge(task.getUserId(), task);
+        for(Task task : dataDomainDto.getTasks()) {
+            taskRepository.merge(task);
         }
-        for(User user : dataDomain.getUsers()) {
-            userRepository.merge(user.getUuid(), user);
+        for(User user : dataDomainDto.getUsers()) {
+            userRepository.merge(user);
         }
     }
 }

@@ -1,47 +1,20 @@
 package ru.girfanov.tm.repository;
 
-import lombok.NoArgsConstructor;
+import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.repository.ISessionRepository;
 import ru.girfanov.tm.entity.Session;
+import ru.girfanov.tm.entity.User;
 
-import java.util.Collection;
-import java.util.List;
-
-@NoArgsConstructor
-public class SessionRepository extends AbstractRepository<Session> implements ISessionRepository {
+@Repository
+public interface SessionRepository extends EntityRepository<Session, String>, ISessionRepository {
+    @Override
+    void persist(@NotNull final Session session);
 
     @Override
-    public void merge(@NotNull String userId, @NotNull Session entity) {
-        //TODO
-    }
+    void remove(@NotNull final Session session);
 
     @Override
-    public void remove(@NotNull String userId, @NotNull String uuid) {
-        if(findOne(userId, uuid) == null) return;
-        map.remove(uuid);
-    }
-
-    @Override
-    public void removeAll(@NotNull final String userId) {
-        //TODO
-    }
-
-    @Override
-    public Session findOne(@NotNull final String userId, @NotNull final String uuid) {
-        if(!map.get(uuid).getUserId().equals(userId)) return null;
-        return map.get(uuid);
-    }
-
-    @Override
-    public List<Session> findAllByUserId(String userId) {
-        //TODO
-        return null;
-    }
-
-    @Override
-    public Collection<Session> findAll() {
-        //TODO
-        return null;
-    }
+    @Query(value = "SELECT s FROM Session s WHERE s.user = :userId AND s.id = :sessionId", singleResult = SingleResultType.OPTIONAL)
+    Session findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("sessionId") @NotNull final String sessionId);
 }
