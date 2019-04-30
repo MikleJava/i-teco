@@ -1,13 +1,12 @@
 package ru.girfanov.tm;
 
-import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.bootstrap.Bootstrap;
+import javax.enterprise.inject.se.SeContainerInitializer;
 
-public final class ApplicationServer {
+public class ApplicationServer {
     public static void main(String[] args) {
-        @NotNull
-        ServiceLocator serviceLocator = new Bootstrap();
-        serviceLocator.init();
+        SeContainerInitializer.newInstance()
+                .addPackages(ApplicationServer.class)
+                .initialize().select(Bootstrap.class).get().init();
     }
 }

@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="return" type="{http://endpoint.tm.girfanov.ru/}project" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="return" type="{http://endpoint.tm.girfanov.ru/}projectDto" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 public class FindAllProjectsResponse {
 
     @XmlElement(name = "return")
-    protected List<Project> _return;
+    protected List<ProjectDto> _return;
 
     /**
      * Gets the value of the return property.
@@ -55,13 +55,13 @@ public class FindAllProjectsResponse {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Project }
+     * {@link ProjectDto }
      * 
      * 
      */
-    public List<Project> getReturn() {
+    public List<ProjectDto> getReturn() {
         if (_return == null) {
-            _return = new ArrayList<Project>();
+            _return = new ArrayList<ProjectDto>();
         }
         return this._return;
     }

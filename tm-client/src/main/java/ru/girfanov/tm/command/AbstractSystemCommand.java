@@ -2,24 +2,17 @@ package ru.girfanov.tm.command;
 
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.ServiceLocator;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
+import ru.girfanov.tm.exception.IncorrectRoleException;
+import ru.girfanov.tm.exception.UserNotFoundException;
 
-@Getter
-@NoArgsConstructor
 public abstract class AbstractSystemCommand<T> {
 
-    @NotNull private final String name = "asc";
+    @Getter @NotNull private final String name = "asc";
 
-    @NotNull private final String description = "abstract system command";
+    @Getter @NotNull private final String description = "abstract system command";
 
-    @Setter protected ServiceLocator serviceLocator;
+    @Getter private final boolean isSecure = false;
 
-    private final boolean isSecure = false;
-
-    public boolean isSecure() {
-        return isSecure;
-    }
-
-    public abstract void execute(@NotNull final Session session);
+    public abstract void execute(@NotNull final SessionDto sessionDto) throws UserNotFoundException, IncorrectRoleException;
 }

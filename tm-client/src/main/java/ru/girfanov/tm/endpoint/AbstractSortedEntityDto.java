@@ -10,20 +10,20 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for abstractSortedEntity complex type.
+ * <p>Java class for abstractSortedEntityDto complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="abstractSortedEntity"&gt;
+ * &lt;complexType name="abstractSortedEntityDto"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractEntity"&gt;
+ *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractEntityDto"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="dateEnd" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="dateStart" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="status" type="{http://endpoint.tm.girfanov.ru/}status" minOccurs="0"/&gt;
  *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -34,7 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "abstractSortedEntity", propOrder = {
+@XmlType(name = "abstractSortedEntityDto", propOrder = {
     "dateEnd",
     "dateStart",
     "description",
@@ -43,10 +43,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "userId"
 })
 @XmlSeeAlso({
-    Task.class
+    TaskDto.class
 })
-public class AbstractSortedEntity
-    extends AbstractEntity
+public class AbstractSortedEntityDto
+    extends AbstractEntityDto
 {
 
     @XmlSchemaType(name = "dateTime")
@@ -55,7 +55,8 @@ public class AbstractSortedEntity
     protected XMLGregorianCalendar dateStart;
     protected String description;
     protected String name;
-    protected String status;
+    @XmlSchemaType(name = "string")
+    protected Status status;
     protected String userId;
 
     /**
@@ -159,10 +160,10 @@ public class AbstractSortedEntity
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Status }
      *     
      */
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -171,10 +172,10 @@ public class AbstractSortedEntity
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Status }
      *     
      */
-    public void setStatus(String value) {
+    public void setStatus(Status value) {
         this.status = value;
     }
 

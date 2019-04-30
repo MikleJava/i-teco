@@ -1,13 +1,17 @@
 package ru.girfanov.tm.api.service;
 
-import java.io.Serializable;
+import ru.girfanov.tm.entity.AbstractEntity;
+import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.UserNotFoundException;
+
 import java.util.List;
 
-public interface Service<T extends Serializable> {
-    void persist(String userId, T entity);
-    void merge(String userId, T entity);
-    void remove(String userId, String uuid);
-    void removeAll(String userId);
-    T findOne(String userId, String uuid);
-    List<T> findAll(String userId);
+public interface Service<T extends AbstractEntity> {
+    void persist(User userId, T entity) throws UserNotFoundException;
+    void merge(User userId, T entity) throws UserNotFoundException;
+    void remove(User userId, T entity) throws UserNotFoundException;
+    void removeAllByUserId(User userId) throws UserNotFoundException;
+    T findOne(User userId, String uuid) throws UserNotFoundException;
+    List<T> findAllByUserId(User userId) throws UserNotFoundException;
+    List<T> findAll();
 }

@@ -1,12 +1,10 @@
 package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
-import ru.girfanov.tm.endpoint.Session;
-import ru.girfanov.tm.endpoint.User;
-import ru.girfanov.tm.endpoint.UserEndPoint;
+import ru.girfanov.tm.endpoint.*;
+import javax.inject.Inject;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
@@ -14,29 +12,29 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
 public final class UserSelectCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-subi";
+    @Getter @NotNull private final String name = "-subi";
 
-    @NotNull private final String description = "select user by id";
+    @Getter @NotNull private final String description = "select user by id";
+
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
-    public void execute(@NotNull final Session session) {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
+    public void execute(@NotNull final SessionDto sessionDto) {
         try {
             System.out.println("all available users : ");
-            final List<User> users = new ArrayList<>(userEndPoint.findAllUsers(session));
+            final List<UserDto> users = new ArrayList<>(userEndPoint.findAllUsers(sessionDto));
             for (int i = 0; i < users.size(); i++) {
-                System.out.println(i + ") " + users.get(i).getUuid() + " | " + users.get(i).getLogin());
+                System.out.println(i + ") " + users.get(i).getId() + " | " + users.get(i).getLogin());
             }
             System.out.print("input user id : ");
             final int id = scanner.nextInt();
             System.out.println("\tid\t|\tlogin\t|\trole");
             System.out.println("_______________________________________________________________________________________________");
-            final User user = userEndPoint.findOneUser(session, users.get(id).getUuid());
-            System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
+            final UserDto user = userEndPoint.findOneUser(sessionDto, users.get(id).getId());
+            System.out.println("\t" + user.getId() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         } catch (InputMismatchException e) {
             System.out.println("Incorrect data");
         }

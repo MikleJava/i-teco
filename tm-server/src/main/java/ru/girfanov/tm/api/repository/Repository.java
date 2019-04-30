@@ -1,15 +1,16 @@
 package ru.girfanov.tm.api.repository;
 
-import java.io.Serializable;
-import java.util.Collection;
+import ru.girfanov.tm.entity.AbstractEntity;
+import ru.girfanov.tm.entity.User;
+
 import java.util.List;
 
-public interface Repository<T extends Serializable> {
-    void persist(String userId, T entity);
-    void merge(String userId, T entity);
-    void remove(String userId, String uuid);
-    void removeAll(String userId);
-    T findOne(String userId, String uuid);
-    List<T> findAllByUserId(String userId);
-    Collection<T> findAll();
+public interface Repository<T extends AbstractEntity> {
+    void persist(T entity);
+    void merge(T entity);
+    void remove(T entity);
+    void removeAllByUser(User user);
+    T findOne(User user, String entityId);
+    List<T> findAllByUser(User user);
+    List<T> findAll();
 }

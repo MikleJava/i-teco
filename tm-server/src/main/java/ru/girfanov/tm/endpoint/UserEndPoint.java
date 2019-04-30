@@ -1,70 +1,117 @@
 package ru.girfanov.tm.endpoint;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.api.service.IUserService;
-import ru.girfanov.tm.entity.Session;
+import ru.girfanov.tm.dto.SessionDto;
+import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.enumeration.Role;
+import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 @WebService
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class UserEndPoint {
 
-    @NonNull private IUserService userService;
-    @NonNull private ISessionService sessionService;
+    @Inject private IUserService userService;
+    @Inject private ISessionService sessionService;
 
     @WebMethod
-    public void persistUser(@WebParam(name = "user") final User user) throws WrongSessionException {
-        userService.persist(user.getUuid(), user);
+    public void persistUser(@WebParam(name = "id") @NotNull final String id, @WebParam(name = "login") @NotNull final String login, @WebParam(name = "password") @NotNull final String password, @WebParam(name = "role") @NotNull final Role role) {
+        userService.persist(id, login, password, role);
     }
 
     @WebMethod
-    public void mergeUser(@WebParam(name = "session") final Session session, @WebParam(name = "user") final User user) throws WrongSessionException {
-        sessionService.existSession(session);
-        userService.merge(session.getUserId(), user);
+    public void mergeUser(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "user") final UserDto userDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) userService.merge(castToUser(userDto));
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @WebMethod
-    public void removeUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String userUuid) throws WrongSessionException {
-        sessionService.existSession(session);
-        userService.remove(session.getUserId(), userUuid);
+    public void removeUser(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "user") final UserDto userDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) userService.remove(castToUser(userDto));
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    @Nullable
     @WebMethod
-    public void removeAllUsers(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
-        userService.removeAll(session.getUserId());
+    public UserDto findOneUser(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "userUuid") final String userId) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToUserDto(userService.findOne(userId));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
+    @Nullable
     @WebMethod
-    public User findOneUser(@WebParam(name = "session") final Session session, @WebParam(name = "userUuid") final String uuid) throws WrongSessionException {
-        sessionService.existSession(session);
-        return userService.findOne(session.getUserId(), uuid);
+    public List<UserDto> findAllUsers(@WebParam(name = "session") final SessionDto sessionDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToListUsersDto(userService.findAll());
+        } catch (WrongSessionException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
-    @WebMethod
-    public List<User> findAllUsers(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
-        return userService.findAll(session.getUserId());
+    @WebMethod //for serialization
+    public List<UserDto> findAll() {
+        return castToListUsersDto(userService.findAll());
     }
 
+    @Nullable
     @WebMethod
-    public void mergeUserPassword(@WebParam(name = "session") final Session session, @WebParam(name = "newPassword") String newPassword) throws WrongSessionException {
-        sessionService.existSession(session);
-        userService.mergePassword(session.getUserId(), newPassword);
+    public UserDto findOneUserByLogin(@WebParam(name = "login") final String login) {
+        try {
+            return castToUserDto(userService.findOneByLogin(login));
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
-    @WebMethod
-    public User findOneUserByLoginAndPassword(@WebParam(name = "login") final String login, @WebParam(name = "password") final String password) {
-        return userService.findOneByLoginAndPassword(login, password);
+    private UserDto castToUserDto(@NotNull final User user) {
+        final UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setLogin(user.getLogin());
+        userDto.setPassword(user.getPassword());
+        userDto.setRole(user.getRole());
+        return userDto;
+    }
+
+    private User castToUser(@NotNull final UserDto userDto) {
+        final User user = new User();
+        user.setId(userDto.getId());
+        user.setLogin(userDto.getLogin());
+        user.setPassword(userDto.getPassword());
+        user.setRole(userDto.getRole());
+        return user;
+    }
+
+    private List<UserDto> castToListUsersDto(@NotNull final List<User> users) {
+        final List<UserDto> usersDto = new ArrayList<>();
+        for (User user : users) {
+            usersDto.add(castToUserDto(user));
+        }
+        return usersDto;
     }
 }

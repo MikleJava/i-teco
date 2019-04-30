@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
- *         &lt;element name="user" type="{http://endpoint.tm.girfanov.ru/}user" minOccurs="0"/&gt;
+ *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
+ *         &lt;element name="user" type="{http://endpoint.tm.girfanov.ru/}userDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -33,18 +33,18 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class MergeUser {
 
-    protected Session session;
-    protected User user;
+    protected SessionDto session;
+    protected UserDto user;
 
     /**
      * Gets the value of the session property.
      * 
      * @return
      *     possible object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public Session getSession() {
+    public SessionDto getSession() {
         return session;
     }
 
@@ -53,10 +53,10 @@ public class MergeUser {
      * 
      * @param value
      *     allowed object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public void setSession(Session value) {
+    public void setSession(SessionDto value) {
         this.session = value;
     }
 
@@ -65,10 +65,10 @@ public class MergeUser {
      * 
      * @return
      *     possible object is
-     *     {@link User }
+     *     {@link UserDto }
      *     
      */
-    public User getUser() {
+    public UserDto getUser() {
         return user;
     }
 
@@ -77,10 +77,10 @@ public class MergeUser {
      * 
      * @param value
      *     allowed object is
-     *     {@link User }
+     *     {@link UserDto }
      *     
      */
-    public void setUser(User value) {
+    public void setUser(UserDto value) {
         this.user = value;
     }
 

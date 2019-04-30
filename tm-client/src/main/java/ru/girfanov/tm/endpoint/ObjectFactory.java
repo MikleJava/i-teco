@@ -69,19 +69,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Session }
+     * Create an instance of {@link SessionDto }
      * 
      */
-    public Session createSession() {
-        return new Session();
+    public SessionDto createSessionDto() {
+        return new SessionDto();
     }
 
     /**
-     * Create an instance of {@link AbstractEntity }
+     * Create an instance of {@link AbstractEntityDto }
      * 
      */
-    public AbstractEntity createAbstractEntity() {
-        return new AbstractEntity();
+    public AbstractEntityDto createAbstractEntityDto() {
+        return new AbstractEntityDto();
     }
 
     /**

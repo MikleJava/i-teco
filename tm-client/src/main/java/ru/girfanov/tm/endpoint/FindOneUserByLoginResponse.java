@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for findOneUserByLoginAndPasswordResponse complex type.
+ * <p>Java class for findOneUserByLoginResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="findOneUserByLoginAndPasswordResponse"&gt;
+ * &lt;complexType name="findOneUserByLoginResponse"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="return" type="{http://endpoint.tm.girfanov.ru/}user" minOccurs="0"/&gt;
+ *         &lt;element name="return" type="{http://endpoint.tm.girfanov.ru/}userDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -27,23 +27,23 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "findOneUserByLoginAndPasswordResponse", propOrder = {
+@XmlType(name = "findOneUserByLoginResponse", propOrder = {
     "_return"
 })
-public class FindOneUserByLoginAndPasswordResponse {
+public class FindOneUserByLoginResponse {
 
     @XmlElement(name = "return")
-    protected User _return;
+    protected UserDto _return;
 
     /**
      * Gets the value of the return property.
      * 
      * @return
      *     possible object is
-     *     {@link User }
+     *     {@link UserDto }
      *     
      */
-    public User getReturn() {
+    public UserDto getReturn() {
         return _return;
     }
 
@@ -52,10 +52,10 @@ public class FindOneUserByLoginAndPasswordResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link User }
+     *     {@link UserDto }
      *     
      */
-    public void setReturn(User value) {
+    public void setReturn(UserDto value) {
         this._return = value;
     }
 

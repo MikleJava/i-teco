@@ -1,37 +1,90 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.repository.ITaskRepository;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.entity.Task;
+import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.repository.TaskRepository;
+import ru.girfanov.tm.repository.UserRepository;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
+@Transactional
+@ApplicationScoped
 @NoArgsConstructor
-public final class TaskService extends AbstractService<Task> implements ITaskService {
+public class TaskService implements ITaskService {
 
-    private ITaskRepository taskRepository;
+    @Inject private TaskRepository taskRepository;
+    @Inject private UserRepository userRepository;
 
-    public TaskService(@NotNull final ITaskRepository taskRepository) {
-        super(taskRepository);
-        this.taskRepository = taskRepository;
+    @Override
+    public void persist(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.persist(task);
     }
 
     @Override
-    public List<Task> findAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
-        if(userId.isEmpty() || projectId.isEmpty()) { return null; }
+    public void merge(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.merge(task);
+    }
+
+    @Override
+    public void remove(@NotNull final User userId, @NotNull final Task task) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.remove(task);
+    }
+
+    @Override
+    public void removeAllByUserId(@NotNull final User userId) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.removeAllByUser(userId);
+    }
+
+    @Nullable
+    @Override
+    public Task findOne(@NotNull final User userId, @NotNull final String taskId) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findOne(userId, taskId);
+    }
+
+    @Nullable
+    @Override
+    public List<Task> findAllByUserId(@NotNull final User userId) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findAllByUser(userId);
+    }
+
+    @Nullable
+    @Override
+    public List<Task> findAll() {
+        return taskRepository.findAll();
+    }
+
+    @Nullable //does not work
+    @Override
+    public List<Task> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        return taskRepository.findAllSortedByValue(userId, value);
+    }
+
+    @Nullable
+    @Override
+    public List<Task> findAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId) throws UserNotFoundException {
+        if(projectId.isEmpty()) { return null; }
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
         return taskRepository.findAllTasksByProjectId(userId, projectId);
     }
 
     @Override
-    public void removeAllTasksByProjectId(@NotNull final String userId, @NotNull final String projectId) {
-        if(!userId.isEmpty() || !projectId.isEmpty()) { taskRepository.removeAllTasksByProjectId(userId, projectId); }
-    }
-
-    @Override
-    public List<Task> findAllSortedByValue(@NotNull final String userId, @NotNull final String value) {
-        if(userId.isEmpty() || value.isEmpty()) { return null; }
-        return taskRepository.findAllSortedByValue(userId, value);
+    public void removeAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId) throws UserNotFoundException {
+        if(userRepository.findOne(userId.getId()) == null) throw new UserNotFoundException("user not found");
+        taskRepository.removeAllTasksByProjectId(userId, projectId);
     }
 }

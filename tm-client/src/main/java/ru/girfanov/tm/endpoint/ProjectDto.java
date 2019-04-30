@@ -7,17 +7,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for mergeUserPasswordResponse complex type.
+ * <p>Java class for projectDto complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="mergeUserPasswordResponse"&gt;
+ * &lt;complexType name="projectDto"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;extension base="{http://endpoint.tm.girfanov.ru/}abstractSortedEntityDto"&gt;
  *       &lt;sequence&gt;
  *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
+ *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
@@ -25,8 +25,10 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "mergeUserPasswordResponse")
-public class MergeUserPasswordResponse {
+@XmlType(name = "projectDto")
+public class ProjectDto
+    extends AbstractSortedEntityDto
+{
 
 
 }

@@ -1,31 +1,28 @@
 package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
-import ru.girfanov.tm.endpoint.Session;
-import ru.girfanov.tm.endpoint.Task;
-import ru.girfanov.tm.endpoint.TaskEndPoint;
+import ru.girfanov.tm.endpoint.*;
+import javax.inject.Inject;
+import java.util.List;
 
-import java.util.Collection;
-
-@Getter
-@NoArgsConstructor
 public final class TasksSelectAllCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-sat";
+    @Getter @NotNull private final String name = "-sat";
 
-    @NotNull private final String description = "select all tasks";
+    @Getter @NotNull private final String description = "select all tasks";
+
+    @Inject
+    private TaskEndPoint taskEndPoint;
 
     @Override
-    public void execute(@NotNull final Session session) {
-        final TaskEndPoint taskEndPoint = serviceLocator.getTaskEndPoint();
+    public void execute(@NotNull final SessionDto sessionDto) {
         System.out.println("\tid\t|\tname\t|\tdescription\t|\tproject_id\t|\tuser_id\t|\tdate_start\t|\tdate_end");
         System.out.println("__________________________________________________________________________________________________________________________________________________________");
-        final Collection<Task> tasks = taskEndPoint.findAllTasks(session);
-        for (Task task : tasks) {
-            System.out.println("\t" + task.getUuid() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
+        final List<TaskDto> tasks = taskEndPoint.findAllTasks(sessionDto);
+        for (TaskDto task : tasks) {
+            System.out.println("\t" + task.getId() + "\t|\t" + task.getName() + "\t|\t" + task.getDescription() + "\t|\t" + task.getProjectId() + "\t|\t" + task.getDateStart() + "\t|\t" + task.getDateEnd());
         }
     }
 }

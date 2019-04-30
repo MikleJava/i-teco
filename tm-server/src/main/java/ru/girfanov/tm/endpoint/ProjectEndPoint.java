@@ -1,66 +1,136 @@
 package ru.girfanov.tm.endpoint;
 
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ISessionService;
+import ru.girfanov.tm.api.service.IUserService;
+import ru.girfanov.tm.dto.ProjectDto;
+import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.Project;
-import ru.girfanov.tm.entity.Session;
+import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 @WebService
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class ProjectEndPoint {
 
-    @NonNull private IProjectService projectService;
-    @NonNull private ISessionService sessionService;
+    @Inject private IProjectService projectService;
+    @Inject private ISessionService sessionService;
+    @Inject private IUserService userService;
 
     @WebMethod
-    public void persistProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) throws WrongSessionException {
-        sessionService.existSession(session);
-        projectService.persist(session.getUserId(), project);
+    public void persistProject(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "project") final ProjectDto projectDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) projectService.persist(userService.findOne(sessionDto.getUserId()), castToProject(projectDto));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @WebMethod
-    public void mergeProject(@WebParam(name = "session") final Session session, @WebParam(name = "project") final Project project) throws WrongSessionException {
-        sessionService.existSession(session);
-        projectService.merge(session.getUserId(), project);
+    public void mergeProject(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "project") final ProjectDto projectDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) projectService.merge(userService.findOne(sessionDto.getUserId()), castToProject(projectDto));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @WebMethod
-    public void removeProject(@WebParam(name = "session") final Session session, @WebParam(name = "projectUuid") final String projectUuid) throws WrongSessionException {
-        sessionService.existSession(session);
-        projectService.remove(session.getUserId(), projectUuid);
+    public void removeProject(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "project") final ProjectDto projectDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) projectService.remove(userService.findOne(sessionDto.getUserId()), castToProject(projectDto));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @WebMethod
-    public void removeAllProjects(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
-        projectService.removeAll(session.getUserId());
+    public void removeAllProjects(@WebParam(name = "session") final SessionDto sessionDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) projectService.removeAllByUserId(userService.findOne(sessionDto.getUserId()));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    @Nullable
     @WebMethod
-    public Project findOneProject(@WebParam(name = "session") final Session session, @WebParam(name = "projectUuid") final String projectUuid) throws WrongSessionException {
-        sessionService.existSession(session);
-        return projectService.findOne(session.getUserId(), projectUuid);
+    public ProjectDto findOneProject(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "projectUuid") final String projectUuid) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToProjectDto(projectService.findOne(userService.findOne(sessionDto.getUserId()), projectUuid));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
+    @Nullable
     @WebMethod
-    public List<Project> findAllProjects(@WebParam(name = "session") final Session session) throws WrongSessionException {
-        sessionService.existSession(session);
-        return projectService.findAll(session.getUserId());
+    public List<ProjectDto> findAllProjects(@WebParam(name = "session") final SessionDto sessionDto) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToListProjectsDto(projectService.findAllByUserId(userService.findOne(sessionDto.getUserId())));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
+    @Nullable
     @WebMethod
-    public List<Project> findAllProjectsSortedByValue(@WebParam(name = "session") final Session session, @WebParam(name = "value") final String value) throws WrongSessionException {
-        sessionService.existSession(session);
-        return projectService.findAllSortedByValue(session.getUserId(), value);
+    public List<ProjectDto> findAllProjectsSortedByValue(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "value") final String value) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToListProjectsDto(projectService.findAllSortedByValue(userService.findOne(sessionDto.getUserId()), value));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    private ProjectDto castToProjectDto(@NotNull final Project project) {
+        final ProjectDto projectDto = new ProjectDto();
+        projectDto.setId(project.getId());
+        projectDto.setName(project.getName());
+        projectDto.setDescription(project.getDescription());
+        projectDto.setStatus(project.getStatus());
+        projectDto.setDateStart(project.getDateStart());
+        projectDto.setDateEnd(project.getDateEnd());
+        projectDto.setUserId(project.getUser().getId());
+        return projectDto;
+    }
+
+    private Project castToProject(@NotNull final ProjectDto projectDto) {
+        final Project project = new Project();
+        project.setId(projectDto.getId());
+        project.setName(projectDto.getName());
+        project.setDescription(projectDto.getName());
+        project.setStatus(projectDto.getStatus());
+        project.setDateStart(projectDto.getDateStart());
+        project.setDateEnd(projectDto.getDateEnd());
+        try {
+            project.setUser(userService.findOne(projectDto.getUserId()));
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return project;
+    }
+
+    private List<ProjectDto> castToListProjectsDto(@NotNull final List<Project> projects) {
+        final List<ProjectDto> projectsDto = new ArrayList<>();
+        for (Project project : projects) {
+            projectsDto.add(castToProjectDto(project));
+        }
+        return projectsDto;
     }
 }

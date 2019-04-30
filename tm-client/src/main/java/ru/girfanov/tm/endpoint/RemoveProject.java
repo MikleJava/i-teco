@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}session" minOccurs="0"/&gt;
- *         &lt;element name="projectUuid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="session" type="{http://endpoint.tm.girfanov.ru/}sessionDto" minOccurs="0"/&gt;
+ *         &lt;element name="project" type="{http://endpoint.tm.girfanov.ru/}projectDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -29,22 +29,22 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "removeProject", propOrder = {
     "session",
-    "projectUuid"
+    "project"
 })
 public class RemoveProject {
 
-    protected Session session;
-    protected String projectUuid;
+    protected SessionDto session;
+    protected ProjectDto project;
 
     /**
      * Gets the value of the session property.
      * 
      * @return
      *     possible object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public Session getSession() {
+    public SessionDto getSession() {
         return session;
     }
 
@@ -53,35 +53,35 @@ public class RemoveProject {
      * 
      * @param value
      *     allowed object is
-     *     {@link Session }
+     *     {@link SessionDto }
      *     
      */
-    public void setSession(Session value) {
+    public void setSession(SessionDto value) {
         this.session = value;
     }
 
     /**
-     * Gets the value of the projectUuid property.
+     * Gets the value of the project property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link ProjectDto }
      *     
      */
-    public String getProjectUuid() {
-        return projectUuid;
+    public ProjectDto getProject() {
+        return project;
     }
 
     /**
-     * Sets the value of the projectUuid property.
+     * Sets the value of the project property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link ProjectDto }
      *     
      */
-    public void setProjectUuid(String value) {
-        this.projectUuid = value;
+    public void setProject(ProjectDto value) {
+        this.project = value;
     }
 
 }

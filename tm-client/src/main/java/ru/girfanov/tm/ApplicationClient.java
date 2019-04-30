@@ -1,21 +1,14 @@
 package ru.girfanov.tm;
 
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.command.crud.*;
 import ru.girfanov.tm.command.system.*;
 import ru.girfanov.tm.command.data.*;
 
-@NoArgsConstructor
+import javax.enterprise.inject.se.SeContainerInitializer;
+
 public class ApplicationClient {
-
-    static {
-        System.out.println("input --help to get info");
-        System.out.println("input --exit to close application");
-    }
-
     @NotNull
     public static final Class[] commandClasses = {
         HelpCommand.class,
@@ -37,8 +30,8 @@ public class ApplicationClient {
 
         UserCreateCommand.class,
         UserAuthCommand.class,
-        UserEndSessionCommand.class,
-        UserPasswordUpdateCommand.class,
+        UserDeleteCommand.class,
+        UserUpdateCommand.class,
         UserSelectCommand.class,
         UsersSelectAllCommand.class,
 
@@ -55,7 +48,9 @@ public class ApplicationClient {
     };
 
     public static void main(String[] args) {
-        @NotNull ServiceLocator serviceLocator = new Bootstrap();
-        serviceLocator.init(commandClasses);
+        SeContainerInitializer.newInstance()
+                .addPackages(ApplicationClient.class)
+                .initialize()
+                .select(Bootstrap.class).get().init(commandClasses);
     }
 }

@@ -1,23 +1,23 @@
 package ru.girfanov.tm.command.data;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.DataDomainEndPoint;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
+import javax.inject.Inject;
 
-@Getter
-@NoArgsConstructor
-public class DataDomainGetByFasterInXml extends AbstractSecureCommand {
+public final class DataDomainGetByFasterInXml extends AbstractSecureCommand {
 
-    @NotNull private final String name = "--dd gfx";
+    @Getter @NotNull private final String name = "--dd gfx";
 
-    @NotNull private final String description = "get data by fasterXML in xml";
+    @Getter @NotNull private final String description = "get data by fasterXML in xml";
+
+    @Inject
+    private DataDomainEndPoint dataDomainEndPoint;
 
     @Override
-    public void execute(@NotNull final Session session) {
-        final DataDomainEndPoint dataDomainEndPoint = serviceLocator.getDataDomainEndPoint();
+    public void execute(@NotNull final SessionDto session) {
         dataDomainEndPoint.getDataByFasterInXml(session);
     }
 }

@@ -2,21 +2,22 @@ package ru.girfanov.tm.entity;
 
 import lombok.*;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
-@AllArgsConstructor
-public class Session extends AbstractEntity implements Serializable {
+@Table(name = "app_session", schema = "tm")
+public class Session extends AbstractEntity {
 
-    private static final long serialVersionUID = -4054345421899926821L;
+    private Date timestamp;
 
-    @NonNull private Date timeStamp;
+    private String signature;
 
-    @NonNull private String userId;
-
-    @NonNull private String signature;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 
 }

@@ -1,11 +1,13 @@
 package ru.girfanov.tm.api.service;
 
 import ru.girfanov.tm.entity.Task;
+import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.UserNotFoundException;
 
 import java.util.List;
 
 public interface ITaskService extends Service<Task> {
-    List<Task> findAllTasksByProjectId(String userId, String projectId);
-    void removeAllTasksByProjectId(String userId, String projectId);
-    List<Task> findAllSortedByValue(String userId, String value);
+    List<Task> findAllTasksByProjectId(User userId, String projectId) throws UserNotFoundException;
+    void removeAllTasksByProjectId(User userId, String projectId) throws UserNotFoundException;
+    List<Task> findAllSortedByValue(User userId, String value) throws UserNotFoundException;
 }

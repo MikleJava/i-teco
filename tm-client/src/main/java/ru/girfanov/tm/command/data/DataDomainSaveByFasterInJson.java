@@ -1,23 +1,24 @@
 package ru.girfanov.tm.command.data;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.DataDomainEndPoint;
-import ru.girfanov.tm.endpoint.Session;
+import ru.girfanov.tm.endpoint.SessionDto;
 
-@Getter
-@NoArgsConstructor
-public class DataDomainSaveByFasterInJson extends AbstractSecureCommand {
+import javax.inject.Inject;
 
-    @NotNull private final String name = "--dd sfj";
+public final class DataDomainSaveByFasterInJson extends AbstractSecureCommand {
 
-    @NotNull private final String description = "save data by fasterXML in json";
+    @Getter @NotNull private final String name = "--dd sfj";
+
+    @Getter @NotNull private final String description = "save data by fasterXML in json";
+
+    @Inject
+    private DataDomainEndPoint dataDomainEndPoint;
 
     @Override
-    public void execute(@NotNull final Session session) {
-        final DataDomainEndPoint dataDomainEndPoint = serviceLocator.getDataDomainEndPoint();
+    public void execute(@NotNull final SessionDto session) {
         dataDomainEndPoint.saveDataByFasterInJson(session);
     }
 }

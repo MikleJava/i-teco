@@ -1,31 +1,28 @@
 package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.command.AbstractSecureCommand;
-import ru.girfanov.tm.endpoint.Session;
-import ru.girfanov.tm.endpoint.User;
-import ru.girfanov.tm.endpoint.UserEndPoint;
+import ru.girfanov.tm.endpoint.*;
+import javax.inject.Inject;
+import java.util.List;
 
-import java.util.Collection;
-
-@Getter
-@NoArgsConstructor
 public final class UsersSelectAllCommand extends AbstractSecureCommand {
 
-    @NotNull private final String name = "-sau";
+    @Getter @NotNull private final String name = "-sau";
 
-    @NotNull private final String description = "select all users";
+    @Getter @NotNull private final String description = "select all users";
+
+    @Inject
+    private UserEndPoint userEndPoint;
 
     @Override
-    public void execute(@NotNull final Session session) {
-        final UserEndPoint userEndPoint = serviceLocator.getUserEndPoint();
+    public void execute(@NotNull final SessionDto sessionDto) {
         System.out.println("\tid\t|\tlogin\t|\trole");
         System.out.println("___________________________________________________________________________________________________");
-        final Collection<User> users = userEndPoint.findAllUsers(session);
-        for (User user : users) {
-            System.out.println("\t" + user.getUuid() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
+        final List<UserDto> users = userEndPoint.findAllUsers(sessionDto);
+        for (UserDto user : users) {
+            System.out.println("\t" + user.getId() + "\t|\t" + user.getLogin() + "\t|\t" + user.getRole());
         }
     }
 }

@@ -3,6 +3,7 @@ package ru.girfanov.tm.endpoint;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -16,7 +17,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="user" type="{http://endpoint.tm.girfanov.ru/}user" minOccurs="0"/&gt;
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="login" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="role" type="{http://endpoint.tm.girfanov.ru/}role" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -27,34 +31,113 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "persistUser", propOrder = {
-    "user"
+    "id",
+    "login",
+    "password",
+    "role"
 })
 public class PersistUser {
 
-    protected User user;
+    protected String id;
+    protected String login;
+    protected String password;
+    @XmlSchemaType(name = "string")
+    protected Role role;
 
     /**
-     * Gets the value of the user property.
+     * Gets the value of the id property.
      * 
      * @return
      *     possible object is
-     *     {@link User }
+     *     {@link String }
      *     
      */
-    public User getUser() {
-        return user;
+    public String getId() {
+        return id;
     }
 
     /**
-     * Sets the value of the user property.
+     * Sets the value of the id property.
      * 
      * @param value
      *     allowed object is
-     *     {@link User }
+     *     {@link String }
      *     
      */
-    public void setUser(User value) {
-        this.user = value;
+    public void setId(String value) {
+        this.id = value;
+    }
+
+    /**
+     * Gets the value of the login property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * Sets the value of the login property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setLogin(String value) {
+        this.login = value;
+    }
+
+    /**
+     * Gets the value of the password property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Sets the value of the password property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPassword(String value) {
+        this.password = value;
+    }
+
+    /**
+     * Gets the value of the role property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Role }
+     *     
+     */
+    public Role getRole() {
+        return role;
+    }
+
+    /**
+     * Sets the value of the role property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Role }
+     *     
+     */
+    public void setRole(Role value) {
+        this.role = value;
     }
 
 }
