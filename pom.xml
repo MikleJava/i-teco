@@ -93,25 +93,6 @@
         <url>http://127.0.0.1/dummy</url>
     </scm>
 
-    <profiles>
-        <profile>
-            <id>testGeneration</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <groups>ru.girfanov.tm.command.crud.CrudCommandTest</groups>
-                            <includes>
-                                <include>**/*.class</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
         <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
         <plugins>
