@@ -36,25 +36,25 @@ public class CrudCommandTest {
 
     @BeforeClass
     public static void setUp() {
-//        seContainer = SeContainerInitializer.newInstance().addPackages(CrudCommandTest.class).initialize();
-//        projectEndPoint = seContainer.select(ProjectEndPoint.class).get();
-//        taskEndPoint = seContainer.select(TaskEndPoint.class).get();
-//        userEndPoint = seContainer.select(UserEndPoint.class).get();
-//        sessionEndPoint = seContainer.select(SessionEndPoint.class).get();
-//
-//        user = new UserDto();
-//        user.setId(userId);
-//        user.setLogin(LOGIN);
-//        user.setPassword(PASSWORD);
-//        user.setRole(Role.USER);
-//        userEndPoint.persistUser(user);
-//        session = sessionEndPoint.createSession(LOGIN);
+        seContainer = SeContainerInitializer.newInstance().addPackages(CrudCommandTest.class).initialize();
+        projectEndPoint = seContainer.select(ProjectEndPoint.class).get();
+        taskEndPoint = seContainer.select(TaskEndPoint.class).get();
+        userEndPoint = seContainer.select(UserEndPoint.class).get();
+        sessionEndPoint = seContainer.select(SessionEndPoint.class).get();
+
+        user = new UserDto();
+        user.setId(userId);
+        user.setLogin(LOGIN);
+        user.setPassword(PASSWORD);
+        user.setRole(Role.USER);
+        userEndPoint.persistUser(userId, LOGIN, PASSWORD, Role.USER);
+        session = sessionEndPoint.createSession(LOGIN);
     }
 
     @AfterClass
     public static void setDown() {
-        //sessionEndPoint.removeSession(session);
-        userEndPoint.removeUser(session, user);
+        if(projectEndPoint.findOneProject(session, projectId) != null) projectEndPoint.removeAllProjects(session);
+        if(userEndPoint.findOneUser(session, userId) != null) userEndPoint.removeUser(session, user);
     }
 
     @Test
@@ -63,19 +63,18 @@ public class CrudCommandTest {
     }
 
     @Test
-    public void selectSession() {
+    public void existSession() {
         assertNotNull(session);
     }
 
     @Test
-    public void updateUser() {
+    public void updateUserPassword() {
         final UserDto user = userEndPoint.findOneUserByLogin(LOGIN);
         final String newPassword = "newPassword";
         user.setPassword(newPassword);
         userEndPoint.mergeUser(session, user);
-        assertNotNull(userEndPoint.findOneUserByLogin(LOGIN));
-        user.setPassword(PASSWORD);
-        userEndPoint.mergeUser(session, user);
+        final UserDto updatedUser = userEndPoint.findOneUserByLogin(LOGIN);
+        assertNotNull(updatedUser.getPassword());
     }
 
     @Test

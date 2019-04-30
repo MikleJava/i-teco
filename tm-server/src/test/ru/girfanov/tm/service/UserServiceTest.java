@@ -1,68 +1,59 @@
 package ru.girfanov.tm.service;
 
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.NotNull;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Role;
 import ru.girfanov.tm.exception.UserNotFoundException;
 
-import javax.persistence.NoResultException;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+@RunWith(CdiTestRunner.class)
 public class UserServiceTest {
 
-    private static UserService userService;
+    @Inject
+    private UserService userService;
 
+    @NotNull private static final String ID = UUID.randomUUID().toString();
     @NotNull private static final String LOGIN = "test";
     @NotNull private static final String PASSWORD = "test";
-    @NotNull private static final String NEW_PASSWORD = "newPassword";
-    @NotNull private static final String ROLE = "USER";
-
-    @BeforeClass
-    public static void setUp() {
-        userService = new UserService();
-    }
+    @NotNull private static final Role ROLE = Role.USER;
 
     @Test
     public void testPersist() throws UserNotFoundException {
-//        final User user = new User();
-//        user.setId(UUID.randomUUID().toString());
-//        user.setLogin(LOGIN);
-//        user.setPassword(PASSWORD);
-//        user.setRole(Role.valueOf(ROLE));
-//        userService.persist(user);
-//        final User createdUser = userService.findOne(user.getId());
-//        assertNotNull(createdUser);
-//        assertTrue(user.getId().equals(createdUser.getId()) && user.getLogin().equals(createdUser.getLogin()) && user.getPassword().equals(createdUser.getPassword()) && user.getRole().equals(createdUser.getRole()));
+        final User user = new User();
+        user.setId(ID);
+        user.setLogin(LOGIN);
+        user.setPassword(PASSWORD);
+        user.setRole(ROLE);
+        userService.persist(ID, LOGIN, PASSWORD, ROLE);
+        final User createdUser = userService.findOne(user.getId());
+        assertNotNull(createdUser);
     }
 
     @Test
     public void testMerge() throws UserNotFoundException {
         final User user = userService.findOneByLogin(LOGIN);
-        user.setPassword(NEW_PASSWORD);
+        user.setPassword("newPassword");
         userService.merge(user);
-        final User createdUser = userService.findOneByLogin(LOGIN);
-        assertTrue(user.getId().equals(createdUser.getId()) && user.getLogin().equals(createdUser.getLogin()) && user.getPassword().equals(createdUser.getPassword()) && user.getRole().equals(createdUser.getRole()));
+        final User updatedUser = userService.findOneByLogin(LOGIN);
+        assertEquals(updatedUser.getPassword(), user.getPassword());
     }
 
-    @Test(expected = NoResultException.class)
+    @Test(expected = UserNotFoundException.class)
     public void testRemove() throws UserNotFoundException {
-        final User user = userService.findOneByLogin(LOGIN);
-        userService.remove(user);
+        userService.remove(userService.findOneByLogin(LOGIN));
         assertNull(userService.findOneByLogin(LOGIN));
     }
 
     @Test
-    public void testRemoveAllByUserId() {
-        //TODO
-    }
-
-    @Test
-    public void testFindOneByLoginAndPassword() throws UserNotFoundException {
+    public void testFindOneByLogin() throws UserNotFoundException {
         final User user = userService.findOneByLogin(LOGIN);
         System.out.println(user.getLogin());
         assertNotNull(user);
@@ -70,14 +61,9 @@ public class UserServiceTest {
 
     @Test
     public void testFindOne() throws UserNotFoundException {
-        final User user = userService.findOne(userService.findOneByLogin(LOGIN).getId());
+        final User user = userService.findOne(ID);
         System.out.println(user.getLogin());
         assertNotNull(user);
-    }
-
-    @Test
-    public void testFindAllByUserId() {
-        //TODO
     }
 
     @Test

@@ -1,32 +1,41 @@
 package ru.girfanov.tm.service;
 
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.NotNull;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
+import javax.inject.Inject;
+
 import static org.junit.Assert.*;
 
+@RunWith(CdiTestRunner.class)
 public class SessionServiceTest {
 
-    private static SessionService sessionService;
+    @Inject
+    private SessionService sessionService;
 
     @NotNull private static final String LOGIN = "test";
-    private Session session;
+    @NotNull private static final String WRONG_LOGIN = "qwerfsdf";
 
-    @BeforeClass
-    public void setUp() throws UserNotFoundException {
-        sessionService = new SessionService();
-        session = sessionService.createSession(LOGIN);
-    }
+    private static Session session;
 
     @Test
-    public void testCreateSession() {
+    public void testCreatedSession() throws UserNotFoundException {
+        session = sessionService.createSession(LOGIN);
         assertNotNull(session);
     }
+
+    @Test(expected = UserNotFoundException.class)
+    public void testErrorCreatedSession() throws UserNotFoundException {
+        session = sessionService.createSession(WRONG_LOGIN);
+        assertNotNull(session);
+    }
+
 
     @Test
     public void testRemoveSession() throws WrongSessionException, UserNotFoundException {
