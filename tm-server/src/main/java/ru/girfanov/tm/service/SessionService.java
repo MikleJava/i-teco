@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.exception.WrongHostException;
+import ru.girfanov.tm.exception.WrongPortException;
 import ru.girfanov.tm.exception.WrongSessionException;
 import ru.girfanov.tm.repository.SessionRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -66,5 +68,14 @@ public class SessionService implements ISessionService {
         if (!signature.equals(SignatureUtil.sign(sessionDto.getId() + sessionDto.getTimestamp(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
         sessionDto.setSignature(signature);
         return true;
+    }
+
+    @Override
+    public String getServerInfo() throws WrongPortException, WrongHostException {
+        final String host = System.getProperty("server.host", "localhost");
+        if(host == null || host.isEmpty()) throw new WrongHostException("Wrong host");
+        final String port = System.getProperty("server.port", "8080");
+        if(port == null || port.isEmpty()) throw new WrongPortException("Wrong port");
+        return "HOST : " + host + "\n" + "PORT : " + port;
     }
 }

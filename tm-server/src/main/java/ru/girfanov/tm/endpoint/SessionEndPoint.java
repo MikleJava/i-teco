@@ -8,6 +8,8 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.exception.WrongHostException;
+import ru.girfanov.tm.exception.WrongPortException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
 import javax.inject.Inject;
@@ -43,6 +45,17 @@ public class SessionEndPoint {
         } catch (WrongSessionException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Nullable
+    @WebMethod
+    public String getServerInfo() {
+        try {
+            return sessionService.getServerInfo();
+        } catch (WrongPortException | WrongHostException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     private SessionDto castToSessionDto(@NotNull final Session session) {

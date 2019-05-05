@@ -1,6 +1,7 @@
 package ru.girfanov.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,6 +12,46 @@ import java.util.Properties;
 @ApplicationScoped
 @NoArgsConstructor
 public class PropertyService {
+
+    @Nullable
+    public static String getApplicationHost() {
+        @Nullable String host = null;
+        try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {
+            Properties properties = new Properties();
+            properties.load(input);
+            host = properties.getProperty("app.host");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return host;
+    }
+
+    @Nullable
+    public static String getApplicationPort() {
+        @Nullable String port = null;
+        try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {
+            Properties properties = new Properties();
+            properties.load(input);
+            port = properties.getProperty("app.port");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return port;
+    }
+
+    @Nullable
+    public static String setApplicationPort(@NotNull final String key, @NotNull final String value) {
+        @Nullable String port = null;
+        try (InputStream input = PropertyService.class.getResourceAsStream("/application.properties")) {
+            Properties properties = new Properties();
+            properties.load(input);
+            properties.setProperty(key, value);
+            port = properties.getProperty(key);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return port;
+    }
 
     @Nullable
     public static String getJdbcDialect() {

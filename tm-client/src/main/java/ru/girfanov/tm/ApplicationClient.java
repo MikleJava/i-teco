@@ -14,6 +14,7 @@ public class ApplicationClient {
         HelpCommand.class,
         AboutCommand.class,
         ExitCommand.class,
+        ServerInfoCommand.class,
 
         ProjectCreateCommand.class,
         ProjectUpdateCommand.class,

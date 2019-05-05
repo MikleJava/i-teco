@@ -1,21 +1,26 @@
 package ru.girfanov.tm.bootstrap;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.api.ServiceLocator;
+import ru.girfanov.tm.service.PropertyService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
+import java.net.InetAddress;
 
 @ApplicationScoped
 public class Bootstrap implements ServiceLocator {
 
-    @NotNull private static final String PROJECT_ENDPOINT = "http://localhost:8080/ProjectEndpoint?wsdl";
-    @NotNull private static final String TASK_ENDPOINT = "http://localhost:8080/TaskEndpoint?wsdl";
-    @NotNull private static final String USER_ENDPOINT = "http://localhost:8080/UserEndpoint?wsdl";
-    @NotNull private static final String DATA_DOMAIN_ENDPOINT = "http://localhost:8080/DataDomainEndpoint?wsdl";
-    @NotNull private static final String SESSION_ENDPOINT = "http://localhost:8080/SessionEndPoint?wsdl";
+    @Nullable private final static String PORT = PropertyService.setApplicationPort("app.port", System.getProperty("server.port", "8080"));
+
+    @NotNull private static final String PROJECT_ENDPOINT = "http://localhost:" + PORT + "/ProjectEndpoint?wsdl";
+    @NotNull private static final String TASK_ENDPOINT = "http://localhost:" + PORT + "/TaskEndpoint?wsdl";
+    @NotNull private static final String USER_ENDPOINT = "http://localhost:" + PORT + "/UserEndpoint?wsdl";
+    @NotNull private static final String DATA_DOMAIN_ENDPOINT = "http://localhost:" + PORT + "/DataDomainEndpoint?wsdl";
+    @NotNull private static final String SESSION_ENDPOINT = "http://localhost:" + PORT + "/SessionEndPoint?wsdl";
 
     @Inject private ProjectEndPoint projectEndPoint;
     @Inject private TaskEndPoint taskEndPoint;
