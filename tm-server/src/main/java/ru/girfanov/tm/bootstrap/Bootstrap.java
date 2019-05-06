@@ -9,7 +9,6 @@ import ru.girfanov.tm.service.PropertyService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
-import java.net.InetAddress;
 
 @ApplicationScoped
 public class Bootstrap implements ServiceLocator {
