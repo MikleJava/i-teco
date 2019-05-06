@@ -3,27 +3,29 @@ package ru.girfanov.tm.command.system;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.exception.IncorrectRoleException;
 
-import javax.inject.Inject;
 import java.util.UUID;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
+@Component
 public final class UserCreateCommand extends AbstractSystemCommand<String> {
 
     @Getter @NotNull private final String name = "-cu";
 
     @Getter @NotNull private final String description = "create user";
 
-    @Inject
+    @Autowired
     protected ServiceLocator serviceLocator;
-    @Inject
+    @Autowired
     private UserEndPoint userEndPoint;
-    @Inject
+    @Autowired
     private SessionEndPoint sessionEndPoint;
 
     @Override

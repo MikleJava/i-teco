@@ -2,9 +2,10 @@ package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-import javax.inject.Inject;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import static ru.girfanov.tm.util.DateConverterGregorianCalendar.convert;
@@ -14,13 +15,14 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.UUID;
 
+@Component
 public final class ProjectCreateCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-cp";
 
     @Getter @NotNull private final String description = "create project";
 
-    @Inject
+    @Autowired
     private ProjectEndPoint projectEndPoint;
 
     @Override

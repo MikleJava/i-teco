@@ -2,9 +2,10 @@ package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-import javax.inject.Inject;
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,15 +15,16 @@ import java.util.List;
 import static ru.girfanov.tm.util.DateConverterGregorianCalendar.convert;
 import static ru.girfanov.tm.util.Terminal.*;
 
+@Component
 public final class TaskCreateCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-ct";
 
     @Getter @NotNull private final String description = "create task";
 
-    @Inject
+    @Autowired
     private TaskEndPoint taskEndPoint;
-    @Inject
+    @Autowired
     private ProjectEndPoint projectEndPoint;
 
     @Override
@@ -36,7 +38,7 @@ public final class TaskCreateCommand extends AbstractSecureCommand {
             final String status = scanner.next();
             //System.out.print("input date start : ");
             final Date dateStart = new Date();
-            System.out.print("input date end : ");
+//            System.out.print("input date end : ");
             final Date dateEnd = new Date();
             System.out.println("all available projects : ");
             final List<ProjectDto> projects = new ArrayList<>(projectEndPoint.findAllProjects(sessionDto));

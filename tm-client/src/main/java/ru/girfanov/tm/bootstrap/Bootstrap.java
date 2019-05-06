@@ -1,8 +1,13 @@
 package ru.girfanov.tm.bootstrap;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.api.ServiceLocator;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.command.system.UserAuthCommand;
@@ -10,38 +15,42 @@ import ru.girfanov.tm.exception.AlreadyExistException;
 import ru.girfanov.tm.endpoint.*;
 import ru.girfanov.tm.exception.IncorrectRoleException;
 import ru.girfanov.tm.exception.UserNotFoundException;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
-@ApplicationScoped
-public class Bootstrap implements ServiceLocator {
+@Component
+public class Bootstrap implements ServiceLocator, ApplicationContextAware {
 
     static {
         System.out.println("input --help to get info");
         System.out.println("input --exit to close application");
     }
 
-    @NotNull private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();
+    @Getter @NotNull private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();
 
     @Nullable private String command = null;
+
+    @Setter @Nullable private SessionDto sessionDto;
+
+    private ApplicationContext ctx;
+
+    @Override
+    public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+        this.ctx = ctx;
+    }
 
     @Override
     public void registerCommand(@NotNull final Class clazz) {
         try {
-            AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) CDI.current().select(clazz).get();
+            AbstractSystemCommand<String> command = (AbstractSystemCommand<String>) ctx.getBean(clazz);
             if(mapCommands.containsKey(command.getName())) throw new AlreadyExistException("Command " + command.getName() + " already exist");
             mapCommands.put(command.getName(), command);
         } catch (AlreadyExistException | ClassCastException e) {
             System.out.println("Does not correct command");
         }
     }
-
-    @Setter @Nullable private SessionDto sessionDto;
 
     @Override
     public void init(@NotNull final Class [] commandClasses) {

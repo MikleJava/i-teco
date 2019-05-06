@@ -9,5 +9,5 @@ import java.util.List;
 public interface ITaskService extends Service<Task> {
     List<Task> findAllTasksByProjectId(User userId, String projectId) throws UserNotFoundException;
     void removeAllTasksByProjectId(User userId, String projectId) throws UserNotFoundException;
-    List<Task> findAllSortedByValue(User userId, String value) throws UserNotFoundException;
+//    List<Task> findAllSortedByValue(User userId, String value) throws UserNotFoundException;
 }

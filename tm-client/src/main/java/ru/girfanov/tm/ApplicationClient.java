@@ -1,19 +1,19 @@
 package ru.girfanov.tm;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.girfanov.tm.bootstrap.Bootstrap;
 import ru.girfanov.tm.command.crud.*;
 import ru.girfanov.tm.command.system.*;
 import ru.girfanov.tm.command.data.*;
 
-import javax.enterprise.inject.se.SeContainerInitializer;
-
 public class ApplicationClient {
     @NotNull
     public static final Class[] commandClasses = {
-        HelpCommand.class,
         AboutCommand.class,
         ExitCommand.class,
+        HelpCommand.class,
         ServerInfoCommand.class,
 
         ProjectCreateCommand.class,
@@ -49,9 +49,10 @@ public class ApplicationClient {
     };
 
     public static void main(String[] args) {
-        SeContainerInitializer.newInstance()
-                .addPackages(ApplicationClient.class)
-                .initialize()
-                .select(Bootstrap.class).get().init(commandClasses);
+        final AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.scan("ru.girfanov.tm");
+        ctx.refresh();
+        final Bootstrap bootstrap = ctx.getBean(Bootstrap.class);
+        bootstrap.init(commandClasses);
     }
 }

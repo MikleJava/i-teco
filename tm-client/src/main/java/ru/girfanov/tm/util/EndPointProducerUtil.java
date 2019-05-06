@@ -1,45 +1,33 @@
 package ru.girfanov.tm.util;
 
-import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import ru.girfanov.tm.endpoint.*;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-@ApplicationScoped
-@NoArgsConstructor
+@Configuration
 public class EndPointProducerUtil {
 
-    @Inject private ProjectEndPointService projectEndPointService;
-    @Inject private TaskEndPointService taskEndPointService;
-    @Inject private UserEndPointService userEndPointService;
-    @Inject private SessionEndPointService sessionEndPointService;
-    @Inject private DataDomainEndPointService dataDomainEndPointService;
-
-    @Produces
+    @Bean
     public ProjectEndPoint getProjectEndPoint() {
-        return projectEndPointService.getProjectEndPointPort();
+        return new ProjectEndPointService().getProjectEndPointPort();
     }
 
-    @Produces
+    @Bean
     public TaskEndPoint getTaskEndPoint() {
-        return taskEndPointService.getTaskEndPointPort();
+        return new TaskEndPointService().getTaskEndPointPort();
     }
 
-    @Produces
+    @Bean
     public UserEndPoint getUserEndPoint() {
-        return userEndPointService.getUserEndPointPort();
+        return new UserEndPointService().getUserEndPointPort();
     }
 
-    @Produces
+    @Bean
     public SessionEndPoint getSessionEndPoint() {
-        return sessionEndPointService.getSessionEndPointPort();
+        return new SessionEndPointService().getSessionEndPointPort();
     }
 
-    @Produces
-    public DataDomainEndPoint getDataDomainEndPoint() {
-        return dataDomainEndPointService.getDataDomainEndPointPort();
-    }
+    @Bean
+    public DataDomainEndPoint getDataDomainEndPoint() { return new DataDomainEndPointService().getDataDomainEndPointPort(); }
 
 }

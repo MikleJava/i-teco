@@ -6,11 +6,11 @@ import ru.girfanov.tm.entity.User;
 import java.util.List;
 
 public interface Repository<T extends AbstractEntity> {
-    void persist(T entity);
-    void merge(T entity);
-    void remove(T entity);
+//    void persist(T entity);
+    void merge(String name, String entityId);
+//    void remove(T entity);
     void removeAllByUser(User user);
-    T findOne(User user, String entityId);
+//    T findOne(User user, String entityId);
     List<T> findAllByUser(User user);
-    List<T> findAll();
+//    List<T> findAll();
 }

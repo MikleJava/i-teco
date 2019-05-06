@@ -2,19 +2,21 @@ package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-import javax.inject.Inject;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
+@Component
 public final class UserUpdateCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-uu";
 
     @Getter @NotNull private final String description = "update user";
 
-    @Inject
+    @Autowired
     private UserEndPoint userEndPoint;
 
     @Override

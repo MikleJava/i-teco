@@ -1,8 +1,12 @@
 package ru.girfanov.tm.repository;
 
-import org.apache.deltaspike.data.api.*;
-import org.hibernate.jpa.QueryHints;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
@@ -11,36 +15,33 @@ import javax.persistence.QueryHint;
 import java.util.List;
 
 @Repository
-public interface TaskRepository extends EntityRepository<Task, String>, ITaskRepository {
-
-    @Override
-    void persist(@NotNull final Task task);
-
-    @Override
-    void merge(@NotNull final Task task);
-
-    @Override
-    void remove(@NotNull final Task task);
+public interface TaskRepository extends CrudRepository<Task, String>, ITaskRepository {
 
     @Override
     @Modifying
-    @Query("DELETE FROM Task t WHERE t.user = :userId")
-    void removeAllByUser(@QueryParam("userId") @NotNull final User userId);
+    @Transactional
+    @Query("UPDATE Task t SET t.name = ?1 where t.id = ?2")
+    void merge(@NotNull final String name, @NotNull final String taskId);
 
     @Override
     @Modifying
-    @Query("DELETE FROM Task t WHERE t.user = :userId AND t.project = :projectId")
-    void removeAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
+    @Transactional
+    @Query("DELETE FROM Task t WHERE t.user = ?1")
+    void removeAllByUser(@NotNull final User userId);
 
     @Override
-    @Query(value = "SELECT t FROM Task t WHERE t.user = :userId AND t.id = :taskId", hints = {@QueryHint(name = QueryHints.HINT_CACHEABLE, value = "true")}, singleResult = SingleResultType.OPTIONAL)
-    Task findOne(@QueryParam("userId") @NotNull final User userId, @QueryParam("taskId") @NotNull final String taskId);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Task t WHERE t.user = ?1 AND t.project = ?2")
+    void removeAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId);
 
     @Override
-    @Query(value = "SELECT t FROM Task t WHERE t.user = :userId", hints = {@QueryHint(name = QueryHints.HINT_CACHEABLE, value = "true")})
-    List<Task> findAllByUser(@QueryParam("userId") @NotNull final User userId);
+    @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
+    @Query(value = "SELECT t FROM Task t WHERE t.user = ?1")
+    List<Task> findAllByUser(@NotNull final User userId);
 
     @Override
-    @Query(value = "SELECT t FROM Task t WHERE t.user = :userId AND t.project = :projectId", hints = {@QueryHint(name = QueryHints.HINT_CACHEABLE, value = "true")})
-    List<Task> findAllTasksByProjectId(@QueryParam("userId") @NotNull final User userId, @QueryParam("projectId") @NotNull final String projectId);
+    @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
+    @Query(value = "SELECT t FROM Task t WHERE t.user = ?1 AND t.project = ?2")
+    List<Task> findAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId);
 }

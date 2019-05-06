@@ -16,10 +16,10 @@ import java.util.Collection;
 @XmlRootElement(name = "DataDomainDto")
 public final class DataDomainDto {
 
-    @NotNull Collection<Project> projects = new ArrayList<>();
+    @NotNull Iterable<Project> projects = new ArrayList<>();
 
-    @NotNull Collection<Task> tasks = new ArrayList<>();
+    @NotNull Iterable<Task> tasks = new ArrayList<>();
 
-    @NotNull Collection<User> users = new ArrayList<>();
+    @NotNull Iterable<User> users = new ArrayList<>();
 
 }

@@ -3,6 +3,8 @@ package ru.girfanov.tm.endpoint;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.SessionDto;
@@ -12,19 +14,19 @@ import ru.girfanov.tm.exception.WrongHostException;
 import ru.girfanov.tm.exception.WrongPortException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-@Singleton
+@Component
 @WebService
 @NoArgsConstructor
 public class SessionEndPoint {
 
-    @Inject private ISessionService sessionService;
-    @Inject private IUserService userService;
+    @Autowired
+    private ISessionService sessionService;
+    @Autowired
+    private IUserService userService;
 
     @Nullable
     @WebMethod
