@@ -1,13 +1,14 @@
 package ru.girfanov.tm.command.crud;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.girfanov.tm.endpoint.*;
+import ru.girfanov.tm.util.EndPointProducerUtil;
 
-import javax.enterprise.inject.se.SeContainer;
-import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import java.util.Date;
@@ -16,16 +17,21 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 import static ru.girfanov.tm.util.DateConverterGregorianCalendar.convert;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = EndPointProducerUtil.class)
 public class CrudCommandTest {
 
-    private static SeContainer seContainer;
-    private static ProjectEndPoint projectEndPoint;
-    private static TaskEndPoint taskEndPoint;
-    private static UserEndPoint userEndPoint;
-    private static SessionEndPoint sessionEndPoint;
+    @Autowired
+    private ProjectEndPoint projectEndPoint;
+    @Autowired
+    private TaskEndPoint taskEndPoint;
+    @Autowired
+    private UserEndPoint userEndPoint;
+    @Autowired
+    private SessionEndPoint sessionEndPoint;
 
-    private static SessionDto session;
-    private static UserDto user;
+    private SessionDto session;
+    private UserDto user;
 
     @NotNull private static final String LOGIN = "test";
     @NotNull private static final String PASSWORD = "test";
@@ -34,14 +40,8 @@ public class CrudCommandTest {
     @NotNull private static final String userId = UUID.randomUUID().toString();
     @NotNull private static final String taskId = UUID.randomUUID().toString();
 
-    @BeforeClass
-    public static void setUp() {
-        seContainer = SeContainerInitializer.newInstance().addPackages(CrudCommandTest.class).initialize();
-        projectEndPoint = seContainer.select(ProjectEndPoint.class).get();
-        taskEndPoint = seContainer.select(TaskEndPoint.class).get();
-        userEndPoint = seContainer.select(UserEndPoint.class).get();
-        sessionEndPoint = seContainer.select(SessionEndPoint.class).get();
-
+    @Before
+    public void setUp() {
         user = new UserDto();
         user.setId(userId);
         user.setLogin(LOGIN);
@@ -49,12 +49,12 @@ public class CrudCommandTest {
         user.setRole(Role.USER);
         userEndPoint.persistUser(userId, LOGIN, PASSWORD, Role.USER);
         session = sessionEndPoint.createSession(LOGIN);
+        user = userEndPoint.findOneUserByLogin(LOGIN);
     }
 
-    @AfterClass
-    public static void setDown() {
-        if(projectEndPoint.findOneProject(session, projectId) != null) projectEndPoint.removeAllProjects(session);
-        if(userEndPoint.findOneUser(session, userId) != null) userEndPoint.removeUser(session, user);
+    @After
+    public void setDown() {
+        userEndPoint.removeUser(session, user);
     }
 
     @Test
@@ -69,7 +69,6 @@ public class CrudCommandTest {
 
     @Test
     public void updateUserPassword() {
-        final UserDto user = userEndPoint.findOneUserByLogin(LOGIN);
         final String newPassword = "newPassword";
         user.setPassword(newPassword);
         userEndPoint.mergeUser(session, user);
@@ -84,7 +83,7 @@ public class CrudCommandTest {
         project.setName("proj");
         project.setDescription("desc");
         project.setStatus(Status.PROCESS);
-        project.setUserId(session.getUserId());
+        project.setUserId(userId);
         project.setDateStart(convert(new Date()));
         project.setDateEnd(convert(new Date()));
         projectEndPoint.persistProject(session, project);
@@ -105,11 +104,11 @@ public class CrudCommandTest {
         task.setId(taskId);
         task.setName("task");
         task.setDescription("desc");
-        task.setUserId(session.getUserId());
+        task.setUserId(userId);
         task.setStatus(Status.PLANNING);
         task.setDateStart(convert(new Date()));
         task.setDateEnd(convert(new Date()));
-        task.setProjectId(projectEndPoint.findOneProject(session, projectId).getId());
+        task.setProjectId(projectId);
         taskEndPoint.persistTask(session, task);
         assertNotNull(taskEndPoint.findOneTask(session, taskId));
     }

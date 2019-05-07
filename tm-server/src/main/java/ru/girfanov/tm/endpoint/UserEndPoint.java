@@ -3,6 +3,8 @@ package ru.girfanov.tm.endpoint;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.SessionDto;
@@ -12,21 +14,21 @@ import ru.girfanov.tm.enumeration.Role;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Singleton
+@Component
 @WebService
 @NoArgsConstructor
 public class UserEndPoint {
 
-    @Inject private IUserService userService;
-    @Inject private ISessionService sessionService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private ISessionService sessionService;
 
     @WebMethod
     public void persistUser(@WebParam(name = "id") @NotNull final String id, @WebParam(name = "login") @NotNull final String login, @WebParam(name = "password") @NotNull final String password, @WebParam(name = "role") @NotNull final Role role) {
@@ -36,7 +38,7 @@ public class UserEndPoint {
     @WebMethod
     public void mergeUser(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "user") final UserDto userDto) {
         try {
-            if(sessionService.existSession(sessionDto)) userService.merge(castToUser(userDto));
+            if(sessionService.existSession(sessionDto)) userService.merge(userDto.getId(), userDto.getPassword());
         } catch (WrongSessionException e) {
             System.out.println(e.getMessage());
         }

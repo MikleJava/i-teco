@@ -1,12 +1,14 @@
 package ru.girfanov.tm;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.girfanov.tm.bootstrap.Bootstrap;
-import javax.enterprise.inject.se.SeContainerInitializer;
+import ru.girfanov.tm.util.SpringJpaConfig;
 
 public class ApplicationServer {
     public static void main(String[] args) {
-        SeContainerInitializer.newInstance()
-                .addPackages(ApplicationServer.class)
-                .initialize().select(Bootstrap.class).get().init();
+        final ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringJpaConfig.class);
+        final Bootstrap bootstrap = ctx.getBean(Bootstrap.class);
+        bootstrap.init();
     }
 }

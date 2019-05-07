@@ -2,18 +2,20 @@ package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-import javax.inject.Inject;
 import java.util.List;
 
+@Component
 public final class TasksSelectAllCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-sat";
 
     @Getter @NotNull private final String description = "select all tasks";
 
-    @Inject
+    @Autowired
     private TaskEndPoint taskEndPoint;
 
     @Override

@@ -1,32 +1,34 @@
 package ru.girfanov.tm.service;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Status;
 import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.util.SpringJpaConfig;
 
-import javax.inject.Inject;
 import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-@RunWith(CdiTestRunner.class)
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = SpringJpaConfig.class)
 public class ProjectServiceTest {
 
-    @Inject
+    @Autowired
     private ProjectService projectService;
-    @Inject
+    @Autowired
     private UserService userService;
 
-    private static User user;
+    private User user;
 
     @NotNull private static final String ID = UUID.randomUUID().toString();
     @NotNull private static final String NAME = "project";
@@ -59,6 +61,7 @@ public class ProjectServiceTest {
         project.setDateEnd(DATE_END);
         project.setUser(user);
         projectService.persist(user, project);
+        assertNotNull(projectService.findOne(user, ID));
     }
 
     @Test
@@ -92,7 +95,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testFindOne() throws UserNotFoundException {
+    public void testFindOne() {
         assertNotNull(projectService.findAll().get(0));
     }
 

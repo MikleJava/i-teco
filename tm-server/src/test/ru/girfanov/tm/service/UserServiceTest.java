@@ -1,23 +1,27 @@
 package ru.girfanov.tm.service;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Role;
 import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.util.PasswordHashUtil;
+import ru.girfanov.tm.util.SpringJpaConfig;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-@RunWith(CdiTestRunner.class)
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = SpringJpaConfig.class)
 public class UserServiceTest {
 
-    @Inject
+    @Autowired
     private UserService userService;
 
     @NotNull private static final String ID = UUID.randomUUID().toString();
@@ -41,9 +45,9 @@ public class UserServiceTest {
     public void testMerge() throws UserNotFoundException {
         final User user = userService.findOneByLogin(LOGIN);
         user.setPassword("newPassword");
-        userService.merge(user);
+        userService.merge(user.getId(), user.getPassword());
         final User updatedUser = userService.findOneByLogin(LOGIN);
-        assertEquals(updatedUser.getPassword(), user.getPassword());
+        assertEquals(updatedUser.getPassword(), PasswordHashUtil.md5(user.getPassword()));
     }
 
     @Test(expected = UserNotFoundException.class)
@@ -62,7 +66,6 @@ public class UserServiceTest {
     @Test
     public void testFindOne() throws UserNotFoundException {
         final User user = userService.findOne(ID);
-        System.out.println(user.getLogin());
         assertNotNull(user);
     }
 

@@ -2,19 +2,21 @@ package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.SessionDto;
 import ru.girfanov.tm.endpoint.UserDto;
 import ru.girfanov.tm.endpoint.UserEndPoint;
-import javax.inject.Inject;
 
+@Component
 public final class UserDeleteCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-du";
 
     @Getter @NotNull private final String description = "delete user";
 
-    @Inject
+    @Autowired
     private UserEndPoint userEndPoint;
 
     @Override

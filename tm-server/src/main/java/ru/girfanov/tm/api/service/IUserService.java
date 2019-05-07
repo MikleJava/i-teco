@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IUserService {
     void persist(String id, String login, String password, Role role);
-    void merge(User user);
+    void merge(String userId, String password);
     void remove(User user);
     User findOne(String userId) throws UserNotFoundException;
     List<User> findAll();

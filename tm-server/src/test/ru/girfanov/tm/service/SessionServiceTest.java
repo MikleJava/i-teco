@@ -1,28 +1,30 @@
 package ru.girfanov.tm.service;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.girfanov.tm.dto.SessionDto;
 import ru.girfanov.tm.entity.Session;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
-
-import javax.inject.Inject;
+import ru.girfanov.tm.util.SpringJpaConfig;
 
 import static org.junit.Assert.*;
 
-@RunWith(CdiTestRunner.class)
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = SpringJpaConfig.class)
 public class SessionServiceTest {
 
-    @Inject
+    @Autowired
     private SessionService sessionService;
 
     @NotNull private static final String LOGIN = "test";
     @NotNull private static final String WRONG_LOGIN = "qwerfsdf";
 
-    private static Session session;
+    private Session session;
 
     @Test
     public void testCreatedSession() throws UserNotFoundException {

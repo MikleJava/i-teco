@@ -5,10 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.NoArgsConstructor;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.girfanov.tm.api.service.IDataDomainService;
 import ru.girfanov.tm.dto.DataDomainDto;
 import ru.girfanov.tm.entity.AbstractEntity;
@@ -19,8 +20,6 @@ import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -30,8 +29,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Transactional
-@ApplicationScoped
+@Service
 @NoArgsConstructor
 public class DataDomainService implements IDataDomainService {
 
@@ -41,18 +39,21 @@ public class DataDomainService implements IDataDomainService {
     @NotNull private static final String FASTER_XML_FILE = "./DataDomainFaster.xml";
     @NotNull private static final String FASTER_JSON_FILE = "./DataDomainFaster.json";
 
-    @Inject private ProjectRepository projectRepository;
-    @Inject private TaskRepository taskRepository;
-    @Inject private UserRepository userRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void saveDataBySerialization() {
         final File file = new File(SERIALIZE_FILE);
         try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             final Collection<AbstractEntity> list = new ArrayList<>();
-            list.addAll(projectRepository.findAll());
-            list.addAll(taskRepository.findAll());
-            list.addAll(userRepository.findAll());
+            list.addAll((Collection<? extends AbstractEntity>) projectRepository.findAll());
+            list.addAll((Collection<? extends AbstractEntity>) taskRepository.findAll());
+            list.addAll((Collection<? extends AbstractEntity>) userRepository.findAll());
             for (AbstractEntity entity : list) {
                 objectOutputStream.writeObject(entity);
             }
@@ -68,13 +69,13 @@ public class DataDomainService implements IDataDomainService {
             Object object;
             while ((object = objectInputStream.readObject()) != null) {
                 if (object instanceof Project) {
-                    projectRepository.merge((Project) object);
+                    projectRepository.merge(((Project) object).getName(), ((Project) object).getId());
                 }
                 if (object instanceof Task) {
-                    taskRepository.merge((Task) object);
+                    taskRepository.merge(((Task) object).getName(), ((Task) object).getId());
                 }
                 if (object instanceof User) {
-                    userRepository.merge((User) object);
+                    userRepository.merge(((User) object).getId(), ((User) object).getPassword());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -190,13 +191,13 @@ public class DataDomainService implements IDataDomainService {
 
     private void updateDataDomain(DataDomainDto dataDomainDto) {
         for(Project project : dataDomainDto.getProjects()) {
-            projectRepository.merge(project);
+            projectRepository.merge(project.getName(), project.getId());
         }
         for(Task task : dataDomainDto.getTasks()) {
-            taskRepository.merge(task);
+            taskRepository.merge(task.getName(), task.getId());
         }
         for(User user : dataDomainDto.getUsers()) {
-            userRepository.merge(user);
+            userRepository.merge(user.getId(), user.getPassword());
         }
     }
 }

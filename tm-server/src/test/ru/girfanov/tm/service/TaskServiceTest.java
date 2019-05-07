@@ -1,38 +1,40 @@
 package ru.girfanov.tm.service;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Status;
 import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.util.SpringJpaConfig;
 
-import javax.inject.Inject;
 import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(CdiTestRunner.class)
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = SpringJpaConfig.class)
 public class TaskServiceTest {
-    @Inject
+    @Autowired
     private TaskService taskService;
-    @Inject
+    @Autowired
     private UserService userService;
-    @Inject
+    @Autowired
     private ProjectService projectService;
 
-    private static User user;
-    private static Project project;
+    private User user;
+    private Project project;
 
-    @NotNull
-    private static final String ID = UUID.randomUUID().toString();
+    @NotNull private static final String ID = UUID.randomUUID().toString();
     @NotNull private static final String NAME = "task";
     @NotNull private static final String DESCRIPTION = "desc";
     @NotNull private static final Status STATUS = Status.READY;
@@ -111,7 +113,7 @@ public class TaskServiceTest {
     public void testFindAllByProjectId() throws UserNotFoundException {
         assertNotNull(taskService.findAllTasksByProjectId(user, project.getId()));
     }
-    
+
     @Test
     public void testFindAll() {
         assertNotNull(taskService.findAll());

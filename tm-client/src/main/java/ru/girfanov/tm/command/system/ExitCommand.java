@@ -3,10 +3,12 @@ package ru.girfanov.tm.command.system;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSystemCommand;
 import ru.girfanov.tm.endpoint.SessionDto;
 
 @Getter
+@Component
 public final class ExitCommand extends AbstractSystemCommand<String> {
 
     @NotNull private final String name = "--exit";

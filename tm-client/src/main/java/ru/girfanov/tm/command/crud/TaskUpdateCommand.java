@@ -2,22 +2,25 @@ package ru.girfanov.tm.command.crud;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.command.AbstractSecureCommand;
 import ru.girfanov.tm.endpoint.*;
-import javax.inject.Inject;
 
 import static ru.girfanov.tm.util.Terminal.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+
+@Component
 public final class TaskUpdateCommand extends AbstractSecureCommand {
 
     @Getter @NotNull private final String name = "-ut";
 
     @Getter @NotNull private final String description = "update task";
 
-    @Inject
+    @Autowired
     private TaskEndPoint taskEndPoint;
 
     @Override

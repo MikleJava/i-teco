@@ -3,6 +3,8 @@ package ru.girfanov.tm.endpoint;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ISessionService;
 import ru.girfanov.tm.api.service.IUserService;
@@ -12,22 +14,23 @@ import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.exception.WrongSessionException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Singleton
+@Component
 @WebService
 @NoArgsConstructor
 public class ProjectEndPoint {
 
-    @Inject private IProjectService projectService;
-    @Inject private ISessionService sessionService;
-    @Inject private IUserService userService;
+    @Autowired
+    private IProjectService projectService;
+    @Autowired
+    private ISessionService sessionService;
+    @Autowired
+    private IUserService userService;
 
     @WebMethod
     public void persistProject(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "project") final ProjectDto projectDto) {
