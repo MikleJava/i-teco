@@ -1,10 +1,12 @@
 package ru.girfanov.tm.util;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import ru.girfanov.tm.endpoint.*;
 
 @Configuration
+@ComponentScan("ru.girfanov.tm")
 public class EndPointProducerUtil {
 
     @Bean

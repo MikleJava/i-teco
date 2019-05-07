@@ -23,11 +23,6 @@ import static ru.girfanov.tm.util.Terminal.*;
 @Component
 public class Bootstrap implements ServiceLocator, ApplicationContextAware {
 
-    static {
-        System.out.println("input --help to get info");
-        System.out.println("input --exit to close application");
-    }
-
     @Getter @NotNull private final Map<String, AbstractSystemCommand<String>> mapCommands = new HashMap<>();
 
     @Nullable private String command = null;
@@ -57,6 +52,9 @@ public class Bootstrap implements ServiceLocator, ApplicationContextAware {
         for(Class clazz : commandClasses) {
             registerCommand(clazz);
         }
+
+        System.out.println("input --help to get info");
+        System.out.println("input --exit to close application");
 
         while(true) {
             command = scanner.nextLine();

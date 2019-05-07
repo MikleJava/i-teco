@@ -113,16 +113,16 @@ public class TaskEndPoint {
         }
     }
 
-//    @Nullable
-//    @WebMethod
-//    public List<TaskDto> findAllTasksSortedByValue(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "value") final String value) {
-//        try {
-//            if(sessionService.existSession(sessionDto)) return castToListTasksDto(taskService.findAllSortedByValue(userService.findOne(sessionDto.getUserId()), value));
-//        } catch (WrongSessionException | UserNotFoundException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return null;
-//    }
+    @Nullable
+    @WebMethod
+    public List<TaskDto> findAllTasksSortedByValue(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "value") final String value) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToListTasksDto(taskService.findAllSortedByValue(userService.findOne(sessionDto.getUserId()), value));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
     private TaskDto castToTaskDto(@NotNull final Task task) {
         final TaskDto taskDto = new TaskDto();

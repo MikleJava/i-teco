@@ -52,6 +52,7 @@ public class SpringJpaConfig {
         factoryBean.setPackagesToScan("ru.girfanov.tm.entity");
         final Properties properties = new Properties();
         properties.put(Environment.DIALECT, dialect);
+        properties.put(Environment.STORAGE_ENGINE, "innodb");
         properties.put(Environment.HBM2DDL_AUTO, "update");
         properties.put(Environment.SHOW_SQL, "true");
         properties.put(Environment.FORMAT_SQL, "true");

@@ -6,5 +6,5 @@ import ru.girfanov.tm.entity.User;
 import java.util.List;
 
 public interface IProjectRepository extends Repository<Project> {
-//    List<Project> findAllSortedByValue(User user, String value);
+    List<Project> findAllSortedByValue(User user, String value);
 }

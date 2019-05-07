@@ -17,8 +17,10 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, String>, IProjectRepository {
 
-//    @Override
-//    List<Project> findAllSortedByValue(@NotNull final User user, @NotNull final String value);
+    @Override
+    @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
+    @Query("SELECT p FROM Project p WHERE p.user = ?1 ORDER BY ?#{[0]}")
+    List<Project> findAllSortedByValue(@NotNull final User user, @NotNull final String value);
 
     @Override
     @Modifying

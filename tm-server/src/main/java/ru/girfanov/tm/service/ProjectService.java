@@ -69,11 +69,11 @@ public class ProjectService implements IProjectService {
         return (List<Project>) projectRepository.findAll();
     }
 
-//    @Nullable //does not work
-//    @Override
-//    public List<Project> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
-//        if (value.isEmpty()) { return null; }
-//        if(!userRepository.findById(userId.getId()).isPresent()) throw new UserNotFoundException("user not found");
-//        return projectRepository.findAllSortedByValue(userId, value);
-//    }
+    @Nullable
+    @Override
+    public List<Project> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
+        if (value.isEmpty()) { return null; }
+        if(!userRepository.findById(userId.getId()).isPresent()) throw new UserNotFoundException("user not found");
+        return projectRepository.findAllSortedByValue(userId, value);
+    }
 }

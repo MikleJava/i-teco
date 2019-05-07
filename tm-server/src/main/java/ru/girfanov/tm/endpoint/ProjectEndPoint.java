@@ -90,16 +90,16 @@ public class ProjectEndPoint {
         return null;
     }
 
-//    @Nullable
-//    @WebMethod
-//    public List<ProjectDto> findAllProjectsSortedByValue(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "value") final String value) {
-//        try {
-//            if(sessionService.existSession(sessionDto)) return castToListProjectsDto(projectService.findAllSortedByValue(userService.findOne(sessionDto.getUserId()), value));
-//        } catch (WrongSessionException | UserNotFoundException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return null;
-//    }
+    @Nullable
+    @WebMethod
+    public List<ProjectDto> findAllProjectsSortedByValue(@WebParam(name = "session") final SessionDto sessionDto, @WebParam(name = "value") final String value) {
+        try {
+            if(sessionService.existSession(sessionDto)) return castToListProjectsDto(projectService.findAllSortedByValue(userService.findOne(sessionDto.getUserId()), value));
+        } catch (WrongSessionException | UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
     private ProjectDto castToProjectDto(@NotNull final Project project) {
         final ProjectDto projectDto = new ProjectDto();

@@ -44,4 +44,9 @@ public interface TaskRepository extends CrudRepository<Task, String>, ITaskRepos
     @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
     @Query(value = "SELECT t FROM Task t WHERE t.user = ?1 AND t.project = ?2")
     List<Task> findAllTasksByProjectId(@NotNull final User userId, @NotNull final String projectId);
+
+    @Override
+    @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
+    @Query("SELECT t FROM Task t WHERE t.user = ?1 ORDER BY ?#{[0]}")
+    List<Task> findAllSortedByValue(@NotNull final User userId, @NotNull final String value);
 }

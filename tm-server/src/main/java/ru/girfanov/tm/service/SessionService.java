@@ -47,7 +47,7 @@ public class SessionService implements ISessionService {
             session = new Session();
             session.setTimestamp(getDateISO8601(new Date()));
             session.setUser(user.get());
-            session.setSignature(SignatureUtil.sign(session.getId() + session.getTimestamp(), SALT, CYCLE));
+            session.setSignature(SignatureUtil.sign(session.getId() + session.getUser().getId(), SALT, CYCLE));
             sessionRepository.save(session);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
@@ -66,7 +66,7 @@ public class SessionService implements ISessionService {
         final String signature = sessionDto.getSignature();
         if (signature == null || signature.isEmpty()) throw new WrongSessionException("Wrong session");
         sessionDto.setSignature(null);
-        if (!signature.equals(SignatureUtil.sign(sessionDto.getId() + sessionDto.getTimestamp(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
+        if (!signature.equals(SignatureUtil.sign(sessionDto.getId() + sessionDto.getUserId(), SALT, CYCLE))) throw new WrongSessionException("Wrong session");
         sessionDto.setSignature(signature);
         return true;
     }

@@ -7,5 +7,5 @@ import ru.girfanov.tm.exception.UserNotFoundException;
 import java.util.List;
 
 public interface IProjectService extends Service<Project> {
-//    List<Project> findAllSortedByValue(User userId, String value) throws UserNotFoundException;
+    List<Project> findAllSortedByValue(User userId, String value) throws UserNotFoundException;
 }

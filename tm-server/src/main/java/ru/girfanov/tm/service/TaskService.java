@@ -81,10 +81,10 @@ public class TaskService implements ITaskService {
         taskRepository.removeAllTasksByProjectId(userId, projectId);
     }
 
-//    @Nullable //does not work
-//    @Override
-//    public List<Task> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
-//        if(!userRepository.findOne(userId.getId()).isPresent()) throw new UserNotFoundException("user not found");
-//        return taskRepository.findAllSortedByValue(userId, value);
-//    }
+    @Nullable
+    @Override
+    public List<Task> findAllSortedByValue(@NotNull final User userId, @NotNull final String value) throws UserNotFoundException {
+        if(!userRepository.findById(userId.getId()).isPresent()) throw new UserNotFoundException("user not found");
+        return taskRepository.findAllSortedByValue(userId, value);
+    }
 }
