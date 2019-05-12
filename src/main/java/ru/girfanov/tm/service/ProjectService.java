@@ -1,19 +1,28 @@
 package ru.girfanov.tm.service;
 
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.util.LoggerUtil;
 
 import java.util.Collection;
 import java.util.List;
 
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class ProjectService implements IProjectService {
 
-    private ProjectRepository projectRepository;
-    private UserRepository userRepository;
+    @NotNull private static final Logger log = LoggerUtil.getLogger(ProjectService.class);
+
+    @NonNull private UserRepository userRepository;
+    @NonNull private ProjectRepository projectRepository;
 
     @Override
     public void persist(@NotNull final String userId, @NotNull final Project project) throws UserNotFoundException {

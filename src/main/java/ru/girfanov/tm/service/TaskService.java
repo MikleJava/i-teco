@@ -1,5 +1,9 @@
 package ru.girfanov.tm.service;
 
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.ITaskService;
@@ -7,14 +11,19 @@ import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.util.LoggerUtil;
 
 import java.util.Collection;
 import java.util.List;
 
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class TaskService implements ITaskService {
 
-    private TaskRepository taskRepository;
-    private UserRepository userRepository;
+    @NotNull private static final Logger log = LoggerUtil.getLogger(TaskService.class);
+
+    @NonNull private UserRepository userRepository;
+    @NonNull private TaskRepository taskRepository;
 
     @Override
     public void persist(@NotNull final String userId, @NotNull final Task task) throws UserNotFoundException {

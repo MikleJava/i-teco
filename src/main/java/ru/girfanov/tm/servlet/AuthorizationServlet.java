@@ -1,10 +1,12 @@
 package ru.girfanov.tm.servlet;
 
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.service.UserService;
+import ru.girfanov.tm.util.LoggerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +18,7 @@ import java.io.IOException;
 @WebServlet("/authorization")
 public class AuthorizationServlet extends HttpServlet {
 
-    @NotNull private final UserService userService = new UserService(new UserRepository());
+    @NotNull private final UserService userService = new UserService(UserRepository.getInstance());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

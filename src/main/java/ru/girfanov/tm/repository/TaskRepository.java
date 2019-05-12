@@ -12,6 +12,23 @@ import java.util.stream.Collectors;
 
 public class TaskRepository implements ITaskRepository {
 
+    private static volatile TaskRepository taskRepository;
+
+    private TaskRepository() {}
+
+    public static TaskRepository getInstance() {
+        TaskRepository instance = taskRepository;
+        if(instance == null) {
+            synchronized (UserRepository.class) {
+                instance = taskRepository;
+                if(instance == null) {
+                    taskRepository = new TaskRepository();
+                }
+            }
+        }
+        return taskRepository;
+    }
+
     @NotNull private Map<String, Task> map = new ConcurrentHashMap<>();
 
     @Override

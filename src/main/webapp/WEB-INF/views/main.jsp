@@ -9,7 +9,7 @@
 <body>
     <div class="content">
         <div class="greeting">
-            <%User user = (User) request.getAttribute("user");%>
+            <%User user = (User) request.getSession().getAttribute("user");%>
             <c:set var="user" value="<%=user%>" scope="page"/>
             <c:if test="${user==null}">
                 <h1>You must be logged in</h1>
