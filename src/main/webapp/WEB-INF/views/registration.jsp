@@ -8,6 +8,7 @@
 <jsp:include page="header.jsp"/>
 <body>
     <div class="content">
+        <h2>REGISTRATION</h2>
         <form action="<%=request.getContextPath()%>/registration" method="post">
             <div class="login-field">
                 <div class="login-name">
@@ -26,7 +27,7 @@
                 </div>
             </div>
             <div class="send-button">
-                <button type="submit">SEND</button>
+                <button type="submit">SIGN UP</button>
             </div>
         </form>
     </div>

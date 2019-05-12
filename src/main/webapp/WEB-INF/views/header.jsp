@@ -14,8 +14,8 @@
             <li><a href="<%=request.getContextPath()%>/registration">Sign up</a></li>
         </c:if>
         <c:if test="${user!=null}">
-            <li><a href="<%=request.getContextPath()%>/showproject">Projects</a></li>
-            <li><a href="<%=request.getContextPath()%>/showtask">Tasks</a></li>
+            <li><a href="<%=request.getContextPath()%>/project-list">Projects</a></li>
+            <li><a href="<%=request.getContextPath()%>/task-list">Tasks</a></li>
             <li><a href="<%=request.getContextPath()%>/logout">Sign out</a></li>
         </c:if>
     </ul>

@@ -8,6 +8,7 @@
 <jsp:include page="header.jsp"/>
 <body>
 <div class="content">
+    <h2>AUTHORIZATION</h2>
     <form action="<%=request.getContextPath()%>/authorization" method="post">
         <div class="login-field">
             <div class="login-name">
@@ -26,7 +27,7 @@
             </div>
         </div>
         <div class="send-button">
-            <button type="submit">SEND</button>
+            <button type="submit">SIGN IN</button>
         </div>
     </form>
 </div>

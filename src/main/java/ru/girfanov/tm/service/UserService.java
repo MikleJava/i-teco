@@ -27,7 +27,7 @@ public class UserService implements IUserService {
     public void persist(@NotNull final User user) {
         user.setPassword(PasswordHashUtil.md5(user.getPassword()));
         userRepository.persist(user);
-        log.info("User " + user.getLogin() + " " + user.getPassword() + " has logged in");
+        log.info("User " + user.getLogin() + " has logged in");
     }
 
     @Nullable
@@ -43,7 +43,6 @@ public class UserService implements IUserService {
     @Override
     public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) throws UserNotFoundException {
         if(login.isEmpty() || password.isEmpty()) return null;
-        log.info(password + " | " + PasswordHashUtil.md5(password));
         @Nullable final User user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
         if(user == null) throw new UserNotFoundException("User not found");
         return user;
