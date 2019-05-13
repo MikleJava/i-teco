@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.repository.ProjectRepository;
+import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
-import ru.girfanov.tm.service.ProjectService;
+import ru.girfanov.tm.service.TaskService;
 import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
 
@@ -18,14 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/project-list")
-public class ProjectListServlet extends HttpServlet {
+@WebServlet("/task-list")
+public class TaskListServlet extends HttpServlet {
 
-    @NotNull
-    private static final Logger log = LoggerUtil.getLogger(ProjectListServlet.class);
+    @NotNull private static final Logger log = LoggerUtil.getLogger(TaskListServlet.class);
 
     @NotNull private final UserService userService = new UserService(UserRepository.getInstance());
-    @NotNull private final ProjectService projectService = new ProjectService(UserRepository.getInstance(), ProjectRepository.getInstance());
+    @NotNull private final TaskService taskService = new TaskService(UserRepository.getInstance(), TaskRepository.getInstance());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,8 +32,8 @@ public class ProjectListServlet extends HttpServlet {
         try {
             user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
             if(user == null) return;
-            req.setAttribute("projects", projectService.findAllByUserId(user.getId()));
-            req.getRequestDispatcher("WEB-INF/views/project-list.jsp").forward(req, resp);
+            req.setAttribute("tasks", taskService.findAllByUserId(user.getId()));
+            req.getRequestDispatcher("WEB-INF/views/task-list.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }

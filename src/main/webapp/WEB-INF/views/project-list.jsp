@@ -12,47 +12,22 @@
     <div class="content">
         <h2>PROJECT LIST</h2>
         <table>
-            <colgroup>
-                <col class="number">
-                <col class="id">
-                <col class="name">
-                <col class="description">
-                <col class="status">
-                <col class="date-start">
-                <col class="date-end">
-                <col class="user-id">
-                <col class="edit">
-                <col class="remove">
-            </colgroup>
+            <caption>PROJECTS</caption>
             <tr>
                 <th>№</th>
                 <th>ID</th>
                 <th>NAME</th>
-                <th>DESCRIPTION</th>
-                <th>STATUS</th>
-                <th>DATE START</th>
-                <th>DATE END</th>
-                <th>USER ID</th>
-                <th>EDIT</th>
-                <th>REMOVE</th>
+                <th>SHOW</th>
             </tr>
             <%List<Project> projects = (List<Project>) request.getAttribute("projects");%>
             <c:set var="projects" value="<%=projects%>" scope="page"/>
-            <c:forEach var="project" items="${projects}" varStatus="i">
+            <c:forEach var="project" varStatus="i" items="${projects}">
                 <tr>
                     <td>${i.count}</td>
                     <td>${project.id}</td>
                     <td>${project.name}</td>
-                    <td>${project.description}</td>
-                    <td>${project.status}</td>
-                    <td>${project.dateStart}</td>
-                    <td>${project.dateEnd}</td>
-                    <td>${project.userId}</td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/project-edit?pid=${project.id}"><i class="fas fa-edit"></i></a><!--&nbsp;-->
-                    </td>
-                    <td>
-                        <a href="<%=request.getContextPath()%>/project-remove?pid=${project.id}"><i class="fas fa-trash-alt"></i></a><!--&nbsp;-->
+                        <a href="<%=request.getContextPath()%>/project-show?project_id=${project.id}">SHOW</a>
                     </td>
                 </tr>
             </c:forEach>

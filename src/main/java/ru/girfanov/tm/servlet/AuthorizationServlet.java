@@ -18,6 +18,8 @@ import java.io.IOException;
 @WebServlet("/authorization")
 public class AuthorizationServlet extends HttpServlet {
 
+    @NotNull private static final Logger log = LoggerUtil.getLogger(AuthorizationServlet.class);
+
     @NotNull private final UserService userService = new UserService(UserRepository.getInstance());
 
     @Override
@@ -29,11 +31,13 @@ public class AuthorizationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             final User user = userService.findOneByLoginAndPassword(req.getParameter("login"), req.getParameter("password"));
+            if(user == null) return;
             req.getSession().setAttribute("user", user);
             req.getSession().setMaxInactiveInterval(-1);
+            resp.sendRedirect(req.getContextPath() + "/");
+            log.info("User " + user.getLogin() + " has signed in.");
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        resp.sendRedirect(req.getContextPath() + "/");
     }
 }

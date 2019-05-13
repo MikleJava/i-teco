@@ -3,6 +3,7 @@ package ru.girfanov.tm.servlet;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.ProjectRepository;
@@ -18,23 +19,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/project-list")
-public class ProjectListServlet extends HttpServlet {
+@WebServlet("/project-show")
+public class ProjectShowServlet extends HttpServlet {
 
     @NotNull
-    private static final Logger log = LoggerUtil.getLogger(ProjectListServlet.class);
+    private static final Logger log = LoggerUtil.getLogger(ProjectShowServlet.class);
 
     @NotNull private final UserService userService = new UserService(UserRepository.getInstance());
     @NotNull private final ProjectService projectService = new ProjectService(UserRepository.getInstance(), ProjectRepository.getInstance());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        @Nullable User user;
         try {
-            user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
+            @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
             if(user == null) return;
-            req.setAttribute("projects", projectService.findAllByUserId(user.getId()));
-            req.getRequestDispatcher("WEB-INF/views/project-list.jsp").forward(req, resp);
+            @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
+            if(project == null) return;
+            req.setAttribute("project", project);
+            req.getRequestDispatcher("WEB-INF/views/project-show.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }

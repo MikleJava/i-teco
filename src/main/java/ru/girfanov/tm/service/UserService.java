@@ -3,14 +3,12 @@ package ru.girfanov.tm.service;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.UserRepository;
-import ru.girfanov.tm.util.LoggerUtil;
 import ru.girfanov.tm.util.PasswordHashUtil;
 
 import java.util.Collection;
@@ -19,15 +17,12 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
 
-    @NotNull private static final Logger log = LoggerUtil.getLogger(UserService.class);
-
     @NonNull private UserRepository userRepository;
 
     @Override
     public void persist(@NotNull final User user) {
         user.setPassword(PasswordHashUtil.md5(user.getPassword()));
         userRepository.persist(user);
-        log.info("User " + user.getLogin() + " has logged in");
     }
 
     @Nullable
@@ -54,7 +49,6 @@ public class UserService implements IUserService {
         if(userRepository.findOne(userId) == null) throw new UserNotFoundException("User not found");
         user.setPassword(PasswordHashUtil.md5(user.getPassword()));
         userRepository.merge(user);
-        log.info("User " + user.getLogin() + " has updated password");
     }
 
     @Override
@@ -62,7 +56,6 @@ public class UserService implements IUserService {
         if(userId.isEmpty() || !userId.equals(user.getId())) return;
         if(userRepository.findOne(userId) == null) throw new UserNotFoundException("User not found");
         userRepository.remove(user);
-        log.info("User " + userId + " has deleted user [" + user.getId() + "]");
     }
 
     @Override

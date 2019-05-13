@@ -1,6 +1,5 @@
 <%@ page import="ru.girfanov.tm.enumeration.Status" %>
 <%@ page import="java.util.Date" %>
-<%@ page import="ru.girfanov.tm.util.DateFormatUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
