@@ -40,7 +40,7 @@ public class ProjectEditServlet extends HttpServlet {
             @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
             if(project == null) return;
             req.setAttribute("project", project);
-            req.getRequestDispatcher("WEB-INF/views/project-edit.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/project-edit.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -51,8 +51,7 @@ public class ProjectEditServlet extends HttpServlet {
         try {
             @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
             if (user == null) return;
-            log.info("getting proj id " + ((Project) req.getAttribute("project")).getId());
-            @Nullable final Project project = projectService.findOne(user.getId(), ((Project) req.getAttribute("project")).getId());
+            @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
             if(project == null) return;
             project.setName(req.getParameter("name"));
             project.setDescription(req.getParameter("desc"));
@@ -61,7 +60,7 @@ public class ProjectEditServlet extends HttpServlet {
             project.setDateEnd(getDateISO8601(req.getParameter("date-end")));
             project.setUserId(user.getId());
             projectService.merge(user.getId(), project);
-            resp.sendRedirect(req.getContextPath() + "/project-list");
+            resp.sendRedirect(req.getContextPath() + "/project-show?project_id=" + req.getParameter("project_id"));
         } catch (UserNotFoundException | ParseException e) {
             e.printStackTrace();
         }

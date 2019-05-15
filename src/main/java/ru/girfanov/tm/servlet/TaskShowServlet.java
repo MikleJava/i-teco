@@ -19,28 +19,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/task-remove")
-public class TaskRemoveServlet extends HttpServlet {
+@WebServlet("/task-show")
+public class TaskShowServlet extends HttpServlet {
 
     @NotNull
-    private static final Logger log = LoggerUtil.getLogger(TaskRemoveServlet.class);
+    private static final Logger log = LoggerUtil.getLogger(TaskShowServlet.class);
 
-    @NotNull
-    private final UserService userService = new UserService(UserRepository.getInstance());
-    @NotNull
-    private final TaskService taskService = new TaskService(UserRepository.getInstance(), TaskRepository.getInstance());
+    @NotNull private final UserService userService = new UserService(UserRepository.getInstance());
+    @NotNull private final TaskService taskService = new TaskService(UserRepository.getInstance(), TaskRepository.getInstance());
+
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if (user == null) return;
+            if(user == null) return;
             @Nullable final Task task = taskService.findOne(user.getId(), req.getParameter("task_id"));
-            if (task == null) return;
-            taskService.remove(user.getId(), task);
-            resp.sendRedirect(req.getContextPath() + "/task-list");
+            if(task == null) return;
+            req.setAttribute("task", task);
+            req.getRequestDispatcher("/WEB-INF/views/task-show.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }
     }
 }
+

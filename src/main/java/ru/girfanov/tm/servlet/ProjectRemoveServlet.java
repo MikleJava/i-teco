@@ -28,7 +28,7 @@ public class ProjectRemoveServlet extends HttpServlet {
     @NotNull private final ProjectService projectService = new ProjectService(UserRepository.getInstance(), ProjectRepository.getInstance());
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
             if(user == null) return;

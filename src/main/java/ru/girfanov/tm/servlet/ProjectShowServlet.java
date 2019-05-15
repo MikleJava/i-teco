@@ -36,7 +36,7 @@ public class ProjectShowServlet extends HttpServlet {
             @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
             if(project == null) return;
             req.setAttribute("project", project);
-            req.getRequestDispatcher("WEB-INF/views/project-show.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/project-show.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }

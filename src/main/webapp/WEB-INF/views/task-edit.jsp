@@ -1,7 +1,7 @@
 <%@ page import="ru.girfanov.tm.enumeration.Status" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="ru.girfanov.tm.entity.Project" %>
 <%@ page import="java.util.List" %>
+<%@ page import="ru.girfanov.tm.entity.Task" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,12 +14,15 @@
 <body>
 <div class="content">
     <h2>EDIT TASK</h2>
+    <%Task task = (Task) request.getAttribute("task");%>
+    <c:set var="task" value="<%=task%>" scope="page"/>
     <form action="<%=request.getContextPath()%>/task-edit" method="post">
+        <input type="hidden" name="task_id" value="${task.id}" />
         <div class="name-field">
             <div class="task-name">
                 <p>Name</p>
                 <label>
-                    <input type="text" name="name" placeholder="name"/>
+                    <input type="text" name="name" value="<%=task.getName()%>" placeholder="name"/>
                 </label>
             </div>
         </div>
@@ -27,7 +30,7 @@
             <div class="task-desc">
                 <p>Description</p>
                 <label>
-                    <input type="text" name="desc" placeholder="description"/>
+                    <input type="text" name="desc" value="<%=task.getDescription()%>" placeholder="description"/>
                 </label>
             </div>
         </div>
@@ -37,7 +40,7 @@
                 <label>
                     <select name="status" multiple size="1">
                         <c:forEach var="s" items="<%=Status.values()%>">
-                            <option value="${s.name()}"> ${s.name()} </option>
+                            <option value="${s.name()}" ${s.name() == task.status.name() ? 'selected' : ''}> ${s.name()} </option>
                         </c:forEach>
                     </select>
                 </label>
@@ -48,7 +51,7 @@
                 <p>Date start</p>
                 <label>
                     <input type="date" name="date-start"
-                           value = "<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd" />"
+                           value = "<fmt:formatDate value="<%=task.getDateStart()%>" pattern="yyyy-MM-dd" />"
                     />
                 </label>
             </div>
@@ -57,7 +60,9 @@
             <div class="task-date-end">
                 <p>Date end</p>
                 <label>
-                    <input type="date" name="date-end" value = "<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd" />"/>
+                    <input type="date" name="date-end"
+                           value = "<fmt:formatDate value="<%=task.getDateEnd()%>" pattern="yyyy-MM-dd" />"
+                    />
                 </label>
             </div>
         </div>
@@ -66,9 +71,9 @@
                 <%List<Project> projects = (List<Project>) request.getAttribute("projects");%>
                 <p>Projects</p>
                 <label>
-                    <select name="project-id" multiple size="1">
+                    <select name="project_id" multiple size="1">
                         <c:forEach var="p" items="<%=projects%>">
-                            <option value="${p.id}"> ${p.id} </option>
+                            <option value="${p.id}" ${p.id == task.projectId ? 'selected' : ''}> ${p.id} </option>
                         </c:forEach>
                     </select>
                 </label>

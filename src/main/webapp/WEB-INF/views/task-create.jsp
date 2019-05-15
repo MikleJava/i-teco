@@ -37,7 +37,7 @@
                 <label>
                     <select name="status" multiple size="1">
                         <c:forEach var="s" items="<%=Status.values()%>">
-                            <option value="${s.name()}"> ${s.name()} </option>
+                            <option value="${s.name()}" selected> ${s.name()} </option>
                         </c:forEach>
                     </select>
                 </label>

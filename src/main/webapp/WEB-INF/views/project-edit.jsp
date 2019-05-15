@@ -1,5 +1,4 @@
 <%@ page import="ru.girfanov.tm.enumeration.Status" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="ru.girfanov.tm.entity.Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -14,7 +13,9 @@
 <div class="content">
     <h2>EDIT PROJECT</h2>
     <%Project project = (Project) request.getAttribute("project");%>
+    <c:set var="project" value="<%=project%>" scope="page"/>
     <form action="<%=request.getContextPath()%>/project-edit" method="post">
+        <input type="hidden" name="project_id" value="${project.id}" />
         <div class="name-field">
             <div class="project-name">
                 <p>Name</p>
@@ -37,7 +38,7 @@
                 <label>
                     <select name="status" multiple size="1">
                         <c:forEach var="s" items="<%=Status.values()%>">
-                            <option value="${s.name()}"> ${s.name()} </option>
+                            <option value="${s.name()}" ${s.name() == project.status.name() ? 'selected' : ''}> ${s.name()} </option>
                         </c:forEach>
                     </select>
                 </label>

@@ -33,12 +33,14 @@
             <td><%=project.getUserId()%></td>
         </tr>
     </table>
-    <div class="send-button">
-        <a href="<%=request.getContextPath()%>/project-edit?project_id=<%=project.getId()%>"> <button type="button">EDIT</button></a>
-    </div>
-    <div class="send-button">
-        <a href="<%=request.getContextPath()%>/project-remove?project_id=<%=project.getId()%>"> <button type="button">REMOVE</button></a>
-    </div>
+        <div class="send-button">
+            <a href="<%=request.getContextPath()%>/project-edit?project_id=<%=project.getId()%>"> <button type="button">EDIT</button></a>
+        </div>
+    <form action="<%=request.getContextPath()%>/project-remove?project_id=<%=project.getId()%>" method="post">
+        <div class="send-button">
+            <button type="submit">REMOVE</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

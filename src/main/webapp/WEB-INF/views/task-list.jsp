@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>project-list</title>
+    <title>task-list</title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css" type="text/css"/>
 </head>
 <jsp:include page="header.jsp"/>
@@ -17,6 +17,7 @@
             <th>№</th>
             <th>ID</th>
             <th>NAME</th>
+            <th>STATUS</th>
             <th>SHOW</th>
         </tr>
         <%List<Task> tasks = (List<Task>) request.getAttribute("tasks");%>
@@ -26,11 +27,9 @@
                 <td>${i.count}</td>
                 <td>${task.id}</td>
                 <td>${task.name}</td>
+                <td>${task.status}</td>
                 <td>
-                    <a href="<%=request.getContextPath()%>/task-edit?pid=${task.id}"></a>
-                </td>
-                <td>
-                    <a href="<%=request.getContextPath()%>/task-remove?pid=${task.id}"></a>
+                    <a href="<%=request.getContextPath()%>/task-show?task_id=${task.id}">SHOW</a>
                 </td>
             </tr>
         </c:forEach>

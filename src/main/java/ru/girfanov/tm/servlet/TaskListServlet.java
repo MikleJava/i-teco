@@ -33,7 +33,7 @@ public class TaskListServlet extends HttpServlet {
             user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
             if(user == null) return;
             req.setAttribute("tasks", taskService.findAllByUserId(user.getId()));
-            req.getRequestDispatcher("WEB-INF/views/task-list.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/task-list.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }

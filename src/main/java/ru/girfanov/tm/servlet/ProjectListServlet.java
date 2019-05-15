@@ -34,7 +34,7 @@ public class ProjectListServlet extends HttpServlet {
             user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
             if(user == null) return;
             req.setAttribute("projects", projectService.findAllByUserId(user.getId()));
-            req.getRequestDispatcher("WEB-INF/views/project-list.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/project-list.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }

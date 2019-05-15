@@ -17,6 +17,7 @@
                 <th>№</th>
                 <th>ID</th>
                 <th>NAME</th>
+                <th>STATUS</th>
                 <th>SHOW</th>
             </tr>
             <%List<Project> projects = (List<Project>) request.getAttribute("projects");%>
@@ -26,6 +27,7 @@
                     <td>${i.count}</td>
                     <td>${project.id}</td>
                     <td>${project.name}</td>
+                    <td>${project.status}</td>
                     <td>
                         <a href="<%=request.getContextPath()%>/project-show?project_id=${project.id}">SHOW</a>
                     </td>
