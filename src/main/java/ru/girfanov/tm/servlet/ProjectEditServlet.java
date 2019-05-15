@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.enumeration.Status;
+import ru.girfanov.tm.exception.EmptyFieldException;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.ProjectRepository;
 import ru.girfanov.tm.repository.UserRepository;
@@ -34,25 +35,66 @@ public class ProjectEditServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        @NotNull final String projectId = req.getParameter("project_id");
+        if(projectId.isEmpty()) {
+            req.setAttribute("error", "Project does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if(user == null) return;
-            @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
-            if(project == null) return;
+            @Nullable final Project project = projectService.findOne(user.getId(), projectId);
+            if(project == null) {
+                req.setAttribute("error", "Project does not exist");
+                resp.sendError(404);
+                return;
+            }
             req.setAttribute("project", project);
             req.getRequestDispatcher("/WEB-INF/views/project-edit.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        @NotNull final String projectId = req.getParameter("project_id");
+        if(projectId.isEmpty()) {
+            req.setAttribute("error", "Project does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if (user == null) return;
-            @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
-            if(project == null) return;
+            @Nullable final Project project = projectService.findOne(user.getId(), projectId);
+            if(project == null) {
+                req.setAttribute("error", "Project does not exist");
+                resp.sendError(404);
+                return;
+            }
             project.setName(req.getParameter("name"));
             project.setDescription(req.getParameter("desc"));
             project.setStatus(Status.valueOf(req.getParameter("status")));
@@ -61,8 +103,12 @@ public class ProjectEditServlet extends HttpServlet {
             project.setUserId(user.getId());
             projectService.merge(user.getId(), project);
             resp.sendRedirect(req.getContextPath() + "/project-show?project_id=" + req.getParameter("project_id"));
-        } catch (UserNotFoundException | ParseException e) {
-            e.printStackTrace();
+        } catch (UserNotFoundException unf) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+        } catch (ParseException pe) {
+            req.setAttribute("error", "Incorrect date");
+            resp.sendError(404);
         }
     }
 }

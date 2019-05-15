@@ -29,14 +29,24 @@ public class ProjectListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        @Nullable User user;
-        try {
-            user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if(user == null) return;
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        try{
             req.setAttribute("projects", projectService.findAllByUserId(user.getId()));
             req.getRequestDispatcher("/WEB-INF/views/project-list.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
         }
     }
 }

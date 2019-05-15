@@ -3,6 +3,7 @@ package ru.girfanov.tm.servlet;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.EmptyFieldException;
 import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
@@ -27,10 +28,17 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        final User user = new User();
-        user.setLogin(req.getParameter("login"));
-        user.setPassword(req.getParameter("password"));
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        @NotNull final String login = req.getParameter("login");
+        @NotNull final String password = req.getParameter("password");
+        if(login.isEmpty() || password.isEmpty()) {
+            req.setAttribute("error", "login or password must be not empty");
+            resp.sendError(404);
+            return;
+        }
+        @NotNull final User user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
         userService.persist(user);
         resp.sendRedirect(req.getContextPath() + "/");
         log.info("User " + user.getLogin() + " has signed up.");

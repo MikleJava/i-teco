@@ -27,19 +27,17 @@ public class UserService implements IUserService {
 
     @Nullable
     @Override
-    public User findOne(@NotNull final String userId) throws UserNotFoundException{
+    public User findOne(@NotNull final String userId) {
         if(userId.isEmpty()) return null;
         @Nullable final User user = userRepository.findOne(userId);
-        if(user == null) throw new UserNotFoundException("User not found");
         return user;
     }
 
     @Nullable
     @Override
-    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) throws UserNotFoundException {
+    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
         if(login.isEmpty() || password.isEmpty()) return null;
         @Nullable final User user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
-        if(user == null) throw new UserNotFoundException("User not found");
         return user;
     }
 

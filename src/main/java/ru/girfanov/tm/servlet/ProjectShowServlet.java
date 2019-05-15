@@ -30,15 +30,36 @@ public class ProjectShowServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        @NotNull final String projectId = req.getParameter("project_id");
+        if(projectId.isEmpty()) {
+            req.setAttribute("error", "Project does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if(user == null) return;
-            @Nullable final Project project = projectService.findOne(user.getId(), req.getParameter("project_id"));
-            if(project == null) return;
+            @Nullable final Project project = projectService.findOne(user.getId(), projectId);
+            if(project == null) {
+                req.setAttribute("error", "Project does not exist");
+                resp.sendError(404);
+                return;
+            }
             req.setAttribute("project", project);
             req.getRequestDispatcher("/WEB-INF/views/project-show.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
         }
     }
 }

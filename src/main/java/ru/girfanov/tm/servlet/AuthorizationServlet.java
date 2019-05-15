@@ -3,6 +3,7 @@ package ru.girfanov.tm.servlet;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.exception.EmptyFieldException;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.service.UserService;
@@ -29,15 +30,22 @@ public class AuthorizationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            final User user = userService.findOneByLoginAndPassword(req.getParameter("login"), req.getParameter("password"));
-            if(user == null) return;
-            req.getSession().setAttribute("user", user);
-            req.getSession().setMaxInactiveInterval(-1);
-            resp.sendRedirect(req.getContextPath() + "/");
-            log.info("User " + user.getLogin() + " has signed in.");
-        } catch (UserNotFoundException e) {
-            System.out.println(e.getMessage());
+        @NotNull final String login = req.getParameter("login");
+        @NotNull final String password = req.getParameter("password");
+        if(login.isEmpty() || password.isEmpty()) {
+            req.setAttribute("error", "login or password must be not empty");
+            resp.sendError(404);
+            return;
         }
+        final User user = userService.findOneByLoginAndPassword(login, password);
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        req.getSession().setAttribute("user", user);
+        req.getSession().setMaxInactiveInterval(-1);
+        resp.sendRedirect(req.getContextPath() + "/");
+        log.info("User " + user.getLogin() + " has signed in.");
     }
 }

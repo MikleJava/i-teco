@@ -8,8 +8,8 @@
 <body>
     <div class="error-img">
         <div class="error-content">
-            ...big error text here......big error text here......big error text here......big error text here...
-            ...big error text here......big error text here......big error text here......big error text here...
+            <%String error = (String) request.getAttribute("error");%>
+            <%=error%>
         </div>
     </div>
 

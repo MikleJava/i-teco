@@ -38,21 +38,32 @@ public class ProjectCreateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        @Nullable User user;
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        final Project project = new Project();
+        project.setName(req.getParameter("name"));
+        project.setDescription(req.getParameter("desc"));
+        project.setStatus(Status.valueOf(req.getParameter("status")));
         try {
-            user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if (user == null) return;
-            final Project project = new Project();
-            project.setName(req.getParameter("name"));
-            project.setDescription(req.getParameter("desc"));
-            project.setStatus(Status.valueOf(req.getParameter("status")));
             project.setDateStart(getDateISO8601(req.getParameter("date-start")));
             project.setDateEnd(getDateISO8601(req.getParameter("date-end")));
-            project.setUserId(user.getId());
-            projectService.persist(user.getId(), project);
-            resp.sendRedirect(req.getContextPath() + "/project-list");
-        } catch (UserNotFoundException | ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException e) {
+            req.setAttribute("error", "Incorrect date");
+            resp.sendError(404);
+            return;
         }
+        project.setUserId(user.getId());
+        projectService.persist(user.getId(), project);
+        resp.sendRedirect(req.getContextPath() + "/project-list");
     }
 }

@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.exception.UserNotFoundException;
@@ -25,9 +26,8 @@ public class ProjectService implements IProjectService {
     @NonNull private ProjectRepository projectRepository;
 
     @Override
-    public void persist(@NotNull final String userId, @NotNull final Project project) throws UserNotFoundException {
+    public void persist(@NotNull final String userId, @NotNull final Project project) {
         if (userId.isEmpty()) return;
-        if(userRepository.findOne(userId) == null) throw new UserNotFoundException("User not found");
         projectRepository.persist(project);
     }
 
@@ -45,13 +45,14 @@ public class ProjectService implements IProjectService {
         projectRepository.merge(project);
     }
 
+    @Nullable
     @Override
     public Project findOne(@NotNull final String userId, @NotNull final String projectId) throws UserNotFoundException {
-        if (userId.isEmpty() || projectId.isEmpty()) return null;
         if(userRepository.findOne(userId) == null) throw new UserNotFoundException("User not found");
         return projectRepository.findOne(projectId);
     }
 
+    @Nullable
     @Override
     public List<Project> findAllByUserId(@NotNull final String userId) throws UserNotFoundException {
         if (userId.isEmpty()) return null;
