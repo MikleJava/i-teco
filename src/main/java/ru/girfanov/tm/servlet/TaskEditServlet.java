@@ -37,28 +37,73 @@ public class TaskEditServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        @NotNull final String taskId = req.getParameter("task_id");
+        if(taskId.isEmpty()) {
+            req.setAttribute("error", "Task does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if(user == null) return;
-            @Nullable final Task task = taskService.findOne(user.getId(), req.getParameter("task_id"));
-            if(task == null) return;
+            @Nullable final Task task = taskService.findOne(user.getId(), taskId);
+            if(task == null) {
+                req.setAttribute("error", "Task does not exist");
+                resp.sendError(404);
+                return;
+            }
             req.setAttribute("task", task);
             req.setAttribute("projects", projectService.findAllByUserId(user.getId()));
             req.getRequestDispatcher("/WEB-INF/views/task-edit.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        @NotNull final String taskId = req.getParameter("task_id");
+        if(taskId.isEmpty()) {
+            req.setAttribute("error", "Task does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            @Nullable final User user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if (user == null) return;
-            @Nullable final Task task = taskService.findOne(user.getId(), req.getParameter("task_id"));
-            if(task == null) return;
+            @Nullable final Task task = taskService.findOne(user.getId(), taskId);
+            if(task == null) {
+                req.setAttribute("error", "Task does not exist");
+                resp.sendError(404);
+                return;
+            }
             @Nullable final String projectId = req.getParameter("project_id");
-            if(projectId == null) return;
+            if(projectId == null) {
+                req.setAttribute("error", "Project does not exist");
+                resp.sendError(404);
+                return;
+            }
             task.setName(req.getParameter("name"));
             task.setDescription(req.getParameter("desc"));
             task.setStatus(Status.valueOf(req.getParameter("status")));
@@ -68,8 +113,12 @@ public class TaskEditServlet extends HttpServlet {
             task.setProjectId(projectId);
             taskService.merge(user.getId(), task);
             resp.sendRedirect(req.getContextPath() + "/task-show?task_id=" + req.getParameter("task_id"));
-        } catch (UserNotFoundException | ParseException e) {
-            e.printStackTrace();
+        } catch (UserNotFoundException unfe) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+        } catch (ParseException pe) {
+            req.setAttribute("error", "Incorrect date");
+            resp.sendError(404);
         }
     }
 }

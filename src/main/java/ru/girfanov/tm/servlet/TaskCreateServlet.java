@@ -39,23 +39,42 @@ public class TaskCreateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        @Nullable User user;
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if(user == null) return;
             req.setAttribute("projects", projectService.findAllByUserId(user.getId()));
             req.getRequestDispatcher("/WEB-INF/views/task-create.jsp").forward(req, resp);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        @Nullable User user;
+        @Nullable User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
+        user = userService.findOne(user.getId());
+        if(user == null) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+            return;
+        }
         try {
-            user = userService.findOne(((User) req.getSession().getAttribute("user")).getId());
-            if (user == null) return;
             final Task task = new Task();
             task.setName(req.getParameter("name"));
             task.setDescription(req.getParameter("desc"));
@@ -66,8 +85,12 @@ public class TaskCreateServlet extends HttpServlet {
             task.setProjectId(req.getParameter("project-id"));
             taskService.persist(user.getId(), task);
             resp.sendRedirect(req.getContextPath() + "/task-list");
-        } catch (UserNotFoundException | ParseException e) {
-            e.printStackTrace();
+        } catch (UserNotFoundException unfe) {
+            req.setAttribute("error", "User does not exist");
+            resp.sendError(404);
+        } catch (ParseException pe) {
+            req.setAttribute("error", "Incorrect date");
+            resp.sendError(404);
         }
     }
 }
