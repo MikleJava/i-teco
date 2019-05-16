@@ -2,30 +2,32 @@ package ru.girfanov.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Repository;
 import ru.girfanov.tm.api.repository.IUserRepository;
 import ru.girfanov.tm.entity.User;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class UserRepository implements IUserRepository {
 
-    private static volatile UserRepository userRepository;
-
-    private UserRepository() {}
-
-    public static UserRepository getInstance() {
-        UserRepository instance = userRepository;
-        if(instance == null) {
-            synchronized (UserRepository.class) {
-                instance = userRepository;
-                if(instance == null) {
-                    userRepository = new UserRepository();
-                }
-            }
-        }
-        return userRepository;
-    }
+//    private static volatile UserRepository userRepository;
+//
+//    private UserRepository() {}
+//
+//    public static UserRepository getInstance() {
+//        UserRepository instance = userRepository;
+//        if(instance == null) {
+//            synchronized (UserRepository.class) {
+//                instance = userRepository;
+//                if(instance == null) {
+//                    userRepository = new UserRepository();
+//                }
+//            }
+//        }
+//        return userRepository;
+//    }
 
     @NotNull private Map<String, User> map = new ConcurrentHashMap<>();
 
