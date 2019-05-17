@@ -12,9 +12,9 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('Deploy') {
+        stage('Run') {
             steps {
-                sh 'mvn tomcat7:deploy'
+                sh 'mvn tomcat7:run'
             }
         }
     }
