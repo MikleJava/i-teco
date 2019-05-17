@@ -10,4 +10,9 @@ public class UserServiceTest {
     public void persist() {
         assertTrue(true);
     }
+
+    @Test
+    public void anotherOne() {
+        assertTrue(true);
+    }
 }
