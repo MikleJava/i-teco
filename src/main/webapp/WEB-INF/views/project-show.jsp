@@ -1,7 +1,3 @@
-<%@ page import="ru.girfanov.tm.entity.Project" %>
-<%@ page import="org.springframework.web.bind.annotation.ModelAttribute" %>
-<%@ page import="org.springframework.ui.ModelMap" %>
-<%@ page import="org.springframework.ui.Model" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -17,7 +13,6 @@
     <c:if test="${project!=null}">
         <h2>PROJECT</h2>
         <table>
-            <caption>PROJECTS</caption>
             <tr>
                 <th>ID</th>
                 <th>NAME</th>
@@ -40,9 +35,6 @@
         <div class="send-button">
             <a href="/project/edit?project_id=${project.id}"> <button type="button">EDIT</button></a>
         </div>
-<%--        <div class="send-button">--%>
-<%--            <a href="/project/remove?project_id=${project.id}"> <button type="submit">REMOVE</button></a>--%>
-<%--        </div>--%>
         <form action="/project/remove?project_id=${project.id}" method="post">
             <div class="send-button">
                 <button type="submit">REMOVE</button>

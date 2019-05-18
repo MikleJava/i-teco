@@ -16,7 +16,7 @@
     <h2>EDIT PROJECT</h2>
     <%--@elvariable id="project" type="ru.girfanov.tm.entity.Project"--%>
     <form:form modelAttribute="project" action="/project/edit" method="post">
-        <input type="hidden" name="project_id" value="${project.id}" />
+        <form:input path="id" type="hidden"/>
         <div class="name-field">
             <div class="project-name">
                 <p>Name</p>
@@ -61,6 +61,7 @@
                 </label>
             </div>
         </div>
+        <form:input path="userId" type="hidden"/>
         <div class="send-button">
             <button type="submit">EDIT</button>
         </div>

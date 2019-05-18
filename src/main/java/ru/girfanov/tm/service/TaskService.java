@@ -1,6 +1,5 @@
 package ru.girfanov.tm.service;
 
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +9,12 @@ import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.TaskRepository;
 import ru.girfanov.tm.repository.UserRepository;
-import ru.girfanov.tm.util.LoggerUtil;
 
 import java.util.Collection;
 import java.util.List;
 
 @Service
 public class TaskService implements ITaskService {
-
-    @NotNull private static final Logger log = LoggerUtil.getLogger(TaskService.class);
 
     @Autowired
     private UserRepository userRepository;
