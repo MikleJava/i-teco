@@ -12,23 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class UserRepository implements IUserRepository {
 
-//    private static volatile UserRepository userRepository;
-//
-//    private UserRepository() {}
-//
-//    public static UserRepository getInstance() {
-//        UserRepository instance = userRepository;
-//        if(instance == null) {
-//            synchronized (UserRepository.class) {
-//                instance = userRepository;
-//                if(instance == null) {
-//                    userRepository = new UserRepository();
-//                }
-//            }
-//        }
-//        return userRepository;
-//    }
-
     @NotNull private Map<String, User> map = new ConcurrentHashMap<>();
 
     @Override

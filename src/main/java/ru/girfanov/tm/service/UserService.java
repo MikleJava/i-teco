@@ -1,5 +1,6 @@
 package ru.girfanov.tm.service;
 
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,15 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
 import ru.girfanov.tm.repository.UserRepository;
+import ru.girfanov.tm.util.LoggerUtil;
 import ru.girfanov.tm.util.PasswordHashUtil;
 
 import java.util.Collection;
 
 @Service
 public class UserService implements IUserService {
+
+    @NotNull private static final Logger log = LoggerUtil.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;

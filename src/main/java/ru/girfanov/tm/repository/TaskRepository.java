@@ -1,6 +1,7 @@
 package ru.girfanov.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Repository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
 import ru.girfanov.tm.entity.Task;
 
@@ -10,24 +11,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Repository
 public class TaskRepository implements ITaskRepository {
-
-    private static volatile TaskRepository taskRepository;
-
-    private TaskRepository() {}
-
-    public static TaskRepository getInstance() {
-        TaskRepository instance = taskRepository;
-        if(instance == null) {
-            synchronized (UserRepository.class) {
-                instance = taskRepository;
-                if(instance == null) {
-                    taskRepository = new TaskRepository();
-                }
-            }
-        }
-        return taskRepository;
-    }
 
     @NotNull private Map<String, Task> map = new ConcurrentHashMap<>();
 

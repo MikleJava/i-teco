@@ -1,6 +1,7 @@
 package ru.girfanov.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Repository;
 import ru.girfanov.tm.api.repository.IProjectRepository;
 import ru.girfanov.tm.entity.Project;
 
@@ -10,24 +11,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Repository
 public class ProjectRepository implements IProjectRepository {
-
-    private static volatile ProjectRepository projectRepository;
-
-    private ProjectRepository() {}
-
-    public static ProjectRepository getInstance() {
-        ProjectRepository instance = projectRepository;
-        if(instance == null) {
-            synchronized (UserRepository.class) {
-                instance = projectRepository;
-                if(instance == null) {
-                    projectRepository = new ProjectRepository();
-                }
-            }
-        }
-        return projectRepository;
-    }
 
     @NotNull
     private Map<String, Project> map = new ConcurrentHashMap<>();

@@ -1,46 +1,54 @@
 <%@ page import="ru.girfanov.tm.entity.Project" %>
+<%@ page import="org.springframework.web.bind.annotation.ModelAttribute" %>
+<%@ page import="org.springframework.ui.ModelMap" %>
+<%@ page import="org.springframework.ui.Model" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>project-show</title>
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/style.css" type="text/css"/>
 </head>
 <jsp:include page="header.jsp"/>
 <body>
 <div class="content">
-    <h2>PROJECT</h2>
-    <table>
-        <caption>PROJECTS</caption>
-        <tr>
-            <th>ID</th>
-            <th>NAME</th>
-            <th>DESCRIPTION</th>
-            <th>STATUS</th>
-            <th>DATE START</th>
-            <th>DATE END</th>
-            <th>USER ID</th>
-        </tr>
-        <%Project project = (Project) request.getAttribute("project");%>
-        <tr>
-            <td><%=project.getId()%></td>
-            <td><%=project.getName()%></td>
-            <td><%=project.getDescription()%></td>
-            <td><%=project.getStatus()%></td>
-            <td><%=project.getDateStart()%></td>
-            <td><%=project.getDateEnd()%></td>
-            <td><%=project.getUserId()%></td>
-        </tr>
-    </table>
+    <%--@elvariable id="project" type="ru.girfanov.tm.entity.Project"--%>
+    <c:if test="${project!=null}">
+        <h2>PROJECT</h2>
+        <table>
+            <caption>PROJECTS</caption>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>DESCRIPTION</th>
+                <th>STATUS</th>
+                <th>DATE START</th>
+                <th>DATE END</th>
+                <th>USER ID</th>
+            </tr>
+            <tr>
+                <td>${project.id}</td>
+                <td>${project.name}</td>
+                <td>${project.description}</td>
+                <td>${project.status}</td>
+                <td>${project.dateStart}</td>
+                <td>${project.dateEnd}</td>
+                <td>${project.userId}</td>
+            </tr>
+        </table>
         <div class="send-button">
-            <a href="<%=request.getContextPath()%>/project-edit?project_id=<%=project.getId()%>"> <button type="button">EDIT</button></a>
+            <a href="/project/edit?project_id=${project.id}"> <button type="button">EDIT</button></a>
         </div>
-    <form action="<%=request.getContextPath()%>/project-remove?project_id=<%=project.getId()%>" method="post">
-        <div class="send-button">
-            <button type="submit">REMOVE</button>
-        </div>
-    </form>
+<%--        <div class="send-button">--%>
+<%--            <a href="/project/remove?project_id=${project.id}"> <button type="submit">REMOVE</button></a>--%>
+<%--        </div>--%>
+        <form action="/project/remove?project_id=${project.id}" method="post">
+            <div class="send-button">
+                <button type="submit">REMOVE</button>
+            </div>
+        </form>
+    </c:if>
 </div>
 </body>
 </html>

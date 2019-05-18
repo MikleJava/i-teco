@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>project-list</title>
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/style.css" type="text/css"/>
 </head>
 <jsp:include page="header.jsp"/>
 <body>
@@ -20,8 +20,7 @@
                 <th>STATUS</th>
                 <th>SHOW</th>
             </tr>
-            <%List<Project> projects = (List<Project>) request.getAttribute("projects");%>
-            <c:set var="projects" value="<%=projects%>" scope="page"/>
+            <%--@elvariable id="projects" type="java.util.List"--%>
             <c:forEach var="project" varStatus="i" items="${projects}">
                 <tr>
                     <td>${i.count}</td>
@@ -29,13 +28,13 @@
                     <td>${project.name}</td>
                     <td>${project.status}</td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/project-show?project_id=${project.id}">SHOW</a>
+                        <a href="/project/show?project_id=${project.id}">SHOW</a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
         <div class="send-button">
-            <a href="<%=request.getContextPath()%>/project-create"> <button type="button">CREATE PROJECT</button></a>
+            <a href="/project/create"> <button type="button">CREATE PROJECT</button></a>
         </div>
     </div>
 </body>

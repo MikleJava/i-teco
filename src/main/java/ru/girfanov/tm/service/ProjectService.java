@@ -1,11 +1,10 @@
 package ru.girfanov.tm.service;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.exception.UserNotFoundException;
@@ -16,14 +15,16 @@ import ru.girfanov.tm.util.LoggerUtil;
 import java.util.Collection;
 import java.util.List;
 
-@NoArgsConstructor
-@RequiredArgsConstructor
+@Service
 public class ProjectService implements IProjectService {
 
     @NotNull private static final Logger log = LoggerUtil.getLogger(ProjectService.class);
 
-    @NonNull private UserRepository userRepository;
-    @NonNull private ProjectRepository projectRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Override
     public void persist(@NotNull final String userId, @NotNull final Project project) {

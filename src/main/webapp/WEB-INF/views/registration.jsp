@@ -3,13 +3,13 @@
 <html>
 <head>
     <title>registration</title>
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/style.css" type="text/css"/>
 </head>
 <jsp:include page="header.jsp"/>
 <body>
     <div class="content">
         <h2>REGISTRATION</h2>
-        <form action="<%=request.getContextPath()%>/registration" method="post">
+        <form action="/registration" method="post" enctype="application/x-www-form-urlencoded">
             <div class="login-field">
                 <div class="login-name">
                     <p>Login</p>
