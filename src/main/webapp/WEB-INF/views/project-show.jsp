@@ -29,7 +29,7 @@
                 <td>${project.status}</td>
                 <td>${project.dateStart}</td>
                 <td>${project.dateEnd}</td>
-                <td>${project.userId}</td>
+                <td>${project.user.id}</td>
             </tr>
         </table>
         <div class="send-button">

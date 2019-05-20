@@ -6,18 +6,37 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.girfanov.tm.enumeration.Status;
 
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
+@Table(name = "app_project")
 public class Project extends AbstractEntity {
+
     private String name;
+
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(name = "date_start")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateStart;
+
+    @Column(name = "date_end")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateEnd;
-    private String userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
+
 }

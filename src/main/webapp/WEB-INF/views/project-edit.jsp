@@ -61,7 +61,7 @@
                 </label>
             </div>
         </div>
-        <form:input path="userId" type="hidden"/>
+        <form:input path="user" type="hidden"/>
         <div class="send-button">
             <button type="submit">EDIT</button>
         </div>

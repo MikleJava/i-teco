@@ -1,63 +1,37 @@
 package ru.girfanov.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.girfanov.tm.api.repository.ITaskRepository;
+import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
+import ru.girfanov.tm.entity.User;
 
-import java.util.Collection;
+import javax.persistence.QueryHint;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Repository
-public class TaskRepository implements ITaskRepository {
+public interface TaskRepository extends CrudRepository<Task, String>, ITaskRepository {
 
-    @NotNull private Map<String, Task> map = new ConcurrentHashMap<>();
-
-    @Override
-    public void persist(@NotNull final Task task) {
-        map.put(task.getId(), task);
-    }
+    @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
+    @Query(value = "SELECT t FROM Task t WHERE t.user = ?1")
+    List<Task> findAllByUser(@NotNull final User user);
 
     @Override
-    public void remove(@NotNull final Task task) {
-        map.remove(task.getId());
-    }
+    @Modifying
+    @Query("DELETE FROM Task t WHERE t.user = ?1")
+    void removeAllByUser(@NotNull final User user);
 
-    @Override
-    public void merge(@NotNull final Task task) {
-        map.put(task.getId(), task);
-    }
-
-    @Override
-    public Task findOne(@NotNull final String taskId) {
-        return map.get(taskId);
-    }
-
-    @Override
-    public List<Task> findAllByUserId(@NotNull final String userId) {
-        return map.values().stream().filter(value -> value.getUserId().equals(userId)).collect(Collectors.toList());
-    }
-
-    @Override
-    public void removeAllByUserId(@NotNull final String userId) {
-        map.values().removeIf(value -> value.getUserId().equals(userId));
-    }
-
-    @Override
-    public List<Task> findAllByProjectId(@NotNull final String projectId) {
-        return map.values().stream().filter(value -> value.getProjectId().equals(projectId)).collect(Collectors.toList());
-    }
-
-    @Override
-    public void removeAllByProjectId(@NotNull final String projectId) {
-        map.values().removeIf(value -> value.getProjectId().equals(projectId));
-    }
-
-    @Override
-    public Collection<Task> findAll() {
-        return map.values();
-    }
+//    @QueryHints(@QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "true"))
+//    @Query(value = "SELECT t FROM Task t WHERE t.user = ?1 AND t.project = ?2")
+//    List<Task> findAllByProject(@NotNull final User user, @NotNull final Project project);
+//
+//    @Override
+//    @Modifying
+//    @Query("DELETE FROM Task t WHERE t.user = ?1 AND t.project = ?2")
+//    void removeAllByProject(@NotNull final User user, @NotNull final Project project);
 }

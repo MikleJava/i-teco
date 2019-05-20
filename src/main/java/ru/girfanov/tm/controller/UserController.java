@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
@@ -21,7 +22,7 @@ public class UserController {
     @NotNull private static final Logger log = LoggerUtil.getLogger(UserController.class);
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @GetMapping("/registration")
     public String registrationView() { return "registration"; }
@@ -51,7 +52,7 @@ public class UserController {
             modelMap.addAttribute("error", "Login and Password must be not empty");
             return "error";
         }
-        @Nullable final User user = userService.findOneByLoginAndPassword(login, password);
+        @Nullable final User user = userService.findOneByLogin(login);
         if(user == null) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";

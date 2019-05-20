@@ -11,6 +11,6 @@ public interface ITaskService extends Service<Task> {
     Task findOne(String userId, String taskId) throws UserNotFoundException;
     List<Task> findAllByUserId(String userId) throws UserNotFoundException;
     void removeAllByUserId(String userId) throws UserNotFoundException;
-    List<Task> findAllByProjectId(String userId, String projectId) throws UserNotFoundException;
-    void removeAllByProjectId(String userId, String projectId) throws UserNotFoundException;
+//    List<Task> findAllByProjectId(String userId, String projectId) throws UserNotFoundException;
+//    void removeAllByProjectId(String userId, String projectId) throws UserNotFoundException;
 }

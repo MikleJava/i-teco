@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
@@ -11,6 +12,7 @@ import ru.girfanov.tm.repository.UserRepository;
 import ru.girfanov.tm.util.PasswordHashUtil;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -19,40 +21,43 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public void persist(@NotNull final User user) {
         user.setPassword(PasswordHashUtil.md5(user.getPassword()));
-        userRepository.persist(user);
+        userRepository.save(user);
     }
 
     @Nullable
     @Override
     public User findOne(@NotNull final String userId) {
         if(userId.isEmpty()) return null;
-        @Nullable final User user = userRepository.findOne(userId);
-        return user;
+        final Optional<User> user = userRepository.findById(userId);
+        return user.orElse(null);
     }
 
     @Nullable
     @Override
-    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
-        if(login.isEmpty() || password.isEmpty()) return null;
-        @Nullable final User user = userRepository.findOneByLoginAndPassword(login, PasswordHashUtil.md5(password));
-        return user;
+    public User findOneByLogin(@NotNull final String login) {
+        if(login.isEmpty()) return null;
+        final Optional<User> user = userRepository.findByLogin(login);
+        return user.orElse(null);
     }
 
     @Override
+    @Transactional
     public void merge(@NotNull final String userId, @NotNull final User user) throws UserNotFoundException {
         if(userId.isEmpty() || !userId.equals(user.getId())) return;
-        if(userRepository.findOne(userId) == null) throw new UserNotFoundException("User not found");
+        if(!userRepository.findById(userId).isPresent()) throw new UserNotFoundException("User not found");
         user.setPassword(PasswordHashUtil.md5(user.getPassword()));
-        userRepository.merge(user);
+        userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void remove(@NotNull final String userId, @NotNull final User user) throws UserNotFoundException {
         if(userId.isEmpty() || !userId.equals(user.getId())) return;
-        if(userRepository.findOne(userId) == null) throw new UserNotFoundException("User not found");
-        userRepository.remove(user);
+        if(!userRepository.findById(userId).isPresent()) throw new UserNotFoundException("User not found");
+        userRepository.delete(user);
     }
 
     @Override

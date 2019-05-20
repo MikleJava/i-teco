@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import ru.girfanov.tm.api.service.IProjectService;
+import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
@@ -25,13 +27,12 @@ public class ProjectController {
     private static final Logger log = LoggerUtil.getLogger(ProjectController.class);
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
-    private ProjectService projectService;
+    private IProjectService projectService;
 
-    @GetMapping("/list")
-    public String projectListView(final HttpServletRequest request, final ModelMap modelMap) {
+    private String checkUser(final HttpServletRequest request, final ModelMap modelMap) {
         @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
         if (userId == null) {
             modelMap.addAttribute("error", "User does not exist");
@@ -42,6 +43,27 @@ public class ProjectController {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
+        return userId;
+    }
+
+    @Nullable
+    private Project checkProject(final HttpServletRequest request, final ModelMap modelMap, final String userId, final String projectId) throws UserNotFoundException {
+        if (projectId.isEmpty()) {
+            modelMap.addAttribute("error", "Project does not exist");
+            return null;
+        }
+        @Nullable final Project project = projectService.findOne(userId, projectId);
+        if (project == null) {
+            modelMap.addAttribute("error", "Project does not exist");
+            return null;
+        }
+        return project;
+    }
+
+    @GetMapping("/list")
+    public String projectListView(final HttpServletRequest request, final ModelMap modelMap) {
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
         try {
             final List<Project> projects = projectService.findAllByUserId(userId);
             modelMap.addAttribute("projects", projects);
@@ -54,26 +76,11 @@ public class ProjectController {
 
     @GetMapping("/show")
     public String projectView(@RequestParam("project_id") final String projectId, final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        if (projectId.isEmpty()) {
-            modelMap.addAttribute("error", "Project does not exist");
-            return "error";
-        }
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
         try {
-            @Nullable final Project project = projectService.findOne(user.getId(), projectId);
-            if (project == null) {
-                modelMap.addAttribute("error", "Project does not exist");
-                return "error";
-            }
+            final Project project = checkProject(request, modelMap, userId, projectId);
+            if(project == null) return "error";
             modelMap.addAttribute("project", project);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
@@ -84,16 +91,8 @@ public class ProjectController {
 
     @GetMapping("/create")
     public String createProjectView(final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
         final Project project = new Project();
         project.setDateStart(new Date());
         project.setDateEnd(new Date());
@@ -103,49 +102,26 @@ public class ProjectController {
 
     @PostMapping("/create")
     public String createProject(final HttpServletRequest request, @ModelAttribute("project") final Project project, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        project.setUserId(userId);
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
+        project.setUser(userService.findOne(userId));
         try {
-            projectService.persist(user.getId(), project);
+            projectService.persist(userId, project);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        log.info("User " + user.getLogin() + " has created project " + project.getId());
+        log.info("User " + userId + " has created project " + project.getId());
         return "redirect:/project/show?project_id=" + project.getId();
     }
 
     @GetMapping("/edit")
     public String editProjectView(@RequestParam("project_id") final String projectId, final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        if (projectId.isEmpty()) {
-            modelMap.addAttribute("error", "Project does not exist");
-            return "error";
-        }
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
         try {
-            @Nullable final Project project = projectService.findOne(user.getId(), projectId);
-            if (project == null) {
-                modelMap.addAttribute("error", "Project does not exist");
-                return "error";
-            }
+            final Project project = checkProject(request, modelMap, userId, projectId);
+            if(project == null) return "error";
             modelMap.addAttribute("project", project);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
@@ -156,54 +132,31 @@ public class ProjectController {
 
     @PostMapping("/edit")
     public String editProject(@ModelAttribute("project") final Project project, final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
         try {
-            projectService.merge(user.getId(), project);
+            projectService.merge(userId, project);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        log.info("User " + user.getLogin() + " has edited project " + project.getId());
+        log.info("User " + userId + " has edited project " + project.getId());
         return "redirect:/project/show?project_id=" + project.getId();
     }
 
     @PostMapping("/remove")
     public String removeProject(@RequestParam("project_id") final String projectId, final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        if (projectId.isEmpty()) {
-            modelMap.addAttribute("error", "Project does not exist");
-            return "error";
-        }
+        final String userId = checkUser(request, modelMap);
+        if(userId.equals("error")) return "error";
         try {
-            @Nullable final Project project = projectService.findOne(user.getId(), projectId);
-            if (project == null) {
-                modelMap.addAttribute("error", "Project does not exist");
-                return "error";
-            }
-            projectService.remove(user.getId(), project);
+            final Project project = checkProject(request, modelMap, userId, projectId);
+            if(project == null) return "error";
+            projectService.remove(userId, project);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        log.info("User " + user.getLogin() + " has removed project " + projectId);
+        log.info("User " + userId + " has removed project " + projectId);
         return "redirect:/project/list";
     }
 }

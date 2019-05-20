@@ -2,6 +2,8 @@ package ru.girfanov.tm.api.repository;
 
 import ru.girfanov.tm.entity.User;
 
+import java.util.Optional;
+
 public interface IUserRepository extends Repository<User> {
-    User findOneByLoginAndPassword(String login, String password);
+    Optional<User> findByLogin(String login);
 }

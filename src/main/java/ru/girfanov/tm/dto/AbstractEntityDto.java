@@ -1,18 +1,16 @@
-package ru.girfanov.tm.entity;
+package ru.girfanov.tm.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
 @Getter
 @Setter
-@MappedSuperclass
 @NoArgsConstructor
-public class AbstractEntity {
-    @Id
+public class AbstractEntityDto {
+    @NotNull
     private String id = UUID.randomUUID().toString();
 }

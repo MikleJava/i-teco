@@ -30,8 +30,8 @@
                 <td>${task.status}</td>
                 <td>${task.dateStart}</td>
                 <td>${task.dateEnd}</td>
-                <td>${task.userId}</td>
-                <td>${task.projectId}</td>
+                <td>${task.user.id}</td>
+                <td>${task.project.id}</td>
             </tr>
         </table>
         <div class="send-button">

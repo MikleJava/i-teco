@@ -62,7 +62,7 @@
             <div class="task-projects">
                 <p>Projects</p>
                 <label>
-                    <form:select path="projectId" size="1">
+                    <form:select path="project" size="1">
                         <%--@elvariable id="projects" type="java.util.List"--%>
                         <c:forEach var="p" items="${projects}">
                             <form:option value="${p.id}">${p.id}</form:option>
