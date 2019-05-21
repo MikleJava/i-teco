@@ -9,7 +9,7 @@
 <jsp:include page="header.jsp"/>
 <body>
 <div class="content">
-    <%--@elvariable id="task" type="ru.girfanov.tm.entity.Task"--%>
+    <%--@elvariable id="task" type="ru.girfanov.tm.dto.TaskDto"--%>
     <c:if test="${task!=null}">
         <h2>TASK</h2>
         <table>
@@ -30,8 +30,8 @@
                 <td>${task.status}</td>
                 <td>${task.dateStart}</td>
                 <td>${task.dateEnd}</td>
-                <td>${task.user.id}</td>
-                <td>${task.project.id}</td>
+                <td>${task.userId}</td>
+                <td>${task.projectId}</td>
             </tr>
         </table>
         <div class="send-button">

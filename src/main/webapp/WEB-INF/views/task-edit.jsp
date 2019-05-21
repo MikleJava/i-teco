@@ -11,10 +11,10 @@
 <jsp:include page="header.jsp"/>
 <body>
 <div class="content">
-    <%--@elvariable id="task" type="ru.girfanov.tm.entity.Task"--%>
+    <%--@elvariable id="task" type="ru.girfanov.tm.dto.TaskDto"--%>
     <c:if test="${task!=null}">
         <h2>EDIT TASK</h2>
-        <%--@elvariable id="task" type="ru.girfanov.tm.entity.Task"--%>
+        <%--@elvariable id="task" type="ru.girfanov.tm.dto.TaskDto"--%>
         <form:form modelAttribute="task" action="/task/edit" method="post">
             <form:input path="id" type="hidden"/>
             <div class="name-field">
@@ -61,12 +61,12 @@
                     </label>
                 </div>
             </div>
-            <form:input path="user" type="hidden"/>
+            <form:input path="userId" type="hidden"/>
             <div class="task-projects-field">
                 <div class="task-projects">
                     <p>Projects</p>
                     <label>
-                        <form:select path="project" size="1">
+                        <form:select path="projectId" size="1">
                             <%--@elvariable id="projects" type="java.util.List"--%>
                             <c:forEach var="p" items="${projects}">
                                 <form:option value="${p.id}">${p.id}</form:option>

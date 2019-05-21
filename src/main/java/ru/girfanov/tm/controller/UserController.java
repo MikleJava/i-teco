@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.girfanov.tm.api.service.IUserService;
+import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
@@ -33,11 +34,11 @@ public class UserController {
             modelMap.addAttribute("error", "Login and Password must be not empty");
             return "error";
         }
-        final User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-        userService.persist(user);
-        log.info("User " + user.getLogin() + " has signed up");
+        final UserDto userDto = new UserDto();
+        userDto.setLogin(login);
+        userDto.setPassword(password);
+        userService.persist(castToUser(userDto));
+        log.info("User " + userDto.getLogin() + " has signed up");
         return "redirect:/";
     }
 
@@ -52,14 +53,14 @@ public class UserController {
             modelMap.addAttribute("error", "Login and Password must be not empty");
             return "error";
         }
-        @Nullable final User user = userService.findOneByLogin(login);
-        if(user == null) {
+        @Nullable final UserDto userDto = castToUserDto(userService.findOneByLogin(login));
+        if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        request.getSession().setAttribute("user_id", user.getId());
+        request.getSession().setAttribute("user_id", userDto.getId());
         request.getSession().setMaxInactiveInterval(-1);
-        log.info("User " + user.getLogin() + " has signed in");
+        log.info("User " + userDto.getLogin() + " has signed in");
         return "redirect:/";
     }
 
@@ -70,13 +71,29 @@ public class UserController {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        @Nullable final User user = userService.findOne(userId);
-        if(user == null) {
+        @Nullable final UserDto userDto = castToUserDto(userService.findOne(userId));
+        if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
         request.getSession().invalidate();
-        log.info("User " + user.getLogin() + " has logged out");
+        log.info("User " + userDto.getLogin() + " has logged out");
         return "redirect:/";
+    }
+
+    private UserDto castToUserDto(@NotNull final User user) {
+        final UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setLogin(user.getLogin());
+        userDto.setPassword(user.getPassword());
+        return userDto;
+    }
+
+    private User castToUser(@NotNull final UserDto userDto) {
+        final User user = new User();
+        user.setId(userDto.getId());
+        user.setLogin(userDto.getLogin());
+        user.setPassword(userDto.getPassword());
+        return user;
     }
 }

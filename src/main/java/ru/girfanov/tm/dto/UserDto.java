@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDto extends AbstractEntityDto{
 
     @NonNull private String login;
     @NonNull private String password;

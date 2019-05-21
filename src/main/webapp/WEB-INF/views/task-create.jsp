@@ -12,7 +12,7 @@
 <body>
 <div class="content">
     <h2>CREATE TASK</h2>
-    <%--@elvariable id="task" type="ru.girfanov.tm.entity.Task"--%>
+    <%--@elvariable id="task" type="ru.girfanov.tm.dto.TaskDto"--%>
     <form:form modelAttribute="task" action="/task/create" method="post">
         <div class="name-field">
             <div class="task-name">
@@ -62,7 +62,7 @@
             <div class="task-projects">
                 <p>Projects</p>
                 <label>
-                    <form:select path="project" size="1">
+                    <form:select path="projectId" size="1">
                         <%--@elvariable id="projects" type="java.util.List"--%>
                         <c:forEach var="p" items="${projects}">
                             <form:option value="${p.id}">${p.id}</form:option>

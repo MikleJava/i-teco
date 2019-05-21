@@ -12,7 +12,7 @@
 <body>
     <div class="content">
         <h2>CREATE PROJECT</h2>
-        <%--@elvariable id="project" type="ru.girfanov.tm.entity.Project"--%>
+        <%--@elvariable id="project" type="ru.girfanov.tm.dto.ProjectDto"--%>
         <form:form modelAttribute="project" action="/project/create" method="post">
             <div class="name-field">
                 <div class="project-name">

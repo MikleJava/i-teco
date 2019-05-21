@@ -9,7 +9,7 @@
 <jsp:include page="header.jsp"/>
 <body>
 <div class="content">
-    <%--@elvariable id="project" type="ru.girfanov.tm.entity.Project"--%>
+    <%--@elvariable id="project" type="ru.girfanov.tm.dto.ProjectDto"--%>
     <c:if test="${project!=null}">
         <h2>PROJECT</h2>
         <table>
@@ -29,7 +29,7 @@
                 <td>${project.status}</td>
                 <td>${project.dateStart}</td>
                 <td>${project.dateEnd}</td>
-                <td>${project.user.id}</td>
+                <td>${project.userId}</td>
             </tr>
         </table>
         <div class="send-button">

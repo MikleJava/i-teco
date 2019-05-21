@@ -11,10 +11,10 @@
 <jsp:include page="header.jsp"/>
 <body>
 <div class="content">
-<%--@elvariable id="project" type="ru.girfanov.tm.entity.Project"--%>
+<%--@elvariable id="project" type="ru.girfanov.tm.dto.ProjectDto"--%>
 <c:if test="${project!=null}">
     <h2>EDIT PROJECT</h2>
-    <%--@elvariable id="project" type="ru.girfanov.tm.entity.Project"--%>
+    <%--@elvariable id="project" type="ru.girfanov.tm.dto.ProjectDto"--%>
     <form:form modelAttribute="project" action="/project/edit" method="post">
         <form:input path="id" type="hidden"/>
         <div class="name-field">
@@ -61,7 +61,7 @@
                 </label>
             </div>
         </div>
-        <form:input path="user" type="hidden"/>
+        <form:input path="userId" type="hidden"/>
         <div class="send-button">
             <button type="submit">EDIT</button>
         </div>

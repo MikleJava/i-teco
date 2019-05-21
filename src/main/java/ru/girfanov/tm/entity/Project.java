@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ru.girfanov.tm.enumeration.Status;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Project extends AbstractEntity {
 
     private String description;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -37,6 +39,6 @@ public class Project extends AbstractEntity {
     private User user;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
 }

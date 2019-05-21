@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.ITaskService;
 import ru.girfanov.tm.api.service.IUserService;
+import ru.girfanov.tm.dto.ProjectDto;
+import ru.girfanov.tm.dto.TaskDto;
+import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.entity.Task;
 import ru.girfanov.tm.entity.User;
@@ -20,6 +23,7 @@ import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,17 +57,17 @@ public class TaskController {
     }
 
     @Nullable
-    private Task checkTask(final HttpServletRequest request, final ModelMap modelMap, final String userId, final String taskId) throws UserNotFoundException {
+    private TaskDto checkTask(final HttpServletRequest request, final ModelMap modelMap, final String userId, final String taskId) throws UserNotFoundException {
         if (taskId.isEmpty()) {
             modelMap.addAttribute("error", "Task does not exist");
             return null;
         }
-        @Nullable final Task task = taskService.findOne(userId, taskId);
-        if (task == null) {
+        @Nullable final TaskDto taskDto = castToTaskDto(taskService.findOne(userId, taskId));
+        if (taskDto == null) {
             modelMap.addAttribute("error", "Task does not exist");
             return null;
         }
-        return task;
+        return taskDto;
     }
 
     @GetMapping("/list")
@@ -71,7 +75,7 @@ public class TaskController {
         final String userId = checkUser(request, modelMap);
         if(userId.equals("error")) return "error";
         try {
-            final List<Task> tasks = taskService.findAllByUserId(userId);
+            final List<TaskDto> tasks = castToListTasksDto(taskService.findAllByUserId(userId));
             modelMap.addAttribute("tasks", tasks);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
@@ -85,9 +89,9 @@ public class TaskController {
         final String userId = checkUser(request, modelMap);
         if(userId.equals("error")) return "error";
         try {
-            final Task task = checkTask(request, modelMap, userId, taskId);
-            if(task == null) return "error";
-            modelMap.addAttribute("task", task);
+            final TaskDto taskDto = checkTask(request, modelMap, userId, taskId);
+            if(taskDto == null) return "error";
+            modelMap.addAttribute("task", taskDto);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
@@ -99,12 +103,12 @@ public class TaskController {
     public String createTaskView(final HttpServletRequest request, final ModelMap modelMap) {
         final String userId = checkUser(request, modelMap);
         if(userId.equals("error")) return "error";
-        final Task task = new Task();
-        task.setDateStart(new Date());
-        task.setDateEnd(new Date());
-        modelMap.addAttribute("task", task);
+        final TaskDto taskDto = new TaskDto();
+        taskDto.setDateStart(new Date());
+        taskDto.setDateEnd(new Date());
+        modelMap.addAttribute("task", taskDto);
         try {
-            final List<Project> projects = projectService.findAllByUserId(userId);
+            final List<ProjectDto> projects = ProjectController.castToListProjectsDto(projectService.findAllByUserId(userId));
             modelMap.addAttribute("projects", projects);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
@@ -114,18 +118,18 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public String createTask(final HttpServletRequest request, @ModelAttribute("task") final Task task, final ModelMap modelMap) {
+    public String createTask(final HttpServletRequest request, @ModelAttribute("task") final TaskDto taskDto, final ModelMap modelMap) {
         final String userId = checkUser(request, modelMap);
         if(userId.equals("error")) return "error";
-        task.setUser(userService.findOne(userId));
+        taskDto.setUserId(userId);
         try {
-            taskService.persist(userId, task);
+            taskService.persist(userId, castToTask(taskDto));
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        log.info("User " + userId + " has created task " + task.getId());
-        return "redirect:/task/show?task_id=" + task.getId();
+        log.info("User " + userId + " has created task " + taskDto.getId());
+        return "redirect:/task/show?task_id=" + taskDto.getId();
     }
 
     @GetMapping("/edit")
@@ -133,10 +137,10 @@ public class TaskController {
         final String userId = checkUser(request, modelMap);
         if(userId.equals("error")) return "error";
         try {
-            final Task task = checkTask(request, modelMap, userId, taskId);
-            if(task == null) return "error";
-            modelMap.addAttribute("task", task);
-            final List<Project> projects = projectService.findAllByUserId(userId);
+            final TaskDto taskDto = checkTask(request, modelMap, userId, taskId);
+            if(taskDto == null) return "error";
+            modelMap.addAttribute("task", taskDto);
+            final List<ProjectDto> projects = ProjectController.castToListProjectsDto(projectService.findAllByUserId(userId));
             modelMap.addAttribute("projects", projects);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
@@ -146,17 +150,17 @@ public class TaskController {
     }
 
     @PostMapping("/edit")
-    public String editTask(@ModelAttribute("task") final Task task, final HttpServletRequest request, final ModelMap modelMap) {
+    public String editTask(@ModelAttribute("task") final TaskDto taskDto, final HttpServletRequest request, final ModelMap modelMap) {
         final String userId = checkUser(request, modelMap);
         if(userId.equals("error")) return "error";
         try {
-            taskService.merge(userId, task);
+            taskService.merge(userId, castToTask(taskDto));
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        log.info("User " + userId + " has edited task " + task.getId());
-        return "redirect:/task/show?task_id=" + task.getId();
+        log.info("User " + userId + " has edited task " + taskDto.getId());
+        return "redirect:/task/show?task_id=" + taskDto.getId();
     }
 
     @PostMapping("/remove")
@@ -165,14 +169,52 @@ public class TaskController {
         if(userId.equals("error")) return "error";
 
         try {
-            final Task task = checkTask(request, modelMap, userId, taskId);
-            if(task == null) return "error";
-            taskService.remove(userId, task);
+            final TaskDto taskDto = checkTask(request, modelMap, userId, taskId);
+            if(taskDto == null) return "error";
+            taskService.remove(userId, castToTask(taskDto));
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
         log.info("User " + userId + " has removed task " + taskId);
         return "redirect:/task/list";
+    }
+
+    private TaskDto castToTaskDto(@NotNull final Task task) {
+        final TaskDto taskDto = new TaskDto();
+        taskDto.setId(task.getId());
+        taskDto.setName(task.getName());
+        taskDto.setDescription(task.getDescription());
+        taskDto.setStatus(task.getStatus());
+        taskDto.setDateStart(task.getDateStart());
+        taskDto.setDateEnd(task.getDateEnd());
+        taskDto.setProjectId(task.getProject().getId());
+        taskDto.setUserId(task.getUser().getId());
+        return taskDto;
+    }
+
+    private Task castToTask(@NotNull final TaskDto taskDto) {
+        final Task task = new Task();
+        task.setId(taskDto.getId());
+        task.setName(taskDto.getName());
+        task.setDescription(taskDto.getDescription());
+        task.setStatus(taskDto.getStatus());
+        task.setDateStart(taskDto.getDateStart());
+        task.setDateEnd(taskDto.getDateEnd());
+        try {
+            task.setUser(userService.findOne(taskDto.getUserId()));
+            task.setProject(projectService.findOne(taskDto.getUserId(), taskDto.getProjectId()));
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        }
+        return task;
+    }
+
+    private List<TaskDto> castToListTasksDto(@NotNull final List<Task> tasks) {
+        final List<TaskDto> tasksDto = new ArrayList<>();
+        for (Task task : tasks) {
+            tasksDto.add(castToTaskDto(task));
+        }
+        return tasksDto;
     }
 }
