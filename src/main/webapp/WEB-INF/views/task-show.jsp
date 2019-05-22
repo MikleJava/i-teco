@@ -5,6 +5,7 @@
 <head>
     <title>task-show</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp"/>
 <body>
@@ -35,11 +36,11 @@
             </tr>
         </table>
         <div class="send-button">
-            <a href="/task/edit?task_id=${task.id}"> <button type="button">EDIT</button></a>
+            <a href="/task/edit?task_id=${task.id}"> <button type="button" class="btn btn-warning">EDIT</button></a>
         </div>
         <form action="/task/remove?task_id=${task.id}" method="post">
             <div class="send-button">
-                <button type="submit">REMOVE</button>
+                <button type="submit" class="btn btn-danger">REMOVE</button>
             </div>
         </form>
     </c:if>

@@ -1,5 +1,6 @@
 package ru.girfanov.tm.config;
 
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,6 +43,7 @@ public class SpringDataJpaConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             final DataSource dataSource,
             @Value("${hibernate.show_sql}") final boolean showSql,
+            @Value("${hibernate.format_sql}") final boolean formatSql,
             @Value("${hibernate.hbm2ddl.auto}") final String tableStrategy,
             @Value("${hibernate.dialect}") final String dialect
     ) {
@@ -52,6 +54,7 @@ public class SpringDataJpaConfig {
         factoryBean.setPackagesToScan("ru.girfanov.tm.entity");
         final Properties properties = new Properties();
         properties.put("hibernate.show_sql", showSql);
+        properties.put("hibernate.format_sql", formatSql);
         properties.put("hibernate.hbm2ddl.auto", tableStrategy);
         properties.put("hibernate.dialect", dialect);
         factoryBean.setJpaProperties(properties);

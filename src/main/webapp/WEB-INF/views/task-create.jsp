@@ -7,6 +7,7 @@
 <head>
     <title>task-create</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp"/>
 <body>
@@ -72,7 +73,7 @@
             </div>
         </div>
         <div class="send-button">
-            <button type="submit">CREATE</button>
+            <button type="submit" class="btn btn-success">CREATE</button>
         </div>
     </form:form>
 </div>

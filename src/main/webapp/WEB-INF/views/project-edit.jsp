@@ -7,6 +7,7 @@
 <head>
     <title>project-edit</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp"/>
 <body>
@@ -63,7 +64,7 @@
         </div>
         <form:input path="userId" type="hidden"/>
         <div class="send-button">
-            <button type="submit">EDIT</button>
+            <button type="submit" class="btn btn-success">EDIT</button>
         </div>
     </form:form>
 </c:if>

@@ -19,6 +19,14 @@ ul.hr li {
     margin : 0 70px 0 70px;
 }
 
+.greeting {
+    text-align: center;
+}
+
+#username {
+    color : white;
+}
+
 table {
     width: 100%;
     margin : auto;

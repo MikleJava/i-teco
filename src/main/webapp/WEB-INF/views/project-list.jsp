@@ -4,13 +4,13 @@
 <head>
     <title>project-list</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp"/>
 <body>
     <div class="content">
         <h2>PROJECT LIST</h2>
         <table>
-            <caption>PROJECTS</caption>
             <tr>
                 <th>№</th>
                 <th>ID</th>
@@ -32,7 +32,7 @@
             </c:forEach>
         </table>
         <div class="send-button">
-            <a href="/project/create"> <button type="button">CREATE PROJECT</button></a>
+            <a href="/project/create"> <button type="button" class="btn btn-success">CREATE PROJECT</button></a>
         </div>
     </div>
 </body>

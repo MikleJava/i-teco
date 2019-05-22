@@ -3,6 +3,7 @@ package ru.girfanov.tm.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.girfanov.tm.enumeration.UserRoleEnum;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,6 +20,9 @@ public class User extends AbstractEntity{
 
     @Column(name = "password_hash")
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;

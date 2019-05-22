@@ -6,14 +6,16 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.User;
-import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
+import ru.girfanov.tm.validator.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,42 +27,39 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @GetMapping("/registration")
-    public String registrationView() { return "registration"; }
+    public String registrationView(ModelMap modelMap) {
+        modelMap.addAttribute("user", new UserDto());
+        return "registration";
+    }
 
     @PostMapping("/registration")
-    public String registration(@RequestParam("login") @NotNull final String login, @RequestParam("password") @NotNull final String password, ModelMap modelMap) {
-        if(login.isEmpty() || password.isEmpty()) {
-            modelMap.addAttribute("error", "Login and Password must be not empty");
-            return "error";
+    public String registration(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult, ModelMap modelMap) {
+        userValidator.validate(userDto, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "registration";
         }
-        final UserDto userDto = new UserDto();
-        userDto.setLogin(login);
-        userDto.setPassword(password);
         userService.persist(castToUser(userDto));
         log.info("User " + userDto.getLogin() + " has signed up");
         return "redirect:/";
     }
 
-    @GetMapping("/authorization")
+    @GetMapping("/login")
     public String authorizationView() {
-        return "authorization";
+        return "login";
     }
 
-    @PostMapping("/authorization")
-    public String authorization(@RequestParam("login") @NotNull final String login, @RequestParam("password") @NotNull final String password, @NotNull final HttpServletRequest request, final ModelMap modelMap) {
-        if(login.isEmpty() || password.isEmpty()) {
-            modelMap.addAttribute("error", "Login and Password must be not empty");
-            return "error";
-        }
+    @PostMapping("/login")
+    public String authorization(@RequestParam("login") @NotNull final String login, final ModelMap modelMap) {
         @Nullable final UserDto userDto = castToUserDto(userService.findOneByLogin(login));
         if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        request.getSession().setAttribute("user_id", userDto.getId());
-        request.getSession().setMaxInactiveInterval(-1);
-        log.info("User " + userDto.getLogin() + " has signed in");
+         log.info("User " + userDto.getLogin() + " has signed in");
         return "redirect:/";
     }
 

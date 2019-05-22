@@ -7,6 +7,7 @@
 <head>
     <title>project-create</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp"/>
 <body>
@@ -14,52 +15,32 @@
         <h2>CREATE PROJECT</h2>
         <%--@elvariable id="project" type="ru.girfanov.tm.dto.ProjectDto"--%>
         <form:form modelAttribute="project" action="/project/create" method="post">
-            <div class="name-field">
-                <div class="project-name">
-                    <p>Name</p>
-                    <label>
-                        <form:input type="text" path="name" placeholder="name"/>
-                    </label>
-                </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <form:input type="text" class="form-control" path="name" id="name"/>
             </div>
-            <div class="desc-field">
-                <div class="project-desc">
-                    <p>Description</p>
-                    <label>
-                        <form:input type="text" path="description" placeholder="description"/>
-                    </label>
-                </div>
+            <div class="form-group">
+                <label for="desc">Description:</label>
+                <form:input type="text" class="form-control" path="description" id="desc"/>
             </div>
-            <div class="status-field">
-                <div class="project-status">
-                    <p>Status</p>
-                    <label>
-                        <form:select path="status" size="1">
-                            <c:forEach var="s" items="<%=Status.values()%>">
-                                <form:option value="${s.name()}">${s.name()}</form:option>
-                            </c:forEach>
-                        </form:select>
-                    </label>
-                </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <form:select class="form-control" id="status" name="sellStatus" path="status">
+                    <c:forEach var="s" items="<%=Status.values()%>">
+                        <form:option value="${s.name()}">${s.name()}</form:option>
+                    </c:forEach>
+                </form:select>
             </div>
-            <div class="date-start-field">
-                <div class="project-date-start">
-                    <p>Date start</p>
-                    <label>
-                        <form:input type="date" path="dateStart"/>
-                    </label>
-                </div>
+            <div class="form-group row">
+                <label for="date-start" class="col-2 col-form-label">Date Start:</label>
+                <form:input class="form-control" type="date" path="dateStart" id="date-start"/>
             </div>
-            <div class="date-end-field">
-                <div class="project-date-end">
-                    <p>Date end</p>
-                    <label>
-                        <form:input type="date" path="dateEnd"/>
-                    </label>
-                </div>
+            <div class="form-group row">
+                <label for="date-end" class="col-2 col-form-label">Date End:</label>
+                <form:input class="form-control" type="date" path="dateEnd" id="date-end"/>
             </div>
             <div class="send-button">
-                <button type="submit">CREATE</button>
+                <button type="submit" class="btn btn-success">CREATE</button>
             </div>
         </form:form>
     </div>
