@@ -74,7 +74,7 @@ public class ProjectController {
     }
 
     @GetMapping("/create")
-    public String createProjectView(final HttpServletRequest request, final ModelMap modelMap) {
+    public String createProjectView(final ModelMap modelMap) {
         final ProjectDto projectDto = new ProjectDto();
         projectDto.setDateStart(new Date());
         projectDto.setDateEnd(new Date());
@@ -83,7 +83,7 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public String createProject(final HttpServletRequest request, @ModelAttribute("project") final ProjectDto projectDto, final ModelMap modelMap, final Principal principal) {
+    public String createProject(@ModelAttribute("project") final ProjectDto projectDto, final ModelMap modelMap, final Principal principal) {
         final String userId = userService.findOneByLogin(principal.getName()).getId();
         projectDto.setUserId(userId);
         try {

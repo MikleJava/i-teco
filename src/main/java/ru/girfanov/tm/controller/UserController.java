@@ -17,7 +17,7 @@ import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.util.LoggerUtil;
 import ru.girfanov.tm.validator.UserValidator;
 
-import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult, ModelMap modelMap) {
+    public String registration(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult) {
         userValidator.validate(userDto, bindingResult);
         if(bindingResult.hasErrors()) {
             return "registration";
@@ -64,8 +64,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(@NotNull final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
+    public String logout(final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         if(userId == null) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
@@ -75,7 +75,6 @@ public class UserController {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
         }
-        request.getSession().invalidate();
         log.info("User " + userDto.getLogin() + " has logged out");
         return "redirect:/";
     }
