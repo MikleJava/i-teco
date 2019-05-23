@@ -10,14 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.girfanov.tm.api.service.IProjectService;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.ProjectDto;
-import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.Project;
-import ru.girfanov.tm.entity.User;
 import ru.girfanov.tm.exception.UserNotFoundException;
-import ru.girfanov.tm.service.ProjectService;
-import ru.girfanov.tm.service.UserService;
 import ru.girfanov.tm.util.LoggerUtil;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,22 +32,8 @@ public class ProjectController {
     @Autowired
     private IProjectService projectService;
 
-    private String checkUser(final HttpServletRequest request, final ModelMap modelMap) {
-        @Nullable final String userId = (String) request.getSession().getAttribute("user_id");
-        if (userId == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        @Nullable final User user = userService.findOne(userId);
-        if (user == null) {
-            modelMap.addAttribute("error", "User does not exist");
-            return "error";
-        }
-        return userId;
-    }
-
     @Nullable
-    private ProjectDto checkProject(final HttpServletRequest request, final ModelMap modelMap, final String userId, final String projectId) throws UserNotFoundException {
+    private ProjectDto checkProject(final ModelMap modelMap, final String userId, final String projectId) throws UserNotFoundException {
         if (projectId.isEmpty()) {
             modelMap.addAttribute("error", "Project does not exist");
             return null;
@@ -64,9 +47,8 @@ public class ProjectController {
     }
 
     @GetMapping("/list")
-    public String projectListView(final HttpServletRequest request, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
+    public String projectListView(final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
             final List<ProjectDto> projects = castToListProjectsDto(projectService.findAllByUserId(userId));
             modelMap.addAttribute("projects", projects);
@@ -78,11 +60,10 @@ public class ProjectController {
     }
 
     @GetMapping("/show")
-    public String projectView(@RequestParam("project_id") final String projectId, final HttpServletRequest request, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
+    public String projectView(@RequestParam("project_id") final String projectId, final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
-            final ProjectDto projectDto = checkProject(request, modelMap, userId, projectId);
+            final ProjectDto projectDto = checkProject(modelMap, userId, projectId);
             if(projectDto == null) return "error";
             modelMap.addAttribute("project", projectDto);
         } catch (UserNotFoundException e) {
@@ -94,8 +75,6 @@ public class ProjectController {
 
     @GetMapping("/create")
     public String createProjectView(final HttpServletRequest request, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
         final ProjectDto projectDto = new ProjectDto();
         projectDto.setDateStart(new Date());
         projectDto.setDateEnd(new Date());
@@ -104,9 +83,8 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public String createProject(final HttpServletRequest request, @ModelAttribute("project") final ProjectDto projectDto, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
+    public String createProject(final HttpServletRequest request, @ModelAttribute("project") final ProjectDto projectDto, final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         projectDto.setUserId(userId);
         try {
             projectService.persist(userId, castToProject(projectDto));
@@ -119,11 +97,10 @@ public class ProjectController {
     }
 
     @GetMapping("/edit")
-    public String editProjectView(@RequestParam("project_id") final String projectId, final HttpServletRequest request, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
+    public String editProjectView(@RequestParam("project_id") final String projectId, final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
-            final ProjectDto projectDto = checkProject(request, modelMap, userId, projectId);
+            final ProjectDto projectDto = checkProject(modelMap, userId, projectId);
             if(projectDto == null) return "error";
             modelMap.addAttribute("project", projectDto);
         } catch (UserNotFoundException e) {
@@ -134,9 +111,8 @@ public class ProjectController {
     }
 
     @PostMapping("/edit")
-    public String editProject(@ModelAttribute("project") final ProjectDto projectDto, final HttpServletRequest request, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
+    public String editProject(@ModelAttribute("project") final ProjectDto projectDto, final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
             projectService.merge(userId, castToProject(projectDto));
         } catch (UserNotFoundException e) {
@@ -148,11 +124,10 @@ public class ProjectController {
     }
 
     @PostMapping("/remove")
-    public String removeProject(@RequestParam("project_id") final String projectId, final HttpServletRequest request, final ModelMap modelMap) {
-        final String userId = checkUser(request, modelMap);
-        if(userId.equals("error")) return "error";
+    public String removeProject(@RequestParam("project_id") final String projectId, final ModelMap modelMap, final Principal principal) {
+        final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
-            final ProjectDto projectDto = checkProject(request, modelMap, userId, projectId);
+            final ProjectDto projectDto = checkProject(modelMap, userId, projectId);
             if(projectDto == null) return "error";
             projectService.remove(userId, castToProject(projectDto));
         } catch (UserNotFoundException e) {

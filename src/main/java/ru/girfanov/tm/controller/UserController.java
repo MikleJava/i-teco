@@ -80,7 +80,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    private UserDto castToUserDto(@NotNull final User user) {
+    protected static UserDto castToUserDto(@NotNull final User user) {
         final UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setLogin(user.getLogin());

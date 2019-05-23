@@ -12,6 +12,11 @@
     color : white;
 }
 
+.container {
+    text-align: center;
+    margin-top: 10%;
+}
+
 ul.hr li {
     font-size : 20px;
     display: inline;
@@ -20,6 +25,7 @@ ul.hr li {
 }
 
 .greeting {
+    margin-top: 20%;
     text-align: center;
 }
 

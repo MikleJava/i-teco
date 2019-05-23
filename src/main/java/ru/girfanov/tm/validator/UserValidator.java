@@ -23,16 +23,16 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         final UserDto userDto = (UserDto) o;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "Required.field");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Required.field");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "required.field");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "required.field");
         if(userDto.getLogin().length() < 4 || userDto.getLogin().length() > 20) {
-            errors.rejectValue("login", "Size.login");
-        }
-        if(userService.findOneByLogin(userDto.getLogin()) != null) {
-            errors.rejectValue("login", "Duplicate.login");
+            errors.rejectValue("login", "size.login");
         }
         if(userDto.getPassword().length() < 4) {
-            errors.rejectValue("password", "Size.password");
+            errors.rejectValue("password", "size.password");
+        }
+        if(userService.findOneByLogin(userDto.getLogin()) != null) {
+            errors.rejectValue("login", "duplicate.login");
         }
     }
 }
