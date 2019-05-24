@@ -37,14 +37,14 @@ public class UserController {
         final UserDto userDto = new UserDto();
         userDto.setRole(UserRoleEnum.USER);
         modelMap.addAttribute("user", userDto);
-        return new ModelAndView("registration.jsp");
+        return new ModelAndView("registration");
     }
 
     @PostMapping("/registration")
     public ModelAndView registration(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult) {
         userValidator.validate(userDto, bindingResult);
         if(bindingResult.hasErrors()) {
-            return new ModelAndView("registration.jsp");
+            return new ModelAndView("registration");
         }
         userService.persist(castToUser(userDto));
         log.info("User " + userDto.getLogin() + " has signed up");
@@ -53,7 +53,7 @@ public class UserController {
 
     @GetMapping("/login")
     public ModelAndView authorizationView() {
-        return new ModelAndView("login.jsp");
+        return new ModelAndView("login");
     }
 
     @PostMapping("/login")
@@ -61,7 +61,7 @@ public class UserController {
         @Nullable final UserDto userDto = castToUserDto(userService.findOneByLogin(login));
         if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
-            return new ModelAndView("error.jsp");
+            return new ModelAndView("error");
         }
          log.info("User " + userDto.getLogin() + " has signed in");
         return new ModelAndView("redirect:/");
@@ -72,12 +72,12 @@ public class UserController {
         final String userId = userService.findOneByLogin(principal.getName()).getId();
         if(userId == null) {
             modelMap.addAttribute("error", "User does not exist");
-            return new ModelAndView("error.jsp");
+            return new ModelAndView("error");
         }
         @Nullable final UserDto userDto = castToUserDto(userService.findOne(userId));
         if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
-            return new ModelAndView("error.jsp");
+            return new ModelAndView("error");
         }
         log.info("User " + userDto.getLogin() + " has logged out");
         return new ModelAndView("redirect:/");

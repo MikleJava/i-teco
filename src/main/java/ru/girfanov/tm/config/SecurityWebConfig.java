@@ -16,7 +16,7 @@ import ru.girfanov.tm.service.UserDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalAuthentication
-@ComponentScan("ru.girfanov.tm")
+//@ComponentScan("ru.girfanov.tm")
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
 
