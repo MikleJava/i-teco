@@ -33,54 +33,54 @@ public class UserController {
     private UserValidator userValidator;
 
     @GetMapping("/registration")
-    public ModelAndView registrationView(ModelMap modelMap) {
+    public String registrationView(ModelMap modelMap) {
         final UserDto userDto = new UserDto();
         userDto.setRole(UserRoleEnum.USER);
         modelMap.addAttribute("user", userDto);
-        return new ModelAndView("registration");
+        return "registration";
     }
 
     @PostMapping("/registration")
-    public ModelAndView registration(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("user") UserDto userDto, BindingResult bindingResult) {
         userValidator.validate(userDto, bindingResult);
         if(bindingResult.hasErrors()) {
-            return new ModelAndView("registration");
+            return "registration";
         }
         userService.persist(castToUser(userDto));
         log.info("User " + userDto.getLogin() + " has signed up");
-        return new ModelAndView("redirect:/");
+        return "redirect:/";
     }
 
     @GetMapping("/login")
-    public ModelAndView authorizationView() {
-        return new ModelAndView("login");
+    public String authorizationView() {
+        return "login";
     }
 
     @PostMapping("/login")
-    public ModelAndView authorization(@RequestParam("login") @NotNull final String login, final ModelMap modelMap) {
+    public String authorization(@RequestParam("login") @NotNull final String login, final ModelMap modelMap) {
         @Nullable final UserDto userDto = castToUserDto(userService.findOneByLogin(login));
         if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
-            return new ModelAndView("error");
+            return "error";
         }
          log.info("User " + userDto.getLogin() + " has signed in");
-        return new ModelAndView("redirect:/");
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
-    public ModelAndView logout(final ModelMap modelMap, final Principal principal) {
+    public String logout(final ModelMap modelMap, final Principal principal) {
         final String userId = userService.findOneByLogin(principal.getName()).getId();
         if(userId == null) {
             modelMap.addAttribute("error", "User does not exist");
-            return new ModelAndView("error");
+            return "error";
         }
         @Nullable final UserDto userDto = castToUserDto(userService.findOne(userId));
         if(userDto == null) {
             modelMap.addAttribute("error", "User does not exist");
-            return new ModelAndView("error");
+            return "error";
         }
         log.info("User " + userDto.getLogin() + " has logged out");
-        return new ModelAndView("redirect:/");
+        return "redirect:/";
     }
 
     protected static UserDto castToUserDto(@NotNull final User user) {
