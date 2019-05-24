@@ -3,14 +3,14 @@
 <html>
 <head>
     <title>login</title>
-    <link rel="stylesheet" href="<c:url value="/css/style.css"/>" type="text/css"/>
+    <link rel="stylesheet" href="/css/style.css" type="text/css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp"/>
 <body>
 <div class="container">
     <h2>AUTHORIZATION</h2>
-    <form action="<c:url value="/login"/>" method="post">
+    <form action="/login" method="post">
         <div class="form-group">
             <label for="login">Login:</label>
             <input id="login" type="email" name="login" placeholder="Email address" class="form-control" required autofocus/>

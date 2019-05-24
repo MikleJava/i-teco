@@ -165,6 +165,7 @@
                     <username>admin</username>
                     <password>admin</password>
                     <path>/</path>
+                    <update>true</update>
                 </configuration>
             </plugin>
             <plugin>

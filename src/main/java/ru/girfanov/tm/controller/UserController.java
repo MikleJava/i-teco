@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.UserDto;
 import ru.girfanov.tm.entity.User;
+import ru.girfanov.tm.enumeration.UserRoleEnum;
 import ru.girfanov.tm.util.LoggerUtil;
 import ru.girfanov.tm.validator.UserValidator;
 
@@ -32,7 +33,9 @@ public class UserController {
 
     @GetMapping("/registration")
     public String registrationView(ModelMap modelMap) {
-        modelMap.addAttribute("user", new UserDto());
+        final UserDto userDto = new UserDto();
+        userDto.setRole(UserRoleEnum.USER);
+        modelMap.addAttribute("user", userDto);
         return "registration";
     }
 
