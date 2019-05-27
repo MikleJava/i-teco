@@ -12,10 +12,9 @@ import ru.girfanov.tm.api.service.IUserService;
 import ru.girfanov.tm.dto.ProjectDto;
 import ru.girfanov.tm.entity.Project;
 import ru.girfanov.tm.exception.UserNotFoundException;
+import ru.girfanov.tm.util.AdapterUtil;
 import ru.girfanov.tm.util.LoggerUtil;
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +24,9 @@ public class ProjectController {
 
     @NotNull
     private static final Logger log = LoggerUtil.getLogger(ProjectController.class);
+
+    @Autowired
+    private AdapterUtil<ProjectDto, Project> adapter;
 
     @Autowired
     private IUserService userService;
@@ -38,7 +40,7 @@ public class ProjectController {
             modelMap.addAttribute("error", "Project does not exist");
             return null;
         }
-        @Nullable final ProjectDto projectDto = castToProjectDto(projectService.findOne(userId, projectId));
+        @Nullable final ProjectDto projectDto = adapter.convertToEntityDto(projectService.findOne(userId, projectId));
         if (projectDto == null) {
             modelMap.addAttribute("error", "Project does not exist");
             return null;
@@ -50,7 +52,7 @@ public class ProjectController {
     public String projectListView(final ModelMap modelMap, final Principal principal) {
         final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
-            final List<ProjectDto> projects = castToListProjectsDto(projectService.findAllByUserId(userId));
+            final List<ProjectDto> projects = adapter.convertToListEntitiesDto(projectService.findAllByUserId(userId));
             modelMap.addAttribute("projects", projects);
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
@@ -87,7 +89,7 @@ public class ProjectController {
         final String userId = userService.findOneByLogin(principal.getName()).getId();
         projectDto.setUserId(userId);
         try {
-            projectService.persist(userId, castToProject(projectDto));
+            projectService.persist(userId, adapter.convertToEntity(projectDto));
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
@@ -114,7 +116,7 @@ public class ProjectController {
     public String editProject(@ModelAttribute("project") final ProjectDto projectDto, final ModelMap modelMap, final Principal principal) {
         final String userId = userService.findOneByLogin(principal.getName()).getId();
         try {
-            projectService.merge(userId, castToProject(projectDto));
+            projectService.merge(userId, adapter.convertToEntity(projectDto));
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
@@ -129,7 +131,7 @@ public class ProjectController {
         try {
             final ProjectDto projectDto = checkProject(modelMap, userId, projectId);
             if(projectDto == null) return "error";
-            projectService.remove(userId, castToProject(projectDto));
+            projectService.remove(userId, adapter.convertToEntity(projectDto));
         } catch (UserNotFoundException e) {
             modelMap.addAttribute("error", "User does not exist");
             return "error";
@@ -138,35 +140,35 @@ public class ProjectController {
         return "redirect:/project/list";
     }
 
-    protected static ProjectDto castToProjectDto(@NotNull final Project project) {
-        final ProjectDto projectDto = new ProjectDto();
-        projectDto.setId(project.getId());
-        projectDto.setName(project.getName());
-        projectDto.setDescription(project.getDescription());
-        projectDto.setStatus(project.getStatus());
-        projectDto.setDateStart(project.getDateStart());
-        projectDto.setDateEnd(project.getDateEnd());
-        projectDto.setUserId(project.getUser().getId());
-        return projectDto;
-    }
-
-    protected Project castToProject(@NotNull final ProjectDto projectDto) {
-        final Project project = new Project();
-        project.setId(projectDto.getId());
-        project.setName(projectDto.getName());
-        project.setDescription(projectDto.getName());
-        project.setStatus(projectDto.getStatus());
-        project.setDateStart(projectDto.getDateStart());
-        project.setDateEnd(projectDto.getDateEnd());
-        project.setUser(userService.findOne(projectDto.getUserId()));
-        return project;
-    }
-
-    protected static List<ProjectDto> castToListProjectsDto(@NotNull final List<Project> projects) {
-        final List<ProjectDto> projectsDto = new ArrayList<>();
-        for (Project project : projects) {
-            projectsDto.add(castToProjectDto(project));
-        }
-        return projectsDto;
-    }
+//    protected static ProjectDto castToProjectDto(@NotNull final Project project) {
+//        final ProjectDto projectDto = new ProjectDto();
+//        projectDto.setId(project.getId());
+//        projectDto.setName(project.getName());
+//        projectDto.setDescription(project.getDescription());
+//        projectDto.setStatus(project.getStatus());
+//        projectDto.setDateStart(project.getDateStart());
+//        projectDto.setDateEnd(project.getDateEnd());
+//        projectDto.setUserId(project.getUser().getId());
+//        return projectDto;
+//    }
+//
+//    protected Project castToProject(@NotNull final ProjectDto projectDto) {
+//        final Project project = new Project();
+//        project.setId(projectDto.getId());
+//        project.setName(projectDto.getName());
+//        project.setDescription(projectDto.getName());
+//        project.setStatus(projectDto.getStatus());
+//        project.setDateStart(projectDto.getDateStart());
+//        project.setDateEnd(projectDto.getDateEnd());
+//        project.setUser(userService.findOne(projectDto.getUserId()));
+//        return project;
+//    }
+//
+//    protected static List<ProjectDto> castToListProjectsDto(@NotNull final List<Project> projects) {
+//        final List<ProjectDto> projectsDto = new ArrayList<>();
+//        for (Project project : projects) {
+//            projectsDto.add(castToProjectDto(project));
+//        }
+//        return projectsDto;
+//    }
 }
